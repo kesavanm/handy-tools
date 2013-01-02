@@ -56,19 +56,25 @@ fi
 ##############################################################
 
 yt(){
-	# HTML 5
-	find ~/.mozilla/firefox/*.default/Cache -type f -size +100k -ls|awk '{printf $11 "\n"}'|xargs file|grep -i webm|awk -F: '{printf $1 "\n"}'
+        # HTML 5
+        find ~/.mozilla/firefox/*.default/ -type f -size +100k -ls|awk '{printf $11 "\n"}'|xargs file|grep -i webm|awk -F: '{printf $1 "\n"}'
 
-	# Flash Video
-	find ~/.mozilla/firefox/*.default/Cache -type f -size +100k -ls|awk '{printf $11 "\n"}'|xargs file|grep -i 'Flash Video'|awk -F: '{printf $1 "\n"}'
+        # Flash Video
+        find ~/.mozilla/firefox/*.default/ -type f -size +100k -ls|awk '{printf $11 "\n"}'|xargs file|grep -i 'Flash Video'|awk -F: '{printf $1 "\n"}'
 
 }
 yt2(){
-	# This shows mozilla-media-cache/media_cache (deleted) which is cache of HTML5
-	echo /proc/`ps -ef|grep '/usr/lib/firefox/firefox'|head -1|awk '{printf $2}'`/fd/; 
-	ll /proc/`ps -ef|grep '/usr/lib/firefox/firefox'|head -1|awk '{printf $2}'`/fd/|grep media_cache
-	
-}
 
+        # This shows mozilla-media-cache/media_cache (deleted) which is cache of HTML5
+        FX='';
+        FX=`ps -ef|grep '/usr/lib/firefox/firefox'|grep -v grep|head -1|awk '{printf $2}'`
+        if [ $FX != '' ] ; then {
+                echo /proc/$FX/fd/;
+                ll /proc/$FX/fd/|grep media_cache
+        }   
+        else echo 'No running firefox';return 0;  
+        fi; 
+
+}
 
 
