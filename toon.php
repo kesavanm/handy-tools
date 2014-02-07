@@ -30,77 +30,72 @@ if($_GET[date]){
 
 <link rel="icon" href="k7.png">
 
-	<script>
-	document.onkeydown = checkKey;
-	
-	function checkKey(e) {
+<script>
+document.onkeydown = checkKey;
 
-	    e = e || window.event;
-	    
-	      switch (e.keyCode) {
-	        case 37:			//leftArrowPressed();
-								var uri = window.location.toString();
-								var res = uri.substr(-8,8);
-								var d = new Date(res.substr(0,4),parseInt(res.substr(4,2)) - 1,res.substr(6,2) );
-									    	                
-	    					Date.prototype.yyyymmdd = function() {
-								   var yyyy = this.getFullYear().toString();
-								   var mm = (this.getMonth()).toString(); // getMonth() is zero-based
-								   var dd  = (this.getDate()).toString();
-								   
-								   var newdate = new Date(yyyy ,mm,dd);
-								   newdate.setDate(newdate.getDate() - 1);
-								   
-								   yyyy = newdate.getFullYear().toString();
-								   mm = (newdate.getMonth()+1).toString(); // getMonth() is zero-based
-								   dd  = (newdate.getDate()).toString();
-								   								   
-								   return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
-								  };	
-								
-									uri = uri.substring(0, uri.length - 8);
-									uri = uri.replace("rand","");
-									uri = uri + d.yyyymmdd();
-									window.location=uri;
-	            break;
+function checkKey(e) {
 
-	        case 39:			//rightArrowPressed();
-		    
-								var uri = window.location.toString();
-								var res = uri.substr(-8,8);
-								var d = new Date(res.substr(0,4),parseInt(res.substr(4,2)) - 1,res.substr(6,2) );
-									    	                
-	    					Date.prototype.yyyymmdd = function() {
-								   var yyyy = this.getFullYear().toString();
-								   var mm = (this.getMonth()).toString(); // getMonth() is zero-based
-								   var dd  = (this.getDate()).toString();
-								   
-								   var newdate = new Date(yyyy ,mm,dd);
-								   newdate.setDate(newdate.getDate() + 1);
-								   
-								   yyyy = newdate.getFullYear().toString();
-								   mm = (newdate.getMonth()+1).toString(); // getMonth() is zero-based
-								   dd  = (newdate.getDate()).toString();
-								   								   
-								   return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
-								  };	
-								
-									uri = uri.substring(0, uri.length - 8);
-									uri = uri.replace("rand","");
-									uri = uri + d.yyyymmdd();
-									window.location=uri;
-	            break;
-	        case 13:			//rightArrowPressed();
-							window.location="toon.php?rand";
-	            break;	            
-	   }
-	   							
+    e = e || window.event;
+    
+    switch (e.keyCode) {
+      case 37:			//leftArrowPressed();
+				var uri = window.location.toString();
+				var res = uri.substr(-8,8);
+				var d = new Date(res.substr(0,4),parseInt(res.substr(4,2)) - 1,res.substr(6,2) );
+					    	                
+				Date.prototype.yyyymmdd = function() {
+				   var yyyy = this.getFullYear().toString();
+				   var mm = (this.getMonth()).toString(); // getMonth() is zero-based
+				   var dd  = (this.getDate()).toString();
+				   
+				   var newdate = new Date(yyyy ,mm,dd);
+				   newdate.setDate(newdate.getDate() - 1);
+				   
+				   yyyy = newdate.getFullYear().toString();
+				   mm = (newdate.getMonth()+1).toString(); // getMonth() is zero-based
+				   dd  = (newdate.getDate()).toString();
+				   								   
+				   return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
+				  };	
+				
+				uri = uri.substring(0, uri.length - 8);
+				uri = uri.replace("rand","");
+				uri = uri + d.yyyymmdd();
+				window.location=uri;
+      break;
+      case 39:			//rightArrowPressed();
 
-									
-
-	            
-	}
-	</script>
+				var uri = window.location.toString();
+				var res = uri.substr(-8,8);
+				var d = new Date(res.substr(0,4),parseInt(res.substr(4,2)) - 1,res.substr(6,2) );
+					    	                
+				Date.prototype.yyyymmdd = function() {
+				   var yyyy = this.getFullYear().toString();
+				   var mm = (this.getMonth()).toString(); // getMonth() is zero-based
+				   var dd  = (this.getDate()).toString();
+				   
+				   var newdate = new Date(yyyy ,mm,dd);
+				   newdate.setDate(newdate.getDate() + 1);
+				   
+				   yyyy = newdate.getFullYear().toString();
+				   mm = (newdate.getMonth()+1).toString(); // getMonth() is zero-based
+				   dd  = (newdate.getDate()).toString();
+				   								   
+				   return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
+				  };	
+				
+				uri = uri.substring(0, uri.length - 8);
+				uri = uri.replace("rand","");
+				uri = uri + d.yyyymmdd();
+				window.location=uri;
+      break;
+      case 13:			//rightArrowPressed();
+				window.location="toon.php?rand";
+        break;	            
+   }
+   							
+}
+</script>
 
   </head>
 
