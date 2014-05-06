@@ -1,5 +1,7 @@
 #!/bin/bash
 # indexer - make a html from dir
+# auth - hi@kesavan.info
+
 
 #1 tree the dir
 	tree -CDHFfhi . -o /tmp/_index.html
@@ -37,7 +39,7 @@ echo ' <!doctype html><html>	<head>' > /tmp/_0.html
 
 
 echo "Checks for supporting files"
-if [ -f /tmp/.indexer_ki/jquery.js  -a -f /tmp/.indexer_ki/jquery.dataTables.js  -a -f /tmp/.indexer_ki/indexer.js ] 
+if [ -f /tmp/.indexer_ki/jquery.js  -a -f /tmp/.indexer_ki/jquery.dataTables.js  -a -f /tmp/.indexer_ki/indexer.js -a -f /tmp/.indexer_ki/sorticon.gif  ] 
   then
 	echo Cache avail 
 else 
