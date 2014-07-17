@@ -76,7 +76,18 @@ yt2(){
         fi; 
 
 }
+##############################################################
+#	TOOL (5) findtext - list files with pattern 
+##############################################################
 
+findtext(){
+	if [ "$#" -ne "1" ]; then
+	        echo "Usage: ${0} [text to search for]"
+	else
+	        echo "Searching for \"${1}\" in current directory..."
+	        find . -exec grep -q "$1" '{}' \; -print
+	fi
+}
 
 #---------------------------
 # Personnal HANDY Aliases
