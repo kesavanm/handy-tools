@@ -1,0 +1,115 @@
+VI(M)
+	The following commands could be entered to display the information shown. 
+	=========================================================================
+	:echo @%  def/my.txt	directory/name of file  
+	:echo expand('%:t')	my.txt  name of file ('tail')  
+	:echo expand('%:p')	/abc/def/my.txt  full path  
+	:echo expand('%:p:h')	/abc/def  directory containing file ('head')  
+	
+	:set hlsearch
+	
+	:hi! link Comment Comment 	# Hide the commands
+	:hi! link Comment Ignore 	# Show the comments
+	
+	:setlocal noautoindent nocindent nosmartindent indentexpr= nonu
+	:setlocal nocindent
+	:setlocal nosmartindent
+	:setlocal indentexpr=
+
+BASH	
+	Grep files with a particular string in the file name
+	====================================================
+	grep -r "string" www/code/
+	grep -ir  -E 'get|wcl' KDEWebService.php |tail	
+
+	Find files
+	=====================================
+	find /home/tmpdir -type f -name "*string*" # f-file d-dir l-link
+	
+	find . -mtime -7		# File's data was last modified 7*24 hours ago
+					# finds files changed in the last week	
+	find . -ctime -n		# File's status was last changed n*24 hours ago
+					# (data+inode+permission changes )					
+	find www/code/ ~ -type f -mtime -7 
+
+	Find & Grep	# list files with patterns
+	===========================================================
+	find . -name "*.php" 	  -exec grep -H "some_string" {} \;	
+	find / -name "*checkout*" -exec grep -i 'Confirm Password' {} \;
+
+	Xargs 
+	=====
+	# list files of date & remove them 
+	ll /tmp/*wsdl-bou*|grep 'Jul 24'|awk '{print $9}'|xargs rm 
+	
+	Alias
+	=====
+	alias ls="ls --color"
+	alias phpk="php -d display_errors=1 -d error_reporting=E_ALL -l"
+
+	ln -s for new development env
+	=============================
+	ln -s /data/kmuthuvel/kmcode /srv/www/b3.com/www/public_html/kmcode	#data to public_html
+	ln -s /srv/www/b3.com/www/public_html/kmcode /srv/www/b3.com/www/	#public to www
+
+MySQL
+	-- Find Column & Tables
+	SELECT DISTINCT TABLE_NAME,COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%kesavan%' AND TABLE_SCHEMA IN (SELECT DATABASE());
+	SELECT DISTINCT TABLE_SCHEMA,TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%kesavan%' ;
+	
+	-- Copy Table
+	CREATE TABLE km_db2.table1 SELECT * FROM km_db1.table1
+
+	-- SQL to fetch latest from same table V1 
+	SELECT * FROM (SELECT id,customer_id,note,date_created FROM customer WHERE customer_id =  23761 AND note LIKE 'Customer has added pydd%' ORDER BY id DESC ) AS LATEST GROUP BY customer_id
+	-- SQL to fetch latest from same table  V2 Tuned
+	SELECT ccn.id , ccn.customer_id ,ccn.note , ccn.date_created FROM customer ccn LEFT JOIN customer ccn2
+	ON (ccn.customer_id = ccn2.customer_id AND ccn.date_created < ccn2.date_created AND  ccn.note = ccn2.note
+	) WHERE ccn2.date_created IS NULL AND ccn.customer_id = 23761 AND ccn.note LIKE 'Customer has added pydd%' ;
+
+PHP
+	ob_start();var_dump(); user_error(ob_get_contents()); ob_get_clean();
+	debug_print_backtrace()
+	php -d display_errors=1 -d error_reporting=E_ALL -l #
+
+	define('DEV',0);
+	if(DEV) $fh = fopen("/tmp/kmuth-sql.log","a") ; fwrite($fh,$sql) ; 		fclose($fh);
+	if(DEV) $fh = fopen("/tmp/kmuth-sql.log","a") ; fwrite($fh,print_r($,TRUE)) ; 	fclose($fh);
+
+	echo "<pre>";	print_r($_POST); 
+	echo "<pre>";	var_dump($_POST); exit;
+
+	service php-fpm restart	
+
+GIT 
+	Normal Flow
+	===========
+	git status			#Show the current status
+	git branch kmuth_sonar		#Creates new Branch (Local)
+	git checkout kmuth_sonar	#Switch to branch (kmuth_sonar)
+	git add file.php		#Adding new file to git
+	git commit -m "Fixed,all files"	#Commit the file
+	git push origin kmuth_sonar	#Send to origin
+
+	Logs
+	====
+	git log --author=kmuthuvel	
+	git log --pretty=format:"%h %s" --graph --author=kmuthuvel
+	git log --no-merges master
+
+	Revert To Original
+	==================
+	git stash; git fetch origin; git reset --hard origin/master	#Entire directory
+	git checkout HEAD path/to/file					#Single File
+
+	Clean
+	======
+	git clean -f # remove-local-untracked-files
+
+ShortCuts
+	HeidiSQL REDO SHIFT+ALT+BACKSPACE
+
+
+
+
+
