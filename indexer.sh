@@ -2,17 +2,18 @@
 # indexer - make a html from dir
 # auth - hi@kesavan.info
 
-TMP='tmp'		# Define Temp Dir
+TMP='../tmp'		# Define Temp Dir
 
 #1 tree the dir
 	tree -CDHFfh . -o $TMP/_index.html		#No <tr> initially 
 
 #2 beautify
-	awk '{gsub("&nbsp;&nbsp;",""); print}' $TMP/_index.html  > $TMP/_index2.html 
+	awk '{gsub("&nbsp;&nbsp;",""); print}' $TMP/_index.html  > $TMP/_index20.html 
+	sed 's#[└──│├]##g' $TMP/_index20.html > $TMP/_index2.html 
 
 #3 add table
 
-	awk '{gsub("Tree</h1>", "Tree ! </h1> <p> \n <table STARTXXX><tr>"); print}' $TMP/_index2.html > $TMP/_index3.html #PSEUDO TABLE
+	awk '{gsub("Tree</h1>", "Tree ! </h1> <p> \n <table><tr><td> <table STARTXXX>"); print}' $TMP/_index2.html > $TMP/_index3.html #PSEUDO TABLE
 	awk '{gsub("<br>","</td> </tr>\n <tr> <td>"); gsub("<a","</td><td> <a"); print}' $TMP/_index3.html  > $TMP/_index3.5.html 
 
 #CMD     tree
@@ -31,14 +32,17 @@ TMP='tmp'		# Define Temp Dir
 	
 # strip all
 	sed -e "/<\/table>/,+50d" $TMP/_index4.html > $TMP/_index5.html
-	TABLE=" class='display' id='books' border='1' cellpadding='0' cellspacing='0' align='left' > 	\
-		<thead> 										\
+
+	TABLE=" class='display' id='books' border='1' cellpadding='0' cellspacing='0' align='left'>	\
+		<thead>											\
 			<tr> 										\
 				<th>Information <img src='$TMP\/.indexer_ki\/sorticon.gif'> <\/th> 	\
 				<th>File <img src='$TMP\/.indexer_ki\/sorticon.gif'> <\/th> 		\
-			<\/tr> 										\
-		 <\/thead"
-	sed  "s/STARTXXX/$TABLE/g" < $TMP/_index5.html > $TMP/_index6.html
+			<\/tr>										\
+		<\/thead	"	
+
+	sed "s#STARTXXX#$TABLE#g" < $TMP/_index5.html > $TMP/_index6.html
+
 	head -n -2  $TMP/_index6.html >  $TMP/_index7.html
 
 # finish it
