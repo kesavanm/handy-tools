@@ -9,27 +9,15 @@ TMP='../tmp'		# Define Temp Dir
 
 #2 beautify
 	awk '{gsub("&nbsp;&nbsp;",""); print}' $TMP/_index.html  > $TMP/_index20.html 
-	sed 's#[└──│├]##g' $TMP/_index20.html > $TMP/_index2.html 
+	sed 's#[└──│├\n\t]##g' $TMP/_index20.html > $TMP/_index2.html 
 
 #3 add table
-
-	awk '{gsub("Tree</h1>", "Tree ! </h1> <p> \n <table><tr><td> <table STARTXXX>"); print}' $TMP/_index2.html > $TMP/_index3.html #PSEUDO TABLE
+	awk '{gsub("Tree</h1>", "Tree ! </h1> <p> \n <table ><tr><td align=left> <table STARTXXX>"); print}' $TMP/_index2.html > $TMP/_index3.html #PSEUDO TABLE
 	awk '{gsub("<br>","</td> </tr>\n <tr> <td>"); gsub("<a","</td><td> <a"); print}' $TMP/_index3.html  > $TMP/_index3.5.html 
-
-#CMD     tree
-#USER   /(/[\w)\w+ /g
-#SIZE   /\w+]/g
-#FILE	/(]\s)(.)+$/g
 
 #4 close table
 	awk '{gsub("<tr> <td></td> </tr>", "</table>"); print}' $TMP/_index3.5.html> $TMP/_index4.html	
-	# <tr> <td></td> </tr>
-  
-#5 grep </table> ?
-	#echo 'grep start'
-	#grep -n "</table>" index4.html
-	#echo 'grep done'
-	
+ 
 # strip all
 	sed -e "/<\/table>/,+50d" $TMP/_index4.html > $TMP/_index5.html
 
@@ -68,18 +56,19 @@ else
 	wget -O $TMP/.indexer_ki/indexer.js 		-o $TMP/.indexer_ki/log/jq.index.log	"http://kesavan.info/jquery/jq.indexer.js"
 	wget -O $TMP/.indexer_ki/sorticon.gif		-o $TMP/.indexer_ki/log/img.log		"http://kesavan.info/jquery/sorticon.gif"
 fi
-	
-cat  $TMP/_0.html $TMP/.indexer_ki/indexer.js  $TMP/_3full.html  >> $TMP/_index.new.html
 
-grep -v 'href="."' $TMP/_index.new.html > $TMP/_index.new2.html
-awk '{gsub("</thead><tr>", "</thead>"); print}'  $TMP/_index.new2.html >  indexer.htm
+#combine all
+	cat  $TMP/_0.html $TMP/.indexer_ki/indexer.js  $TMP/_3full.html  >> $TMP/_index.new.html
+
+#misc
+	grep -v 'href="."' $TMP/_index.new.html > $TMP/_index.new2.html
+	awk '{gsub("</thead><tr>", "</thead>"); print}'  $TMP/_index.new2.html >  $TMP/_indexer.html
+
+#remove first td+tr 
+	sed "s#</td> </tr>##" < $TMP/_indexer.html > indexer.htm
 
 #remove all
 	rm -f $TMP/_*html
 
 echo "indexer.htm generated"	
 exit 0	
-
-
-
-
