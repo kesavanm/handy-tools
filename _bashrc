@@ -19,26 +19,33 @@
 #
 #
 ############################################################################################################ 
+
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
 COLUMNS=250
+
 #Colors
-#LTGREEN="\[\033[40;1;32m\]"
-#LTBLUE="\[\033[40;1;34m\]"
-#CLEAR="\[\033[0m\]"
-#LIGHT_GRAY="\[\033[40;1;33m\]"
+LTGREEN="\[\033[40;1;32m\]"
+LTBLUE="\[\033[40;1;34m\]"
+CLEAR="\[\033[0m\]"
+LIGHT_GRAY="\[\033[40;1;33m\]"
+
 # Now we construct the prompt.
 #PS1="[\u@\h \W]\$ "                    #B/W base file path
 #PS1="\e[0;32m[\u@\h \w]\$ \e[m "       #Colorful absolute path
 #PS1="$LTGREEN\u$LTBLUE@\h:$LIGHT_GRAY\w$CLEAR > "
 #PS1="[\u@\h:\w]$ "
+
+
 alias todo="$HOME/bin/.todo"
 alias findname="find . -name "
 alias vim="vim -u $HOME/.vimrc"
 alias grep="grep --color"
 alias profile="vim $HOME/.profile"
+
+
 #list in numeric mode
-#lsn(){	ls -l $* | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf("%0o ",k);print}'; }
+lsn(){	ls -l $* | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf("%0o ",k);print}'; }
 
 #Disk Usage 
 LS(){
@@ -299,3 +306,32 @@ yt2(){
 
 }
 
+function msg(){
+	# http://askubuntu.com/questions/99703/how-to-get-colored-output-from-bash-script
+	# $1 - msg
+	# $2 - format  {greet ,warning, okay/good/positive , no/bad/negative,ul}
+	# $3 - extra , passed to echo as it is
+	# colors -  0Black,1Red,2Green,3yellow?,4Violet,5Pink,6Magenta,7grey
+	
+	B=`tput bold`   #BOLD
+	D=`tput dim`    #DIM
+	U=`tput sgr 0 1` #UNDERLINE
+	U2=`tput smul`  #UNDERLINE2
+	NOU=`tput rmul` #NO UNDERLINE
+	H=`tput smso`   #HIGHLIGHT
+	X=`tput sgr0`   #RESET
+	C='tput setaf '	#COLOR
+
+	case "$2" in
+		warning		) i=3; c=`$C$i` && echo $3 $c${H}$1$X;;
+		greet		) i=6; c=`$C$i` && echo $3 $c${B}$1$X;;
+		bad|negative 	) i=1; c=`$C$i` && echo $3 $c${H}$1$X;;
+		good|okay	) i=2; c=`$C$i` && echo $3 $c${B}$1$X;;
+		bold		) 	c=`$C`  && echo $3 ${B}$1$X;;
+		ul		) 	c=`$C`  && echo $3 ${U}$1$X;;
+		ulbold		) i=2; c=`$C$i` && echo $3 $c${U2}$1$X;;	
+		normal		) i=2; c=`$C$i` && echo $3 $c$1$X;;
+	esac
+}
+msg "Be lazy" 'greet' ;  
+msg "Be always double lazy" 'greet'
