@@ -1,5 +1,226 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+############################################################################################################
+# auth : hi@kesavan.info
+# date : 2015-03-04
+# 
+# PLEASE READ THIS STATEMENT 
+#
+# This should be open and in sync with Work & Home(Z460) & GitHub & Hosting & ownCloud 
+# 
+# 1 - dos2unix .profile.open
+# 2 - to include this this file into your profile , add the following to your existing profile file on top
+#     .profile or .bashrc or whatever it is 
+#
+#     if [ -f ~/.profile.open ]; then
+#       	. ~/.profile.open
+#     fi
+#
+#
+#
+#
+#
+############################################################################################################ 
+# User specific environment and startup programs
+PATH=$PATH:$HOME/bin
+COLUMNS=250
+#Colors
+#LTGREEN="\[\033[40;1;32m\]"
+#LTBLUE="\[\033[40;1;34m\]"
+#CLEAR="\[\033[0m\]"
+#LIGHT_GRAY="\[\033[40;1;33m\]"
+# Now we construct the prompt.
+#PS1="[\u@\h \W]\$ "                    #B/W base file path
+#PS1="\e[0;32m[\u@\h \w]\$ \e[m "       #Colorful absolute path
+#PS1="$LTGREEN\u$LTBLUE@\h:$LIGHT_GRAY\w$CLEAR > "
+#PS1="[\u@\h:\w]$ "
+alias todo="$HOME/bin/.todo"
+alias findname="find . -name "
+alias vim="vim -u $HOME/.vimrc"
+alias grep="grep --color"
+alias profile="vim $HOME/.profile"
+#list in numeric mode
+#lsn(){	ls -l $* | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf("%0o ",k);print}'; }
 
+#Disk Usage 
+LS(){
+		du -sh * 2> /dev/null;	
+}
+#show ln only
+function lns(){ 
+	ll $*| grep -E '^l';
+}
+#alias lsmod="ls -l | awk '{k=0;s=0;for( i=0; i <= 8; i++ ){k += ( ( substr( $1, i+2, 1 ) ~ /[rwxst]/ ) * 2 ^( 8 - i ) )}j=4;for( i=4; i <= 10; i += 3 ){ s += ( ( substr( $1, i, 1 ) ~ /[stST]/ )*j);j/=2;} if (k){printf( "%0o%0o ",s,k);} print;}'  "
+#alias "lsmod=ls -al|awk '{k=0;s=0;for(i=0;i<=8;i++){;k+=((substr(\$1,i+2,1)~/[rwxst]/)*2^(8-i));};j=4;for(i=4;i<=10;i+=3){;s+=((substr(\$1,i,1)~/[stST]/)*j);j/=2;};if(k){;printf(\"%0o%0o \",s,k);};print;}'"
+function kps(){ 
+	ps -ef|head -1;
+	ps -ef|grep $1 |grep -v grep;
+}
+#---------------------------
+# Personnal HANDY Aliases
+#---------------------------
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+# -> Prevents accidentally clobbering files.
+alias mkdir='mkdir -p'
+alias h='history'
+alias j='jobs -l'
+alias which='type -a'
+alias ..='cd ..'
+# Pretty-print of some PATH variables:
+alias path='echo -e ${PATH//:/\\n}'
+alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
+alias du='du -kh' # Makes a more readable output.
+alias df='df -kTh'
+#-------------------------------------------------------------
+# The 'ls' family (this assumes you use a recent GNU ls).
+#-------------------------------------------------------------
+# Add colors for filetype and human-readable sizes by default on 'ls':
+alias ls='ls -h --color'
+alias lx='ls -lXB' # Sort by extension.
+alias lk='ls -lSr' # Sort by size, biggest last.
+alias lt='ls -ltr' # Sort by date, most recent last.
+alias lc='ls -ltcr' # Sort by/show change time,most recent last.
+alias lu='ls -ltur' # Sort by/show access time,most recent last.
+# The ubiquitous 'll': directories first, with alphanumeric sorting:
+#alias ll="ls -lv --group-directories-first"
+alias ll="ls -lvA"
+alias lm='ll |more' # Pipe through 'more'
+alias lr='ll -R' # Recursive ls.
+alias la='ll -A' # Show hidden files.
+alias tree='tree -Csuh' # Nice alternative to 'recursive ls' ...
+#-------------------------------------------------------------
+# File & strings related functions:
+#-------------------------------------------------------------
+# Find a file with a pattern in name:
+function ff() { find . -type f -iname '*'"$*"'*' -ls ; }
+# Find a file with pattern $1 in name and Execute $2 on it:
+function fe() { find . -type f -iname '*'"${1:-}"'*' \
+	-exec ${2:-file} {} \; ; 
+}
+# Find a pattern in a set of files and highlight them:
+# (needs a recent version of egrep).
+function fstr() {
+	OPTIND=1
+	local mycase=""
+	local usage="fstr: find string in files.
+	Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
+	while getopts :it opt
+	do
+		case "$opt" in
+			i) mycase="-i " ;;
+		*) echo "$usage"; return ;;
+	esac
+done
+shift $(( $OPTIND - 1 ))
+if [ "$#" -lt 1 ]; then
+	echo "$usage"
+	return;
+	return;
+fi
+find . -type f -name "${2:-*}" -print0 | \
+	xargs -0 egrep --color=always -sn ${case} "$1" 2>&- | more
+}
+function findtext(){
+	if [ "$#" -ne "1" ]; then
+	        echo "Usage: ${0} [text to search for]"
+	else
+	        echo "Searching for \"${1}\" in current directory..."
+	        find . -exec grep -q "$1" '{}' \; -print
+	fi
+}
+function extract() {	# Handy Extract Program
+	if [ -f $1 ] ; then
+		case $1 in
+			*.tar.bz2) tar xvjf $1 ;;
+			*.tar.gz) tar xvzf $1 ;;
+			*.bz2) bunzip2 $1 ;;
+			*.rar) unrar x $1 ;;
+			*.gz) gunzip $1 ;;
+			*.tar) tar xvf $1 ;;
+			*.tbz2) tar xvjf $1 ;;
+			*.tgz) tar xvzf $1 ;;
+			*.zip) unzip $1 ;;
+			*.Z) uncompress $1 ;;
+			*.7z) 7z x $1 ;;
+			*) echo "'$1' cannot be extracted via >extract<" ;;
+		esac
+	else
+		echo "'$1' is not a valid file!"
+	fi
+}
+# Creates an archive (*.tar.gz) from given directory.
+function maketar() { tar cvzf "${1%%/}.tar.gz" "${1%%/}/"; }
+# Create a ZIP archive of a file or folder.
+function makezip() { zip -r "${1%%/}.zip" "$1" ; }
+#-------------------------------------------------------------
+# Process/system related functions:
+#-------------------------------------------------------------
+function my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
+function pp() { my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
+function killps() {		# kill by process name
+	local pid pname sig="-TERM" # default signal
+	if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+		echo "Usage: killps [-SIGNAL] pattern"
+		return;
+	fi
+	if [ $# = 2 ]; then sig=$1 ; fi
+	for pid in $(my_ps| awk '!/awk/ && $0~pat { print $1 }' pat=${!#} )
+	do
+		pname=$(my_ps | awk '$1~var { print $5 }' var=$pid )
+		if ask "Kill process $pid <$pname> with signal $sig?"
+		then kill $sig $pid
+		fi
+	done
+}
+function mydf() {	# Pretty-print of 'df' output.
+ # Inspired by 'dfc' utility.
+	for fs ; do
+		if [ ! -d $fs ]
+		then
+			echo -e $fs" :No such file or directory" ; continue
+		fi
+		local info=( $(command df -P $fs | awk 'END{ print $2,$3,$5 }') )
+		local free=( $(command df -Pkh $fs | awk 'END{ print $4 }') )
+		local nbstars=$(( 20 * ${info[1]} / ${info[0]} ))
+		local out="["
+		for ((j=0;j<20;j++)); do
+			if [ ${j} -lt ${nbstars} ]; then
+				out=$out"*"
+			else
+				out=$out"-"
+			fi
+		done
+		out=${info[2]}" "$out"] ("$free" free on "$fs")"
+		echo -e $out
+	done
+}
+function myip() {	# Get IP adress on ethernet.
+	MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' |
+	sed -e s/addr://)
+	echo ${MY_IP:-"Not connected"}
+}
+function ii() {	# Get current host related info.
+	echo -e "\nYou are logged on ${BRed}$HOST"
+	echo -e "\n${BRed}Additionnal information:$NC " ; uname -a
+	echo -e "\n${BRed}Users logged on:$NC " ; w -hs |
+	cut -d " " -f1 | sort | uniq
+	echo -e "\n${BRed}Current date :$NC " ; date
+	echo -e "\n${BRed}Machine stats :$NC " ; uptime
+	echo -e "\n${BRed}Memory stats :$NC " ; free
+	echo -e "\n${BRed}Diskspace :$NC " ; mydf / $HOME
+	echo -e "\n${BRed}Local IP Address :$NC" ; my_ip
+	echo -e "\n${BRed}Open connections :$NC "; netstat -pan --inet;
+	echo
+}
+
+
+
+#GIT Version Control
+
+alias gl="git log"
+alias gs="git status --untracked-files=no"
+#alias gls="git log --pretty=format:\"%h%x09%an%x09%ad%x09%s\""
+alias gls="git log --date=local --pretty=format:\"%h%x09%C(cyan)%an%x09%ad:%Creset %s\""
 
 ##############################################
 #	TOOL (1) datec - Quickly find your age 
@@ -18,6 +239,7 @@ datec(){
 #collation_connection: latin1_swedish_ci
 #  Database Collation: latin1_swedish_ci
 #1 row in set (0.00 sec)
+
 
 ##################################################
 #	TOOL (2) software - List of software packs   
@@ -76,201 +298,4 @@ yt2(){
         fi; 
 
 }
-##############################################################
-#	TOOL (5) findtext - list files with pattern 
-##############################################################
 
-findtext(){
-	if [ "$#" -ne "1" ]; then
-	        echo "Usage: ${0} [text to search for]"
-	else
-	        echo "Searching for \"${1}\" in current directory..."
-	        find . -exec grep -q "$1" '{}' \; -print
-	fi
-}
-
-#---------------------------
-# Personnal HANDY Aliases
-#---------------------------
-
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-# -> Prevents accidentally clobbering files.
-alias mkdir='mkdir -p'
-
-alias h='history'
-alias j='jobs -l'
-#alias which='type -a'
-alias ..='cd ..'
-
-# Pretty-print of some PATH variables:
-alias path='echo -e ${PATH//:/\\n}'
-alias libpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
-
-alias du='du -kh'    # Makes a more readable output.
-alias df='df -kTh'
-
-#-------------------------------------------------------------
-# The 'ls' family (this assumes you use a recent GNU ls).
-#-------------------------------------------------------------
-# Add colors for filetype and  human-readable sizes by default on 'ls':
-alias ls='ls -h --color'
-alias lx='ls -lXB'         #  Sort by extension.
-alias lk='ls -lSr'         #  Sort by size, biggest last.
-alias lt='ls -ltr'         #  Sort by date, most recent last.
-alias lc='ls -ltcr'        #  Sort by/show change time,most recent last.
-alias lu='ls -ltur'        #  Sort by/show access time,most recent last.
-
-# The ubiquitous 'll': directories first, with alphanumeric sorting:
-#alias ll="ls -lv --group-directories-first"
-alias ll="ls -lv "
-alias lm='ll |more'        #  Pipe through 'more'
-alias lr='ll -R'           #  Recursive ls.
-alias la='ll -A'           #  Show hidden files.
-alias tree='tree -Csuh'    #  Nice alternative to 'recursive ls' ...
-
-#alias "lsmod=ls -al|awk '{k=0;s=0;for(i=0;i<=8;i++){;k+=((substr(\$1,i+2,1)~/[rwxst]/)*2^(8-i));};j=4;for(i=4;i<=10;i+=3){;s+=((substr(\$1,i,1)~/[stST]/)*j);j/=2;};if(k){;printf(\"%0o%0o \",s,k);};print;}'"
-
-
-#list in numeric mode
-lsn(){
-        ls -l | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf("%0o ",k);print}'
-}
-
-
-#-------------------------------------------------------------
-# File & strings related functions:
-#-------------------------------------------------------------
-
-# Find a file with a pattern in name:
-function ff() { find . -type f -iname '*'"$*"'*' -ls ; }
-
-# Find a file with pattern $1 in name and Execute $2 on it:
-function fe() { find . -type f -iname '*'"${1:-}"'*' \
--exec ${2:-file} {} \;  ; }
-
-
-#  Find a pattern in a set of files and highlight them:
-#+ (needs a recent version of egrep).
-function fstr()
-{
-    OPTIND=1
-    local mycase=""
-    local usage="fstr: find string in files.
-Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
-    while getopts :it opt
-    do
-        case "$opt" in
-           i) mycase="-i " ;;
-           *) echo "$usage"; return ;;
-        esac
-    done
-    shift $(( $OPTIND - 1 ))
-    if [ "$#" -lt 1 ]; then
-        echo "$usage"
-        return;
-        return;
-    fi
-    find . -type f -name "${2:-*}" -print0 | \
-xargs -0 egrep --color=always -sn ${case} "$1" 2>&- | more
-
-}
-
-function extract()      # Handy Extract Program
-{
-    if [ -f $1 ] ; then
-        case $1 in
-            *.tar.bz2)   tar xvjf $1     ;;
-            *.tar.gz)    tar xvzf $1     ;;
-            *.bz2)       bunzip2 $1      ;;
-            *.rar)       unrar x $1      ;;
-            *.gz)        gunzip $1       ;;
-            *.tar)       tar xvf $1      ;;
-            *.tbz2)      tar xvjf $1     ;;
-            *.tgz)       tar xvzf $1     ;;
-            *.zip)       unzip $1        ;;
-            *.Z)         uncompress $1   ;;
-            *.7z)        7z x $1         ;;
-            *)           echo "'$1' cannot be extracted via >extract<" ;;
-        esac
-    else
-        echo "'$1' is not a valid file!"
-    fi
-}
-# Creates an archive (*.tar.gz) from given directory.
-function maketar() { tar cvzf "${1%%/}.tar.gz"  "${1%%/}/"; }
-
-# Create a ZIP archive of a file or folder.
-function makezip() { zip -r "${1%%/}.zip" "$1" ; }
-
-#-------------------------------------------------------------
-# Process/system related functions:
-#-------------------------------------------------------------
-function my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
-function pp() { my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
-
-function killps()   # kill by process name
-{
-    local pid pname sig="-TERM"   # default signal
-    if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
-        echo "Usage: killps [-SIGNAL] pattern"
-        return;
-    fi
-    if [ $# = 2 ]; then sig=$1 ; fi
-    for pid in $(my_ps| awk '!/awk/ && $0~pat { print $1 }' pat=${!#} )
-    do
-        pname=$(my_ps | awk '$1~var { print $5 }' var=$pid )
-        if ask "Kill process $pid <$pname> with signal $sig?"
-            then kill $sig $pid
-        fi
-    done
-}
-
-
-function mydf()         # Pretty-print of 'df' output.
-{                       # Inspired by 'dfc' utility.
-    for fs ; do
-
-        if [ ! -d $fs ]
-        then
-          echo -e $fs" :No such file or directory" ; continue
-        fi
-
-        local info=( $(command df -P $fs | awk 'END{ print $2,$3,$5 }') )
-        local free=( $(command df -Pkh $fs | awk 'END{ print $4 }') )
-        local nbstars=$(( 20 * ${info[1]} / ${info[0]} ))
-        local out="["
-        for ((j=0;j<20;j++)); do
-            if [ ${j} -lt ${nbstars} ]; then
-               out=$out"*"
-            else
-               out=$out"-"
-            fi
-        done
-        out=${info[2]}" "$out"] ("$free" free on "$fs")"
-        echo -e $out
-    done
-}
-
-function my_ip() # Get IP adress on ethernet.
-{
-    MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' |
-      sed -e s/addr://)
-    echo ${MY_IP:-"Not connected"}
-}
-
-function ii()   # Get current host related info.
-{
-    echo -e "\nYou are logged on ${BRed}$HOST"
-    echo -e "\n${BRed}Additionnal information:$NC " ; uname -a
-    echo -e "\n${BRed}Users logged on:$NC " ; w -hs |
-             cut -d " " -f1 | sort | uniq
-    echo -e "\n${BRed}Current date :$NC " ; date
-    echo -e "\n${BRed}Machine stats :$NC " ; uptime
-    echo -e "\n${BRed}Memory stats :$NC " ; free
-    echo -e "\n${BRed}Diskspace :$NC " ; mydf / $HOME
-    echo -e "\n${BRed}Local IP Address :$NC" ; my_ip
-    echo -e "\n${BRed}Open connections :$NC "; netstat -pan --inet;
-    echo
-}
