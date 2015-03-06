@@ -1,10 +1,8 @@
 ############################################################################################################
 # auth : hi@kesavan.info
-# date : 2015-03-04
+# date : 2015-03-06
 # 
 # PLEASE READ THIS STATEMENT 
-#
-# This should be open and in sync with Work & Home(Z460) & GitHub & Hosting & ownCloud 
 # 
 # 1 - dos2unix .profile.open
 # 2 - to include this this file into your profile , add the following to your existing profile file on top
@@ -15,9 +13,11 @@
 #     fi
 #
 #
+# Additional packs you may need : 
+# 1 - .vimrc
+# 2 - .todo  & .todo_list
 #
-#
-#
+# SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud 
 ############################################################################################################ 
 
 # User specific environment and startup programs
@@ -333,5 +333,6 @@ function msg(){
 		normal		) i=2; c=`$C$i` && echo $3 $c$1$X;;
 	esac
 }
-msg "Be lazy" 'greet' ;  
-msg "Be always double lazy" 'greet'
+
+msg "Be lazy" 'greet' ; msg "Be always double lazy" 'greet'
+msg "Your #TODO action(s)" "warning" ;  todo;
