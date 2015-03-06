@@ -16,27 +16,57 @@ VI(M)
 	:setlocal nosmartindent
 	:setlocal indentexpr=
 
+	:diffoff & :diffthis		# Turn Off/On Colors during Diff
+	:diffupdate
+	
+	:set tabstop=4 shiftwidth=4 expandtab	# Tab to 4 WHITESPACE 
+	:retab
+
+	:set syntax=whitespace			#show spaces
+	:set listchars=tab:▸\ ,eol:¬		#show tabs,eol
+
 BASH	
+
+	Find files (man find ; or link http://en.wikipedia.org/wiki/Find)
+	=================================================================
+	find /home/tmpdir -type f -name "*string*" 	-print	# f-file d-dir l-link	-iname “*.pl”
+	find ~ -name \*.c -print		#Instead of doing things this way, you should enclose the pattern in quotes or escape the wildcard
+
+	# Expressions &  RANGES 
+	# xtime 	# x in  - data (m)odified ; data+inode+permission (c)hanges ; file read-only (a)ccess
+	# -n - less than n days (RECENT CHANGES)
+	# +n - more than n days (OLDER CHANGES)
+	#  n - exactly n days
+	# 
+    # ( expr ) Force precedence.
+    # ! expr True if expr is false.
+    # expr1 expr2 And (implied); expr2 is not evaluated if expr1 is false.
+    # expr1 -a expr2 Same as expr1 expr2.
+    # expr1 -o expr2 Or; expr2 is not evaluated if expr1 is true.
+	#      
+
+	find . -ctime n																# File's status was last changed n*24 hours ago
+																				# (data+inode+permission changes )
+	find . -mtime -7															# File's data was last modified 7*24 hours ago
+																				# finds files changed in the last week									
+	find . -mtime -7 -type f													# file's data modified less than 7 days	ago
+	find www/code/ -mtime 8 -mtime -10 -iname "*.pl" 							# files modified less than 10 days & more than 8 days ago
+																				# ie , modified between 8-10 days 
+	find ~ -type f -name rough.txt -newermt 2014-11-04 ! -newermt 2014-11-04 	# files modified between dates
+													
+	
+	Find & Grep		# list files with patterns
+	===========================================
+	# Combining find & grep is strongly depreciated ; Just for learning. Go with GNU grep (below)
+	find . -name "*.php" 	  -exec grep -H "some_string" {} \;	
+	find / -iname "*checkin*" -exec grep 'Confirm Password' {} \;
+	
 	Grep files with a particular string in the file name
 	====================================================
-	grep -r "string" www/code/
-	grep -ir  -E 'get|wcl' KDEWebService.php |tail	
-
-	Find files
-	=====================================
-	find /home/tmpdir -type f -name "*string*" # f-file d-dir l-link
+	grep -rH "string" www/code/				# -r recursive
+	grep -ir  -E 'get|wcl' sample.php|tail	# -i case-insensitive
+	grep -H ERROR  www/log					# -H force to print --with-filename; default nature
 	
-	find . -mtime -7		# File's data was last modified 7*24 hours ago
-					# finds files changed in the last week	
-	find . -ctime -n		# File's status was last changed n*24 hours ago
-					# (data+inode+permission changes )					
-	find www/code/ ~ -type f -mtime -7 
-
-	Find & Grep	# list files with patterns
-	===========================================================
-	find . -name "*.php" 	  -exec grep -H "some_string" {} \;	
-	find / -name "*checkout*" -exec grep -i 'Confirm Password' {} \;
-
 	Xargs 
 	=====
 	# list files of date & remove them 
@@ -52,64 +82,213 @@ BASH
 	ln -s /data/kmuthuvel/kmcode /srv/www/b3.com/www/public_html/kmcode	#data to public_html
 	ln -s /srv/www/b3.com/www/public_html/kmcode /srv/www/b3.com/www/	#public to www
 
+	SED / AWk
+	=========
+	sed -n -e 's/.*<name>\(.*\)<\/name>.*/\1/p'  persons.txt 	#kesavan 
+	
+	Mount Disk list	
+	===============
+	sudo lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT,LABEL
+	sudo fdisk -l
+	sudo cat /etc/fstab		# Currently mounted items
+	sudo ls /dev
+	
+		$ export PS1="\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\$"
+	
+	#TODO
+	ps -elF|head -1;ps -elF| grep listen_for_events_pa
+	ps -elf|head -1;ps -elf| grep listen_for_events_pa
+
+	htop
+	
+	Disk Usage
+	==========
+		du -sch * 2>/dev/null			# disk usage by every file/directory 
+		du -sch * 2>/dev/null |tail -1		# disk usage by current directory 	
+		du -sch * 2>/dev/null |sort -hr		# disk usage , sort by size 
+		du -sh * | sort -hr |head -10		# disk usage , top 10 
+		
 MySQL
+
+	mysql> pager less  /** http://www.percona.com/blog/2008/06/23/neat-tricks-for-the-mysql-command-line-pager/ **/
+
 	-- Find Column & Tables
-	SELECT DISTINCT TABLE_NAME,COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '%kesavan%' AND TABLE_SCHEMA IN (SELECT DATABASE());
+	SELECT DISTINCT TABLE_SCHEMA,TABLE_NAME,COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
+	WHERE 
+	COLUMN_NAME 	LIKE '%order%' 		AND 
+	TABLE_NAME 		LIKE '%867%' 		AND
+	TABLE_SCHEMA 	IN (SELECT DATABASE()); 
+
 	SELECT DISTINCT TABLE_SCHEMA,TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%kesavan%' ;
+
+	--REGEXP
+	SELECT id,book_name FROM books WHERE Order_Status REGEXP 'Time|Relativity|Gravity';
+
+
 	
 	-- Copy Table
-	CREATE TABLE km_db2.table1 SELECT * FROM km_db1.table1
+	CREATE TABLE km_dup.table1 SELECT * FROM km_orig.table1
 
 	-- SQL to fetch latest from same table V1 
-	SELECT * FROM (SELECT id,customer_id,note,date_created FROM customer WHERE customer_id =  23761 AND note LIKE 'Customer has added pydd%' ORDER BY id DESC ) AS LATEST GROUP BY customer_id
+	SELECT * FROM (SELECT id,customer_id,note,date_created FROM customer WHERE customer_id =  123 AND note LIKE 'Customer not happy%' ORDER BY id DESC ) AS LATEST GROUP BY customer_id
 	-- SQL to fetch latest from same table  V2 Tuned
 	SELECT ccn.id , ccn.customer_id ,ccn.note , ccn.date_created FROM customer ccn LEFT JOIN customer ccn2
 	ON (ccn.customer_id = ccn2.customer_id AND ccn.date_created < ccn2.date_created AND  ccn.note = ccn2.note
-	) WHERE ccn2.date_created IS NULL AND ccn.customer_id = 23761 AND ccn.note LIKE 'Customer has added pydd%' ;
+	) WHERE ccn2.date_created IS NULL AND ccn.customer_id = 123 AND ccn.note LIKE 'Customer not happy%' ;
+	
+	-- Example V1
+	SELECT * FROM (	SELECT id,customer_id,note,date FROM customer_log ORDER BY id DESC ) AS LATEST 
+	GROUP BY customer_id ORDER BY date DESC ;
+	
+	-- Example V2
+	SELECT c1.* FROM customer_log c1 
+	LEFT JOIN customer_log c2 ON (c1.customer_id = c2.customer_id AND c1.date < c2.date ) 
+	WHERE c2.date IS NULL ;
 
+
+	
+	SELECT id,report_id, CONVERT(params USING utf8) params,last_updated ,run_every,notes,active  FROM autoreports ORDER BY id DESC LIMIT 5; 
+	
 PHP
 	ob_start();var_dump(); user_error(ob_get_contents()); ob_get_clean();
 	debug_print_backtrace()
 	php -d display_errors=1 -d error_reporting=E_ALL -l #
 
 	define('DEV',0);
-	if(DEV) $fh = fopen("/tmp/kmuth-sql.log","a") ; fwrite($fh,$sql) ; 		fclose($fh);
-	if(DEV) $fh = fopen("/tmp/kmuth-sql.log","a") ; fwrite($fh,print_r($,TRUE)) ; 	fclose($fh);
+	if(DEV) error_log(date('c')."\t ==>$sql<== with  ==> ".var_export($anything,true)."<== \n",3,"/tmp/dev.log");
 
 	echo "<pre>";	print_r($_POST); 
 	echo "<pre>";	var_dump($_POST); exit;
 
 	service php-fpm restart	
+	
+	<?php
+	error_reporting(E_ERROR);
+	ini_set('display_errors',1);
+
+	echo 'Syntax Error here";
+	'?>	
+
+	Try-Catch
+	=========
+
+	try{
+		$response = $client->ValidateUser("kesavan", "Password1",'DE'); #SERVICE
+	}catch (Exception $e) {
+		echo "Caught exception:".get_class($e)."\n{$e->getMessage()}\nIn file:{$e->getFile()} at line #{$e->getLine()}\n{$e->getTraceAsString()}\n";
+		throw $e;
+	}
+
+	Custom Profiler
+	================
+	self::profiler('Going to kill me!!! ');
+	
+	public static function profiler($msg){
+		$message = date('Y-m-d H:i:s')." Memory:".round(memory_get_usage()/(1024*1024)).
+			"MB MemoryPeak:".round(memory_get_peak_usage()/(1024*1024))."MB ".var_export($msg,true)."\n";
+		error_log($message,3,'/tmp/sql.log');	
+
+	}
 
 GIT 
 	Normal Flow
 	===========
-	git status			#Show the current status
-	git branch kmuth_sonar		#Creates new Branch (Local)
-	git checkout kmuth_sonar	#Switch to branch (kmuth_sonar)
-	git add file.php		#Adding new file to git
-	git commit -m "Fixed,all files"	#Commit the file
-	git push origin kmuth_sonar	#Send to origin
+		git status					#Show the current status
+		git branch 	new_enchancements		#Creates new Branch (Local)
+		git checkout 	new_enchancements		#Switch to branch (new_enchancements)		
+		git checkout -b new_enchancements		#Creates & Switch to new_enchancements branch (Local)
+		git add file.php				#Adding new file to git
+		git commit -m "Fixed,all files"			#Commit the file
+		git push origin new_enchancements		#Send to origin
+		
+		git checkout --f new_enchancements		#Switch to branch by force 
+		
+	Revert To Original/Old - Entire directory (code base)
+	=====================================================
+		git pull ?
+		git stash; git fetch origin; git reset --hard origin/development	#Entire directory to REMOTE_MASTER/REMOTE_BRANCH
+		git reset --hard df2bcfac7cabc0fd14d5c5abce22d65589e458a1 		#Entire directory to particular version
+		
+	Revert To Original/Old version - File level (single file)
+	=========================================================
+		git checkout -b old_is_gold												#Creates & Switch to branch old_is_gold
+		git checkout HEAD path/to/file											#Single File , from Master 
+		git checkout d279318b40657be62accea2130ef2fdf9b150b26 -- [full/path]	#Single File , from particular commit 
 
-	Logs
-	====
-	git log --author=kmuthuvel	
-	git log --pretty=format:"%h %s" --graph --author=kmuthuvel
-	git log --no-merges master
+	Revert To Original/Old version - Branch level (From remote into local) (Multiple files)
+	=======================================================================================
+		git checkout -b old_local_branch			#Creates & Switch to branch old_local_branch
+		git merge --no-ff old_remote_gold			#Auto-merging from old_remote_gold to old_local_branch
+		git push origin old_local_branch			#Push changes to origin again
 
-	Revert To Original
-	==================
-	git stash; git fetch origin; git reset --hard origin/master	#Entire directory
-	git checkout HEAD path/to/file					#Single File
-
+	Example
+	=======	
+	git checkout development
+		Switched to branch 'development'
+		Your branch is up-to-date with 'origin/development'.
+	git merge --no-ff diff_branch
+		Auto-merging module/sub/no_issue_file.ext
+		Auto-merging module/sub/clean_file.ext
+		CONFLICT (content): Merge conflict in module/sub/conflict.php
+		Automatic merge failed; fix conflicts and then commit the result.
+	git push origin development
+		Everything up-to-date	
+		
+	Get single file from different branch from remote
+	=================================================
+		cd $WORKSPACE				#go to WORKSPACE
+		git checkout origin/diff_branch full/path/to/file.ext
+		
 	Clean
 	======
-	git clean -f # remove-local-untracked-files
+		git clean -f 				# remove-local-untracked-files
+		
+	Remove/Delete remote/local branch
+	=================================	
+		git branch -d <branchName>		#local only		
+		git push origin --delete <branchName>	#remove remote(if you know what you are doing!)
+		git push origin :<branchName>		#alias of above	
+
+	Unable to commit ? 
+	==================
+		To git@gitserver.org:project/code.git
+		 ! [rejected]        new_enchancements -> new_enchancements (non-fast-forward)
+		error: failed to push some refs to 'git@gitserver.org:project/code.git'
+		hint: Updates were rejected because the tip of your current branch is behind
+		hint: its remote counterpart. Integrate the remote changes (e.g.
+		hint: 'git pull ...') before pushing again.
+		hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+		
+		git push origin --delete new_enchancements	#1 remove remote branch
+		cd $WORKSPACE; rm -rf code			#2 remove local setup	
+		git clone git@gitserver.org:project/code.git	#3 setup fresh code
+		git branch new_enchancements (git branch -a)	#4 create unique branch
+		git checkout new_enchancements			#5 switch to new branch
+		...						#6 develop changes
+		git diff					#7 verify changes
+		git status;git add file1 file2 ;		#8 add files and status
+		git commit -m 'Files enchanced'			#9 commit changes
+		git push -u origin new_enchancements		#10 done!
+
+	Diff & Logs
+	===========	
+		git diff <old_source_commit> <new_target_commit> file.ext	# Compare latest to Old
+		git diff a268ab7670c5430a2a98638cb04820516f8b1b9e 85cfd5ae0e4a1d888eb9611d99c6eac2ba92740f  git_is_good.php
+		git diff HEAD^ HEAD [git_is_good.php]
+		
+		git log -S'unique_identifier' -- git_is_good.php
+		git log -G'unique_identifier' -- git_is_good.php
+		
+		git show 211dbe40cd784b06932122f7ba67d656ed438b01	# Particular commit
+
+		[TIP]	#http://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History
+		
+		git log --pretty=format:"%h - %an, %ar : %s" -S'unique_identifier' -- git_is_good.php
+		git log --pretty=format:"%h - %an, %ar : %s" git_is_good.php
+		git log --pretty=format:"%H - %an, %ar : %s" git_is_good.php
+		git log --author=kesavanm	
+		git log --pretty=format:"%h %s" --graph --author=kesavanm
+		git log --no-merges master	
 
 ShortCuts
 	HeidiSQL REDO SHIFT+ALT+BACKSPACE
-
-
-
-
-
