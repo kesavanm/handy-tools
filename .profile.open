@@ -163,6 +163,15 @@ function findtext(){
 	        find . -exec grep -q "$1" '{}' \; -print
 	fi
 }
+
+function grepnln(){             # Grep it but Don't follow Symb Links
+	if [ "$#" -ne "1" ]; then
+		msg "Usage: grepnln [text to search for, but not to follow sym links]" 'bad'
+	else
+		find . -type f -exec grep -H $1 '{}' \;  2>/dev/null
+	fi
+}
+
 function extract() {	# Handy Extract Program
 	if [ -f $1 ] ; then
 		case $1 in
