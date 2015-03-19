@@ -1,6 +1,6 @@
 ##############################################################################
 # auth : hi@kesavan.info
-# date : 2015-03-06
+# date : 2015-03-19
 # 
 # Updated version always avail at
 # 1 - https://github.com/kesavanm/handy-tools/ 	(quick-commands)	and/or
@@ -56,22 +56,30 @@ BASH
     # expr1 -o expr2 Or; expr2 is not evaluated if expr1 is true.
 	#      
 
-	find . -ctime n																# File's status was last changed n*24 hours ago
-																				# (data+inode+permission changes )
-	find . -mtime -7															# File's data was last modified 7*24 hours ago
-																				# finds files changed in the last week									
-	find . -mtime -7 -type f													# file's data modified less than 7 days	ago
-	find www/code/ -mtime 8 -mtime -10 -iname "*.pl" 							# files modified less than 10 days & more than 8 days ago
-																				# ie , modified between 8-10 days 
+	find . -ctime n						# File's status was last changed n*24 hours ago
+								# (data+inode+permission changes )
+	find . -mtime -7					# File's data was last modified 7*24 hours ago
+								# finds files changed in the last week									
+	find . -mtime -7 -type f				# file's data modified less than 7 days	ago
+	find www/code/ -mtime 8 -mtime -10 -iname "*.pl"	# files modified less than 10 days & more than 8 days ago
+								# ie , modified between 8-10 days 
 	find ~ -type f -name rough.txt -newermt 2014-11-04 ! -newermt 2014-11-04 	# files modified between dates
 													
-	
+	#find with REGEX - Read more if need : -regextype posix-extended	
+	find ~ ! -regex '.*/\..*'  -type f				# REGEX to filter non-hidden files/directories/links	
+	find ~ -regex '^(?!\.)(.*)todo.*' -type f			# REGEX to filter *todo* files/directories/links
+	find ~ -type f ! -regex '.*/\..*' -a -regex '.*todo.*'		# REGEX to filter non-hidden *todo* files
+	find ~ -type f  \( -regex '.*/\..*' \) -regex '.*todo.*'	# REGEX to filter hidden *todo* files
+
+
 	Find & Grep		# list files with patterns
 	===========================================
 	# Combining find & grep is strongly depreciated ; Just for learning. Go with GNU grep (below)
 	find . -name "*.php" 	  -exec grep -H "some_string" {} \;	
 	find / -iname "*checkin*" -exec grep 'Confirm Password' {} \;
 	
+	find . -type f -exec grep -H PATTERN '{}' \;  2>/dev/null
+
 	Grep files with a particular string in the file name
 	====================================================
 	grep -rH "string" www/code/				# -r recursive
@@ -141,7 +149,8 @@ MySQL
 	CREATE TABLE km_dup.table1 SELECT * FROM km_orig.table1
 
 	-- SQL to fetch latest from same table V1 
-	SELECT * FROM (SELECT id,customer_id,note,date_created FROM customer WHERE customer_id =  123 AND note LIKE 'Customer not happy%' ORDER BY id DESC ) AS LATEST GROUP BY customer_id
+	SELECT * FROM (SELECT id,customer_id,note,date_created FROM customer 
+	WHERE customer_id =  123 AND note LIKE 'Customer not happy%' ORDER BY id DESC ) AS LATEST GROUP BY customer_id
 	-- SQL to fetch latest from same table  V2 Tuned
 	SELECT ccn.id , ccn.customer_id ,ccn.note , ccn.date_created FROM customer ccn LEFT JOIN customer ccn2
 	ON (ccn.customer_id = ccn2.customer_id AND ccn.date_created < ccn2.date_created AND  ccn.note = ccn2.note
@@ -222,8 +231,8 @@ GIT
 		
 	Revert To Original/Old version - File level (single file)
 	=========================================================
-		git checkout -b old_is_gold												#Creates & Switch to branch old_is_gold
-		git checkout HEAD path/to/file											#Single File , from Master 
+		git checkout -b old_is_gold						#Creates & Switch to branch old_is_gold
+		git checkout HEAD path/to/file						#Single File , from Master 
 		git checkout d279318b40657be62accea2130ef2fdf9b150b26 -- [full/path]	#Single File , from particular commit 
 
 	Revert To Original/Old version - Branch level (From remote into local) (Multiple files)
