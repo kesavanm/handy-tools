@@ -370,6 +370,15 @@ function msg(){
 		normal		) i=2; c=`$C$i` && echo $3 $c$1$X;;
 	esac
 }
+function teachme(){
+        if [ "$#" -ne "1" ]; then
+		msg "Usage: teachme [ pattern to learn something today]" 'good'
+        else
+                msg 'Be sure to have latest .profile.open & quick-commands content on  ~/bin/.teachme.txt' 'warning'
+                grep --color -in $1 ~/bin/.teachme.txt
+        fi
+}
 
 msg "Be lazy" 'greet' ; msg "Be always double lazy" 'greet'
 msg "Your #TODO action(s)" "warning" ;  todo;
+msg "Try to learn something with 'teachme' today" 'greet'
