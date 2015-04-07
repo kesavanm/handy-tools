@@ -128,7 +128,16 @@ BASH
 		du -sh * | sort -hr |head -10		# disk usage , top 10 
 		
 MySQL
-
+	-- PROCESSLIST
+	SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE Command='Query' AND `INFO` LIKE 'SELECT %'; ORDER BY STATE ;
+	
+	-- Pager  MySQL > PAGER(STDOUT)	> STDOUT
+	\P 		grep -v Sleep						-- (\P === pager)	-- MySQL > PAGER(grep) > STDOUT	
+	pager 	grep -v Sleep | more; 
+		SHOW FULL PROCESSLIST; -- OR whatever SQL
+	\P											-- Default pager wasn't set, using stdout. '
+	
+	-- More on Pager 
 	mysql> pager less  /** http://www.percona.com/blog/2008/06/23/neat-tricks-for-the-mysql-command-line-pager/ **/
 
 	-- Find Column & Tables
