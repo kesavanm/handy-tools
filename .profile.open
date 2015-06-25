@@ -39,15 +39,15 @@ LIGHT_GRAY="\[\033[40;1;33m\]"
 #PS1="[\u@\h \W]\$ "                    #B/W base file path
 #PS1="\e[0;32m[\u@\h \w]\$ \e[m "       #Colorful absolute path
 #PS1="$LTGREEN\u$LTBLUE@\h:$LIGHT_GRAY\w$CLEAR > "
+#PS1="[\u@\h \W]\$"						# full path
 #PS1="[\u@\h:\w]$ "
-
+PS1="\[\e]0;\w\a\]\[\e[32m\]\u@\h\[\e[35m\]|\[\e[33m\]\w\[\e[35m\]|\e[34m\]\D{%F %T}\e[0m\]\n\$"
 
 alias todo="$HOME/bin/.todo"
 alias findname="find . -name "
 alias vim="vim -u $HOME/.vimrc"
 alias grep="grep --color"
 alias profile="vim $HOME/.profile"
-
 
 #list in numeric mode
 lsn(){	ls -l $* | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf("%0o ",k);print}'; }
@@ -261,6 +261,17 @@ function ii() {	# Get current host related info.
 	echo
 }
 
+mydiff(){
+	if [ $# -ne 2 ] ; then { 
+		echo "Usage: $FUNCNAME <old-file> <new-file>"; 
+		return 0;
+	}
+	fi
+        diff  	--old-line-format="%dn %L" 		--new-line-format="%dn %L"\
+		--old-group-format=$'\e[0;31m%<\e[0m'	--new-group-format=$'\e[0;32m%>\e[0m'\
+		--unchanged-group-format="" $1 $2
+}
+
 
 
 #GIT Version Control
@@ -374,10 +385,12 @@ function msg(){
 		normal		) i=2; c=`$C$i` && echo $3 $c$1$X;;
 	esac
 }
+
 function teachme(){
         if [ "$#" -ne "1" ]; then
-		msg "Usage: teachme [ pattern to learn something today]" 'good'
+                msg "Usage: $FUNCNAME [ pattern to learn something today]" 'good'
         else
+
                 msg 'Be sure to have latest .profile.open & quick-commands content on  ~/bin/.teachme.txt' 'warning'
                 grep --color -in $1 ~/bin/.teachme.txt
         fi
@@ -385,4 +398,5 @@ function teachme(){
 
 msg "Be lazy" 'greet' ; msg "Be always double lazy" 'greet'
 msg "Your #TODO action(s)" "warning" ;  todo;
+
 msg "Try to learn something with 'teachme' today" 'greet'
