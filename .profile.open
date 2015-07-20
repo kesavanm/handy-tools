@@ -396,6 +396,8 @@ function teachme(){
         fi
 }
 
+shopt -s nocaseglob	# to match case insensitive patterns with ls
+
 msg "Be lazy" 'greet' ; msg "Be always double lazy" 'greet'
 msg "Your #TODO action(s)" "warning" ;  todo;
 
