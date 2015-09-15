@@ -36,6 +36,11 @@ VI(M)
 	:set syntax=whitespace			#show spaces
 	:set listchars=tab:▸\ ,eol:¬		#show tabs,eol
 
+	
+	:set ts=4
+	:set et
+	:659,723retab!								#tabs to 4spaces from 659 to 723 lines
+	
 BASH	
 
 	Find files (man find ; or link http://en.wikipedia.org/wiki/Find)
@@ -56,29 +61,32 @@ BASH
     # expr1 -o expr2 Or; expr2 is not evaluated if expr1 is true.
 	#      
 
-	find . -ctime n						# File's status was last changed n*24 hours ago
-								# (data+inode+permission changes )
-	find . -mtime -7					# File's data was last modified 7*24 hours ago
-								# finds files changed in the last week									
-	find . -mtime -7 -type f				# file's data modified less than 7 days	ago
-	find www/code/ -mtime 8 -mtime -10 -iname "*.pl"	# files modified less than 10 days & more than 8 days ago
-								# ie , modified between 8-10 days 
-	find ~ -type f -name rough.txt -newermt 2014-11-04 ! -newermt 2014-11-04 	# files modified between dates
-													
+	find . -ctime n															# File's status was last changed n*24 hours ago
+																			# (data+inode+permission changes )
+	find . -mtime -7														# File's data was last modified 7*24 hours ago
+																			# finds files changed in the last week
+	find . -mtime -7 -type f												# file's data modified less than 7 days	ago
+	find www/code/ -mtime 8 -mtime -10 -iname "*.pl" 						# perl files modified less than 10 days & more than 8 days ago
+																			# ie , modified between 8-10 days 
+	find ~ -type f -name test.txt -newermt 2014-11-04 ! -newermt 2014-11-04	# files modified between dates
+	
+	find  . -type f -name '*.php' -mmin -60									# php files modified in last one hour
+
+
+
 	#find with REGEX - Read more if need : -regextype posix-extended	
-	find ~ ! -regex '.*/\..*'  -type f				# REGEX to filter non-hidden files/directories/links	
-	find ~ -regex '^(?!\.)(.*)todo.*' -type f			# REGEX to filter *todo* files/directories/links
-	find ~ -type f ! -regex '.*/\..*' -a -regex '.*todo.*'		# REGEX to filter non-hidden *todo* files
-	find ~ -type f  \( -regex '.*/\..*' \) -regex '.*todo.*'	# REGEX to filter hidden *todo* files
-
-
+	find ~ ! -regex '.*/\..*'  -type f										# REGEX to filter non-hidden files/directories/links	
+	find ~ -regex '^(?!\.)(.*)todo.*' -type f								# REGEX to filter *todo* files/directories/links
+	find ~ -type f ! -regex '.*/\..*' -a -regex '.*todo.*'					# REGEX to filter non-hidden *todo* files
+	find ~ -type f  \( -regex '.*/\..*' \) -regex '.*todo.*'				# REGEX to filter hidden *todo* files
+	
 	Find & Grep		# list files with patterns
 	===========================================
 	# Combining find & grep is strongly depreciated ; Just for learning. Go with GNU grep (below)
 	find . -name "*.php" 	  -exec grep -H "some_string" {} \;	
 	find / -iname "*checkin*" -exec grep 'Confirm Password' {} \;
 	
-	find . -type f -exec grep -H PATTERN '{}' \;  2>/dev/null
+	find . -type f -exec grep -H PATTERN '{}' \;  2>/dev/null	#NO SYMB LINK FOLLOW
 
 	Grep files with a particular string in the file name
 	====================================================
@@ -86,11 +94,40 @@ BASH
 	grep -ir  -E 'get|wcl' sample.php|tail	# -i case-insensitive
 	grep -H ERROR  www/log					# -H force to print --with-filename; default nature
 	
+
+	grep -C3 error  www/log					# -Cn prints n lines before & after the matching lines
+											# -(A)bove (B)elow (C)ombined
+
 	Xargs 
 	=====
 	# list files of date & remove them 
 	ll /tmp/*wsdl-bou*|grep 'Jul 24'|awk '{print $9}'|xargs rm 
-	
+
+
+	Search for a file for all users with matching pattern:
+	======================================================
+	for user in bsatishraj btata gkasim kmuthuvel kthokala ktoufique pdurgaprakash rkema_old smareddy smareddy-old smatte snagotu vgunnam; do for envdb in `find /data/$user -maxdepth 5 -type f -name 'env_db.php'` ; do grep -E 'BE_DB_DATABASE|BE_DB_SLAVE_DATABASE|BE_DB_WEATHER_DATABASE' $envdb|grep 'define(' |awk {'print $2 '}|sort|uniq |xargs echo -e "$user - $envdb \t\t -" ; done; done
+
+	Explanation
+	============
+	kmuthuvel@BOUN03VMA15:atlas:~$ for user in kmuthuvel;
+	> do
+	>  for envdb in `find /data/$user -maxdepth 5 -type f -name 'env_db.php'` ;
+	>  do
+	>   grep -E 'DB_DATABASE|DB_SLAVE_DATABASE|DB_WEATHER_DATABASE' $envdb |
+	>   grep 'define(' |
+	>   awk {'print $2 '}|
+	>   sort|
+	>   uniq|
+	>   xargs echo -e "$user - $envdb \t\t -"
+	>  done;
+	> done
+	kmuthuvel - /data/kmuthuvel/code/core/config/env_db.php				- old_db shard01
+	kmuthuvel - /data/kmuthuvel/code-xyz/core/config/env_db.php			- km_db shard01
+	kmuthuvel - /data/kmuthuvel/archive/code/core/config/env_db.php		- km_db newdb shard01
+	kmuthuvel - /data/kmuthuvel/new/core/config/env_db.php				- km_db shard0
+	kmuthuvel@BOUN03VMA15:atlas:~$
+
 	Alias
 	=====
 	alias ls="ls --color"
@@ -112,20 +149,46 @@ BASH
 	sudo cat /etc/fstab		# Currently mounted items
 	sudo ls /dev
 	
+
+
 		$ export PS1="\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\$"
 	
 	#TODO
 	ps -elF|head -1;ps -elF| grep listen_for_events_pa
 	ps -elf|head -1;ps -elf| grep listen_for_events_pa
 
+	rss in ps are resident ; resident set size;the non-swapped physical memory that a task has used (in kiloBytes)(alias rssize, rsz).
+	RES in top ? (may be RSS of ps? . I assume so!
+
 	htop
 	
 	Disk Usage
 	==========
-		du -sch * 2>/dev/null			# disk usage by every file/directory 
+		du -sch * 2>/dev/null				# disk usage by every file/directory 
 		du -sch * 2>/dev/null |tail -1		# disk usage by current directory 	
 		du -sch * 2>/dev/null |sort -hr		# disk usage , sort by size 
 		du -sh * | sort -hr |head -10		# disk usage , top 10 
+
+	Permissions:
+	============
+	Permissions take a different meaning for directories. 
+		read 	- determines if a user can view the directory's contents, i.e. do ls in it.
+		write 	- determines if a user can create new files or delete file in the directory. (Note here that this essentially means that a user with write access toa directory can delete files in the directory even if he/she doesn't have write permissions for the file! So be careful with this.)
+		execute	- determines if the user can cd into the directory.
+		
+		
+	DIFF
+		diff --old-group-format=$'\e[0;31m%<\e[0m'      --new-group-format=$'\e[0;33m%>\e[0m'      --unchanged-group-format=$'\e[0;32m%=\e[0m' /home/tmpdir/migrating_active_collections_report.php code/core/goodyear/scripts/migrating_active_collections_report.php	
+		
+		diff --old-group-format=$'\e[0;31m%<\e[0m'      --new-group-format=$'\e[0;32m%>\e[0m'      --unchanged-group-format=$'\e[0;32m%=\e[0m' /home/tmpdir/migrating_active_collections_report.php code/core/goodyear/scripts/migrating_active_collections_report.php			
+		
+		diff --old-group-format=$'\e[0;31m%<\e[0m'      --new-group-format=$'\e[0;32m%>\e[0m'       /home/tmpdir/migrating_active_collections_report.php code/core/goodyear/scripts/migrating_active_collections_report.php	
+	MYDIFF
+			diff --new-line-format="%dn%L"  --old-line-format="%dn%L"  --unchanged-group-format="" --old-group-format=$'\e[0;31m%<\e[0m'      --new-group-format=$'\e[0;32m%>\e[0m'       /home/tmpdir/migrating_active_collections_report.php code/core/goodyear/scripts/migrating_active_collections_report.php
+
+	
+IRC 
+			/msg nickserv identify kesavan <your-passcode>
 		
 MySQL
 	-- PROCESSLIST
@@ -178,6 +241,12 @@ MySQL
 	
 	SELECT id,report_id, CONVERT(params USING utf8) params,last_updated ,run_every,notes,active  FROM autoreports ORDER BY id DESC LIMIT 5; 
 	
+	TIGGERS
+	========
+	mysqldump --routines --no-create-info --no-data --no-create-db --skip-opt -hlocalhost --ukmuthuvel -pXXXXXXXXXXXX my_database   > ~/my_database.routines.sql
+	mysql -hlocalhost -ukmuthuvel -pXXXXXXXXXXXX kmuth_new < my_database.routines.sql
+
+
 PHP
 	ob_start();var_dump(); user_error(ob_get_contents()); ob_get_clean();
 	debug_print_backtrace()
@@ -211,10 +280,13 @@ PHP
 	Custom Profiler
 	================
 	self::profiler('Going to kill me!!! ');
+
 	
 	public static function profiler($msg){
 		$message = date('Y-m-d H:i:s')." Memory:".round(memory_get_usage()/(1024*1024)).
 			"MB MemoryPeak:".round(memory_get_peak_usage()/(1024*1024))."MB ".var_export($msg,true)."\n";
+
+
 		error_log($message,3,'/tmp/sql.log');	
 
 	}
@@ -222,15 +294,59 @@ PHP
 GIT 
 	Normal Flow
 	===========
-		git status					#Show the current status
-		git branch 	new_enchancements		#Creates new Branch (Local)
+		git status								#Show the current status
+		git branch 	new_enchancements			#Creates new Branch (Local)
 		git checkout 	new_enchancements		#Switch to branch (new_enchancements)		
 		git checkout -b new_enchancements		#Creates & Switch to new_enchancements branch (Local)
-		git add file.php				#Adding new file to git
+		git add file.php						#Adding new file to git
 		git commit -m "Fixed,all files"			#Commit the file
 		git push origin new_enchancements		#Send to origin
 		
-		git checkout --f new_enchancements		#Switch to branch by force 
+		git checkout --f new_enchancements		#Switch to branch by forcee 
+
+		
+	Branching
+	=========	
+		Always create new branch from `development` only. Else you may conflicts raising from the branch from where you create the new.
+		
+		Right-way:
+		==========
+				 -------new-feature----------> 5 changes (new feature added )
+				/
+		-------/--------development----------> 0 changes (upto date with master)
+					       \
+					        \---hotfix-------> 2 changes (quick hotfix;go by eod )
+					 
+		0 ---- 1 ---- 2 ---- 3 ---- Time --->
+		
+		
+		Avoid:
+		=====
+					        /---hotfix-------> 7 changes (combines with new feature)
+					       /
+				 -------new-feature----------> 5 changes (new feature added )
+				/
+		-------/--------development----------> 0 changes (upto date with master)
+
+		0 ---- 1 ---- 2 ---- 3 ---- Time ---->
+		
+	Save changes to temp & goto other branch & come back
+    ====================================================
+	
+	$git branch								#list branches						#10:00 AM
+	 development                                                                
+	 *my-branch                                                                 
+	 master	                                                                    
+	$git status								#current status						#10:30 AM
+	 modified:                                                                  
+		abc.txt                                                                 
+	$git stash								#move changes to temp location		#10:31 AM
+	$git checkout very_new_branch			#switch to other branch				#10:40 AM
+	$git add new.file.ext					#work on other branch				#02:30 PM
+	$git commmit -m 'Fixed issues;'			#commit the changes					#02:40 PM
+	$git checkout my-branch					#back to original branch			#03:00 PM
+	$git stash pop							#get the changes from stash			#03:03 PM
+
 		
 	Revert To Original/Old - Entire directory (code base)
 	=====================================================
@@ -250,6 +366,14 @@ GIT
 		git merge --no-ff old_remote_gold			#Auto-merging from old_remote_gold to old_local_branch
 		git push origin old_local_branch			#Push changes to origin again
 
+	Get changes from master into branch in git
+	============================================
+		git rebase master
+	
+	Copy branch to branch
+	=====================
+		git checkout -b new_branch old_branch
+
 	Example
 	=======	
 	git checkout development
@@ -265,9 +389,10 @@ GIT
 		
 	Get single file from different branch from remote
 	=================================================
+
 		cd $WORKSPACE				#go to WORKSPACE
 		git checkout origin/diff_branch full/path/to/file.ext
-		
+
 	Clean
 	======
 		git clean -f 				# remove-local-untracked-files
@@ -278,26 +403,29 @@ GIT
 		git push origin --delete <branchName>	#remove remote(if you know what you are doing!)
 		git push origin :<branchName>		#alias of above	
 
+
 	Unable to commit ? 
 	==================
-		To git@gitserver.org:project/code.git
+		To git@198.123.45.678:kmuthuvel/code.git
 		 ! [rejected]        new_enchancements -> new_enchancements (non-fast-forward)
-		error: failed to push some refs to 'git@gitserver.org:project/code.git'
+		error: failed to push some refs to 'git@198.123.45.678:kmuthuvel/code.git'
 		hint: Updates were rejected because the tip of your current branch is behind
 		hint: its remote counterpart. Integrate the remote changes (e.g.
 		hint: 'git pull ...') before pushing again.
 		hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 		
-		git push origin --delete new_enchancements	#1 remove remote branch
-		cd $WORKSPACE; rm -rf code			#2 remove local setup	
-		git clone git@gitserver.org:project/code.git	#3 setup fresh code
+		git push origin --delete new_enchancements		#1 remove remote branch
+		cd /data/kmuthuvel; rm -rf code					#2 remove local setup	
+		git clone git@198.123.45.678:kmuthuvel/code.git	#3 setup fresh code
 		git branch new_enchancements (git branch -a)	#4 create unique branch
-		git checkout new_enchancements			#5 switch to new branch
-		...						#6 develop changes
-		git diff					#7 verify changes
-		git status;git add file1 file2 ;		#8 add files and status
-		git commit -m 'Files enchanced'			#9 commit changes
-		git push -u origin new_enchancements		#10 done!
+		git checkout new_enchancements					#5 switch to new branch
+		...												#6 develop changes
+		git diff										#7 verify changes
+		git status;git add file1 file2 ;				#8 add files and status
+		git commit -m 'Reports enchanced'				#9 commit changes
+		git push -u origin new_enchancements			#10 done!
+
+
 
 	Diff & Logs
 	===========	
@@ -319,5 +447,71 @@ GIT
 		git log --pretty=format:"%h %s" --graph --author=kesavanm
 		git log --no-merges master	
 
+		#List all the modified files for a commit
+		git diff-tree --no-commit-id --name-only -r 2bc51f53a15da1428f8320d9ee93f8e7069a05a2
+		
+		git show --name-only 581c968d50ca3259b94081ac428969184ed51eab
+		
+		
+		git diff --name-only | xargs  ls -lt 		# latest modified files
+
+
+MS SQL
+	SELECT TOP 10 * FROM SMT.ESIIDMaster WHERE ESIIDID = 566455 ; 	
+
+
+DOS 
+	Netsh
+	
+	gitlab.yaazhdev.com	198.123.45.678:8080
+
+
+	# route add 198.123.45.678 gitlab.yaazhdev.com
+	# 
+	# Netsh
+	# add v4tov4 listenport=8080 connectaddress=gitlab.yaazhdev.com  listenaddress=198.123.45.678:8080 protocol=tcp
+	# netsh interface portproxy add v4tov4 listenport=8080 listenaddress 198.123.45.678 connectaddress=gitlab.yaazhdev.com
+
+	C:\WINDOWS\system32>netsh interface portproxy add v4tov4 listenport=8080 listenaddress=198.123.45.678 connectport=80 connectaddress=gitlab.yaazhdev.com
+
+
+	C:\WINDOWS\system32>netsh interface portproxy show v4tov4
+
+	Listen on ipv4:             Connect to ipv4:
+
+	Address         Port        Address         Port
+	--------------- ----------  --------------- ----------
+	198.123.45.678   8080        gitlab.yaazhdev.com 80
+
+
+	C:\WINDOWS\system32>		
+
+MarkDown
+	Name	|Sex|City,State
+	-|       
+	Jorge	|M|Corpus, TX	
+	Valerie	|M|Corpus, TX	
+	Sabrina	|F|Corpus, TX	
+		
+Excel
+	To convert the numbers into text?
+	=================================
+	1)	Use a datevalue(text(XX,”mm/dd/yyyy”) formula
+	2)	Use the text to values function to separate anything so “DATE” and “TIMESTAMP” are in two different columns.
+
+	Multi Instance 
+	===============
+	#ExcelLauncher	!!! WARNING !!! Breaks lot of built-in functionality
+		http://dottech.org/26491/how-to-force-microsoft-excel-to-open-files-in-new-window-how-to-guide/
+		http://blog.thomascsherman.com/2010/06/opening-excel-files-in-new-processes-excel-launcher-helper-app/
+
+	Freezing 
+	=========
+		Step 1 - Select
+			First 2 rows:		Click on A3 Cell. 
+			First 2 cols:		Click on C1 Cell. 
+			First x rows & y cols:	Click on (y+1)(x+1) Cell
+		Step end - View  > Window > Freeze Panes > Freeze Panes
+		
 ShortCuts
 	HeidiSQL REDO SHIFT+ALT+BACKSPACE
