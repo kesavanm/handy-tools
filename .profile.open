@@ -415,7 +415,7 @@ function parse_git_branch () {
         git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/|(\1)/'
 }
 
-function check_branch(){
+function git_branch(){
          for i in `find /data/$USER/ -maxdepth 1 -type d|sort | grep -v brand` ; do cd $i 2>/dev/null ; printf "%s\t%s" "Code:$i" "Branch:" ; BR=`git branch 2>/    dev/null | grep \* | awk '{print $2}'`  ; if [ $BR ] ; then msg $BR 'good' ;else msg 'Not_a_git_repository' 'bad';fi ; cd .. ;  done | awk '{print $1 "\t" $2 }    '|column -t
 }
 
