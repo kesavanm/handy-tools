@@ -422,13 +422,16 @@ function git_branch(){
 }
 
 function git_branch_status(){
-        ORIG=`git branch|grep \* | sed -e 's/\* //g'` ;
-        for i in `git branch|sed -e 's/\* //g' -e 's/ //g'` ;
-        do
-                git checkout $i ;
-                git diff --stat --cached origin/$i ;
-        done  ;
-        git checkout $ORIG ;
+	ORIG=`git branch|grep \* | sed -e 's/\* //g'` ; 
+	for i in `git branch|sed -e 's/\* //g' -e 's/ //g'` ; 
+	do git checkout $i 1> /tmp/$USER_git_warings.log; 
+	if [ /tmp/$USER_git_warings.log ] ; then 
+		if [ `grep up-to-date /tmp/$USER_git_warings.log  |wc -l` -eq 0 ] ; then ST='-w' ;  else ST='-g' ; fi ; 
+		cat /tmp/$USER_git_warings.log | msg2 $ST  ; 
+		rm -f /tmp/$USER_git_warings.log; fi ;
+	git diff --stat --cached origin/$i ; 
+	done ; 
+	git checkout $ORIG ;
 }
 
 RED="\[\033[0;31m\]"
