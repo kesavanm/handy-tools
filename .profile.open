@@ -421,6 +421,16 @@ function git_branch(){
          for i in `find /data/$USER/ -maxdepth 1 -type d|sort | grep -v brand` ; do cd $i 2>/dev/null ; printf "%s\t%s" "Code:$i" "Branch:" ; BR=`git branch 2>/    dev/null | grep \* | awk '{print $2}'`  ; if [ $BR ] ; then msg $BR 'good' ;else msg 'Not_a_git_repository' 'bad';fi ; cd .. ;  done | awk '{print $1 "\t" $2 }    '|column -t
 }
 
+function git_branch_status(){
+        ORIG=`git branch|grep \* | sed -e 's/\* //g'` ;
+        for i in `git branch|sed -e 's/\* //g' -e 's/ //g'` ;
+        do
+                git checkout $i ;
+                git diff --stat --cached origin/$i ;
+        done  ;
+        git checkout $ORIG ;
+}
+
 RED="\[\033[0;31m\]"
 YELLOW="\[\033[0;33m\]"
 GREEN="\[\033[0;32m\]"
