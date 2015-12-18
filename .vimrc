@@ -4,6 +4,9 @@ set smartcase
 
 set nu
 
+" turning on syntax
+syntax on
+
 " GUI options that need to be set here first
 " Remove exta, useless button bar.
 set guioptions-=T
