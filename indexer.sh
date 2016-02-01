@@ -65,7 +65,7 @@ fi
 	awk '{gsub("</thead><tr>", "</thead>"); print}'  $TMP/_index.new2.html >  $TMP/_indexer.html
 
 #remove first td+tr 
-	sed "s#</td> </tr>##" < $TMP/_indexer.html > indexer.htm
+	sed "s#</td> </tr>##" < $TMP/_indexer.html > indexer_`date +%F_%k_%M_%S`.htm
 
 #remove all
 	rm -f $TMP/_*html
