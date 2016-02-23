@@ -448,3 +448,4 @@ function git_branch_status(){
 ####################################################################################################
  
 PS1="$GREEN\u@\h$YELLOW|\w$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
+HISTTIMEFORMAT="%F %T "
