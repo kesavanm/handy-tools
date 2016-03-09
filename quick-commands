@@ -98,11 +98,21 @@ BASH
 	grep -C3 error  www/log					# -Cn prints n lines before & after the matching lines
 											# -(A)bove (B)elow (C)ombined
 
+	#Numbering the occurance
+	perl -ne 'print ++$a." $_" if /pattern/' file.ext
+	
+	#recursive statistics on file types in directory
+	================================================
+	find . -type f | sed 's/.*\.//' | sort | uniq -c
+	   16 avi
+	   29 jpg
+	  136 mp3
+	    3 mp4
+
 	Xargs 
 	=====
 	# list files of date & remove them 
 	ll /tmp/*wsdl-bou*|grep 'Jul 24'|awk '{print $9}'|xargs rm 
-
 
 	Search for a file for all users with matching pattern:
 	======================================================
@@ -110,7 +120,7 @@ BASH
 
 	Explanation
 	============
-	kmuthuvel@BOUN03VMA15:atlas:~$ for user in kmuthuvel;
+	kmuthuvel@localhost:atlas:~$ for user in kmuthuvel;
 	> do
 	>  for envdb in `find /data/$user -maxdepth 5 -type f -name 'env_db.php'` ;
 	>  do
@@ -126,12 +136,13 @@ BASH
 	kmuthuvel - /data/kmuthuvel/code-xyz/core/config/env_db.php			- km_db shard01
 	kmuthuvel - /data/kmuthuvel/archive/code/core/config/env_db.php		- km_db newdb shard01
 	kmuthuvel - /data/kmuthuvel/new/core/config/env_db.php				- km_db shard0
-	kmuthuvel@BOUN03VMA15:atlas:~$
+	kmuthuvel@localhost:atlas:~$
 
 	Alias
 	=====
 	alias ls="ls --color"
 	alias phpk="php -d display_errors=1 -d error_reporting=E_ALL -l"
+	alias phpx="php -d xdebug.profiler_output_dir=$HOME/profile -d xdebug.profiler_enable=On"
 
 	ln -s for new development env
 	=============================
@@ -149,9 +160,9 @@ BASH
 	sudo cat /etc/fstab		# Currently mounted items
 	sudo ls /dev
 	
+	kmuthuvel@localhost:atlas:~$ for user in bsatishraj ktoufique kthokala rkema gkasim snagotu vgunnam pdurgaprakash  ; do echo $user `grep km_db /data/$user/code/core/config/env_db.php|wc -l`;   done;
 
-
-		$ export PS1="\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\$"
+	$ export PS1="\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\$"	#lovely PROMPT1
 	
 	#TODO
 	ps -elF|head -1;ps -elF| grep listen_for_events_pa
@@ -215,8 +226,6 @@ MySQL
 	--REGEXP
 	SELECT id,book_name FROM books WHERE Order_Status REGEXP 'Time|Relativity|Gravity';
 
-
-	
 	-- Copy Table
 	CREATE TABLE km_dup.table1 SELECT * FROM km_orig.table1
 
@@ -280,6 +289,7 @@ PHP
 	Custom Profiler
 	================
 	self::profiler('Going to kill me!!! ');
+	$total_orders = count($orders); $i =1;$startTime= microtime(true);
 
 	
 	public static function profiler($msg){
@@ -287,23 +297,29 @@ PHP
 			"MB MemoryPeak:".round(memory_get_peak_usage()/(1024*1024))."MB ".var_export($msg,true)."\n";
 
 
+
+
 		error_log($message,3,'/tmp/sql.log');	
 
 	}
 
+	Color'd echo
+	============
+	echo " \e[1;34m ". date(c)." \e[35m error-message \e[0m ";
+	
 GIT 
 	Normal Flow
 	===========
-		git status								#Show the current status
-		git branch 	new_enchancements			#Creates new Branch (Local)
+		git status					#Show the current status
+		git branch 	new_enchancements		#Creates new Branch (Local)
 		git checkout 	new_enchancements		#Switch to branch (new_enchancements)		
 		git checkout -b new_enchancements		#Creates & Switch to new_enchancements branch (Local)
-		git add file.php						#Adding new file to git
+		git add file.php				#Adding new file to git
 		git commit -m "Fixed,all files"			#Commit the file
 		git push origin new_enchancements		#Send to origin
 		
-		git checkout --f new_enchancements		#Switch to branch by forcee 
-
+		git checkout --f new_enchancements		#Switch to branch by force
+		git remote -v					#git remote info
 		
 	Branching
 	=========	
@@ -374,6 +390,7 @@ GIT
 	=====================
 		git checkout -b new_branch old_branch
 
+
 	Example
 	=======	
 	git checkout development
@@ -390,8 +407,10 @@ GIT
 	Get single file from different branch from remote
 	=================================================
 
+
 		cd $WORKSPACE				#go to WORKSPACE
 		git checkout origin/diff_branch full/path/to/file.ext
+
 
 	Clean
 	======
@@ -402,7 +421,6 @@ GIT
 		git branch -d <branchName>		#local only		
 		git push origin --delete <branchName>	#remove remote(if you know what you are doing!)
 		git push origin :<branchName>		#alias of above	
-
 
 	Unable to commit ? 
 	==================
@@ -424,7 +442,6 @@ GIT
 		git status;git add file1 file2 ;				#8 add files and status
 		git commit -m 'Reports enchanced'				#9 commit changes
 		git push -u origin new_enchancements			#10 done!
-
 
 
 	Diff & Logs
@@ -452,8 +469,9 @@ GIT
 		
 		git show --name-only 581c968d50ca3259b94081ac428969184ed51eab
 		
-		
 		git diff --name-only | xargs  ls -lt 		# latest modified files
+
+		git log --name-only --pretty=format:"%H - %h - %an, %ar : %s"  --author=kmuthuvel  --walk-reflogs   my_hot_fix			# log on only that specific my_hot_fix
 
 
 MS SQL
@@ -464,7 +482,6 @@ DOS
 	Netsh
 	
 	gitlab.yaazhdev.com	198.123.45.678:8080
-
 
 	# route add 198.123.45.678 gitlab.yaazhdev.com
 	# 
@@ -512,6 +529,10 @@ Excel
 			First 2 cols:		Click on C1 Cell. 
 			First x rows & y cols:	Click on (y+1)(x+1) Cell
 		Step end - View  > Window > Freeze Panes > Freeze Panes
+
+
+`ldconfig` is a program that is used to maintain the shared library cache. This cache is typically stored in the file /etc/ld.so.cache and is used by the system to map a shared library name to the location of the corresponding shared library file.	
+Usage :  ldconfig -v  will make new  programs ,ex gpg2 was able to find libksba.so.0
 		
 ShortCuts
 	HeidiSQL REDO SHIFT+ALT+BACKSPACE
