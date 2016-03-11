@@ -461,6 +461,7 @@ GIT
 		git log --pretty=format:"%h - %an, %ar : %s" git_is_good.php
 		git log --pretty=format:"%H - %an, %ar : %s" git_is_good.php
 		git log --author=kesavanm	
+		git log --author="\(kmuthuvel\)\|\(rms\)|\(einstein\)"		#to filter for set of users
 		git log --pretty=format:"%h %s" --graph --author=kesavanm
 		git log --no-merges master	
 
@@ -471,7 +472,8 @@ GIT
 		
 		git diff --name-only | xargs  ls -lt 		# latest modified files
 
-		git log --name-only --pretty=format:"%H - %h - %an, %ar : %s"  --author=kmuthuvel  --walk-reflogs   my_hot_fix			# log on only that specific my_hot_fix
+		git log --name-only --pretty=format:"%H - %h - %an, %ar : %s"  --author=kmuthuvel  --walk-reflogs   my_hot_fix			# log on only that specific branch my_hot_fix
+		git log --stat --oneline --pretty=format:"%h - %an, %ar : %s" --author="\(kmuthuvel\)\|\(raju\)" --walk-reflogs welcome-offshore 
 
 
 MS SQL
