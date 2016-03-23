@@ -368,6 +368,30 @@ yt2(){
 
 }
 
+#################################################################
+#       TOOL (5) cleandebs Remove unwanted debs & free more space
+#################################################################
+function cleandebs(){
+        echo " Going to run the following:
+                sudo aptitude clean
+                sudo aptitude install localepurge       # removes unneeded locale files and localized man page
+                sudo apt-get install deborphan          # removes orphaned packages
+                sudo deborphan | xargs sudo apt-get -y remove –purge
+                ";
+
+        echo -n "Clean the debian orphan files? You may need to run as root/sudo ? [y|n]:" ;
+        read -n 1 choice
+        echo
+        if [ $choice == "y" ] ; then {
+                sudo aptitude clean;
+                sudo aptitude install localepurge
+                sudo apt-get install deborphan
+                sudo deborphan | xargs sudo apt-get -y remove –purge
+        }
+        else echo "Debian orphan files not cleaned";
+        fi
+}
+
 function msg(){
 	# http://askubuntu.com/questions/99703/how-to-get-colored-output-from-bash-script
 	# $1 - msg
