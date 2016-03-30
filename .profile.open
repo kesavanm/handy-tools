@@ -2,7 +2,7 @@
 # auth : hi@kesavan.info
 # date : 2015-03-06
 # 
-# updated : 2016-03-23
+# updated : 2016-03-30
 #
 # PLEASE READ THIS STATEMENT 
 # 
@@ -11,7 +11,7 @@
 #     .profile or .bashrc or whatever it is 
 #
 #     if [ -f ~/.profile.open ]; then
-#       	. ~/.profile.open
+#           . ~/.profile.open
 #     fi
 #
 #
@@ -21,7 +21,7 @@
 #
 #
 # Updated version always avail at
-# 1 - https://github.com/kesavanm/handy-tools/ 	(.profile.open)		and/or
+# 1 - https://github.com/kesavanm/handy-tools/  (.profile.open)     and/or
 # 2 - https://kesavan.info/books.pl ( BASH PROFILE )
 #
 # SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud 
@@ -37,24 +37,19 @@ LTBLUE="\[\033[40;1;34m\]"
 CLEAR="\[\033[0m\]"
 LIGHT_GRAY="\[\033[40;1;33m\]"
 
-# Now we construct the prompt.
-#PS1="[\u@\h \W]\$ "                    #B/W base file path
-#PS1="\e[0;32m[\u@\h \w]\$ \e[m "       #Colorful absolute path
-#PS1="$LTGREEN\u$LTBLUE@\h:$LIGHT_GRAY\w$CLEAR > "
-#PS1="[\u@\h \W]\$"						# full path
-#PS1="[\u@\h:\w]$ "
-#PS1="\[\e]0;\w\a\]\[\e[32m\]\u@\h\[\e[35m\]|\[\e[33m\]\w\[\e[35m\]|\e[34m\]\D{%F %T}\e[0m\]\n\$"
-
 mkdir -p $HOME/bin ; touch $HOME/bin/.todo ; chmod a+wx $HOME/bin/.todo #In-case new to this .profile
 
 alias todo="$HOME/bin/.todo"
 alias findname="find . -name "
-alias vim="vim -u $HOME/.vimrc"
 alias grep="grep --color"
 alias profile="vim $HOME/.profile"
 
+if [ -f $HOME/.vimrc ] ; then
+        alias vim="vim -u $HOME/.vimrc"
+fi
+
 #list in numeric mode
-lsn(){	ls -l $* | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf("%0o ",k);print}'; }
+lsn(){  ls -l $* | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf("%0o ",k);print}'; }
 
 #Disk Usage 
 LS(){
@@ -71,34 +66,34 @@ fi;
 
 #show ln only
 function lns(){ 
-	ll $*| grep -E '^l';
+    ll $*| grep -E '^l';
 }
 #alias lsmod="ls -l | awk '{k=0;s=0;for( i=0; i <= 8; i++ ){k += ( ( substr( $1, i+2, 1 ) ~ /[rwxst]/ ) * 2 ^( 8 - i ) )}j=4;for( i=4; i <= 10; i += 3 ){ s += ( ( substr( $1, i, 1 ) ~ /[stST]/ )*j);j/=2;} if (k){printf( "%0o%0o ",s,k);} print;}'  "
 #alias "lsmod=ls -al|awk '{k=0;s=0;for(i=0;i<=8;i++){;k+=((substr(\$1,i+2,1)~/[rwxst]/)*2^(8-i));};j=4;for(i=4;i<=10;i+=3){;s+=((substr(\$1,i,1)~/[stST]/)*j);j/=2;};if(k){;printf(\"%0o%0o \",s,k);};print;}'"
 function kps(){ 
-	ps -ef|head -1;
-	
-	if [ $# -eq 1 ] ; then
-		ps -ef|grep $1 |grep -v grep;
-	else
-		for id in "$@"
-		do
-			ps -eF|grep "$id" |grep -v grep;
-		done
-	fi
+    ps -eF|head -1;
+
+        if [ $# -eq 1 ] ; then 
+            ps -eF|grep $1 |grep -v grep;
+        else
+                for id in "$@" 
+                do 
+                   ps -eF|grep "$id" |grep -v grep;
+                done
+        fi
 }
 
 function kps2 (){
     ps u | awk '{
-		for ( x=1 ; x<=4 ; x++ ) { printf("%s\t",$x) }
-		for ( x=5 ; x<=6 ; x++ ) {  if (NR>1) { printf("%13.2fMb\t",hr=$x/1024) }
-		else { printf("\t%s\t",$x)  }
-		}
-		for ( x=7 ; x<=10 ; x++ ) { printf("%s\t",$x) }
-		for ( x=11 ; x<=NF ; x++ ) { printf("%s ",$x) }
-		print ""
-		}' |
-	grep --color -v awk;
+        for ( x=1 ; x<=4 ; x++ ) { printf("%s\t",$x) }
+        for ( x=5 ; x<=6 ; x++ ) {  if (NR>1) { printf("%13.2fMb\t",hr=$x/1024) }
+        else { printf("\t%s\t",$x)  }
+        }
+        for ( x=7 ; x<=10 ; x++ ) { printf("%s\t",$x) }
+        for ( x=11 ; x<=NF ; x++ ) { printf("%s ",$x) }
+        print ""
+        }' |
+    grep --color -v awk;
 }
 
 #---------------------------
@@ -138,6 +133,7 @@ alias tree='tree -Csuh' # Nice alternative to 'recursive ls' ...
 
 #php syntax error 
 alias phpk="php -d display_errors=1 -d error_reporting=E_ALL -l"
+alias phpx="php -d xdebug.profiler_output_dir=$HOME/profile -d xdebug.profiler_enable=On"
 
 #-------------------------------------------------------------
 # File & strings related functions:
@@ -146,67 +142,67 @@ alias phpk="php -d display_errors=1 -d error_reporting=E_ALL -l"
 function ff() { find . -type f -iname '*'"$*"'*' -ls ; }
 # Find a file with pattern $1 in name and Execute $2 on it:
 function fe() { find . -type f -iname '*'"${1:-}"'*' \
-	-exec ${2:-file} {} \; ; 
+    -exec ${2:-file} {} \; ; 
 }
 # Find a pattern in a set of files and highlight them:
 # (needs a recent version of egrep).
 function fstr() {
-	OPTIND=1
-	local mycase=""
-	local usage="fstr: find string in files.
-	Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
-	while getopts :it opt
-	do
-		case "$opt" in
-			i) mycase="-i " ;;
-		*) echo "$usage"; return ;;
-	esac
+    OPTIND=1
+    local mycase=""
+    local usage="fstr: find string in files.
+    Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
+    while getopts :it opt
+    do
+        case "$opt" in
+            i) mycase="-i " ;;
+        *) echo "$usage"; return ;;
+    esac
 done
 shift $(( $OPTIND - 1 ))
 if [ "$#" -lt 1 ]; then
-	echo "$usage"
-	return;
-	return;
+    echo "$usage"
+    return;
+    return;
 fi
 find . -type f -name "${2:-*}" -print0 | \
-	xargs -0 egrep --color=always -sn ${case} "$1" 2>&- | more
+    xargs -0 egrep --color=always -sn ${case} "$1" 2>&- | more
 }
 function findtext(){
-	if [ "$#" -ne "1" ]; then
-	        echo "Usage: ${0} [text to search for]"
-	else
-	        echo "Searching for \"${1}\" in current directory..."
-	        find . -exec grep -q "$1" '{}' \; -print
-	fi
+    if [ "$#" -ne "1" ]; then
+            echo "Usage: ${0} [text to search for]"
+    else
+            echo "Searching for \"${1}\" in current directory..."
+            find . -exec grep -q "$1" '{}' \; -print
+    fi
 }
 
 function grepnln(){             # Grep it but Don't follow Symb Links
-	if [ "$#" -ne "1" ]; then
-		msg "Usage: grepnln [text to search for, but not to follow sym links]" 'bad'
-	else
-		find . -type f -exec grep -H $1 '{}' \;  2>/dev/null
-	fi
+    if [ "$#" -ne "1" ]; then
+        msg "Usage: grepnln [text to search for, but not to follow sym links]" 'bad'
+    else
+        find . -type f -exec grep -H $1 '{}' \;  2>/dev/null
+    fi
 }
 
-function extract() {	# Handy Extract Program
-	if [ -f $1 ] ; then
-		case $1 in
-			*.tar.bz2) tar xvjf $1 ;;
-			*.tar.gz) tar xvzf $1 ;;
-			*.bz2) bunzip2 $1 ;;
-			*.rar) unrar x $1 ;;
-			*.gz) gunzip $1 ;;
-			*.tar) tar xvf $1 ;;
-			*.tbz2) tar xvjf $1 ;;
-			*.tgz) tar xvzf $1 ;;
-			*.zip) unzip $1 ;;
-			*.Z) uncompress $1 ;;
-			*.7z) 7z x $1 ;;
-			*) echo "'$1' cannot be extracted via >extract<" ;;
-		esac
-	else
-		echo "'$1' is not a valid file!"
-	fi
+function extract() {    # Handy Extract Program
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2) tar xvjf $1 ;;
+            *.tar.gz) tar xvzf $1 ;;
+            *.bz2) bunzip2 $1 ;;
+            *.rar) unrar x $1 ;;
+            *.gz) gunzip $1 ;;
+            *.tar) tar xvf $1 ;;
+            *.tbz2) tar xvjf $1 ;;
+            *.tgz) tar xvzf $1 ;;
+            *.zip) unzip $1 ;;
+            *.Z) uncompress $1 ;;
+            *.7z) 7z x $1 ;;
+            *) echo "'$1' cannot be extracted via >extract<" ;;
+        esac
+    else
+        echo "'$1' is not a valid file!"
+    fi
 }
 # Creates an archive (*.tar.gz) from given directory.
 function maketar() { tar cvzf "${1%%/}.tar.gz" "${1%%/}/"; }
@@ -217,74 +213,72 @@ function makezip() { zip -r "${1%%/}.zip" "$1" ; }
 #-------------------------------------------------------------
 function my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
 function pp() { my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
-function killps() {		# kill by process name
-	local pid pname sig="-TERM" # default signal
-	if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
-		echo "Usage: killps [-SIGNAL] pattern"
-		return;
-	fi
-	if [ $# = 2 ]; then sig=$1 ; fi
-	for pid in $(my_ps| awk '!/awk/ && $0~pat { print $1 }' pat=${!#} )
-	do
-		pname=$(my_ps | awk '$1~var { print $5 }' var=$pid )
-		if ask "Kill process $pid <$pname> with signal $sig?"
-		then kill $sig $pid
-		fi
-	done
+function killps() {     # kill by process name
+    local pid pname sig="-TERM" # default signal
+    if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+        echo "Usage: killps [-SIGNAL] pattern"
+        return;
+    fi
+    if [ $# = 2 ]; then sig=$1 ; fi
+    for pid in $(my_ps| awk '!/awk/ && $0~pat { print $1 }' pat=${!#} )
+    do
+        pname=$(my_ps | awk '$1~var { print $5 }' var=$pid )
+        if ask "Kill process $pid <$pname> with signal $sig?"
+        then kill $sig $pid
+        fi
+    done
 }
-function mydf() {	# Pretty-print of 'df' output.
+function mydf() {   # Pretty-print of 'df' output.
  # Inspired by 'dfc' utility.
-	for fs ; do
-		if [ ! -d $fs ]
-		then
-			echo -e $fs" :No such file or directory" ; continue
-		fi
-		local info=( $(command df -P $fs | awk 'END{ print $2,$3,$5 }') )
-		local free=( $(command df -Pkh $fs | awk 'END{ print $4 }') )
-		local nbstars=$(( 20 * ${info[1]} / ${info[0]} ))
-		local out="["
-		for ((j=0;j<20;j++)); do
-			if [ ${j} -lt ${nbstars} ]; then
-				out=$out"*"
-			else
-				out=$out"-"
-			fi
-		done
-		out=${info[2]}" "$out"] ("$free" free on "$fs")"
-		echo -e $out
-	done
+    for fs ; do
+        if [ ! -d $fs ]
+        then
+            echo -e $fs" :No such file or directory" ; continue
+        fi
+        local info=( $(command df -P $fs | awk 'END{ print $2,$3,$5 }') )
+        local free=( $(command df -Pkh $fs | awk 'END{ print $4 }') )
+        local nbstars=$(( 20 * ${info[1]} / ${info[0]} ))
+        local out="["
+        for ((j=0;j<20;j++)); do
+            if [ ${j} -lt ${nbstars} ]; then
+                out=$out"*"
+            else
+                out=$out"-"
+            fi
+        done
+        out=${info[2]}" "$out"] ("$free" free on "$fs")"
+        echo -e $out
+    done
 }
-function myip() {	# Get IP adress on ethernet.
-	MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' |
-	sed -e s/addr://)
-	echo ${MY_IP:-"Not connected"}
+function myip() {   # Get IP adress on ethernet.
+    MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' |
+    sed -e s/addr://)
+    echo ${MY_IP:-"Not connected"}
 }
-function ii() {	# Get current host related info.
-	echo -e "\nYou are logged on ${BRed}$HOST"
-	echo -e "\n${BRed}Additionnal information:$NC " ; uname -a
-	echo -e "\n${BRed}Users logged on:$NC " ; w -hs |
-	cut -d " " -f1 | sort | uniq
-	echo -e "\n${BRed}Current date :$NC " ; date
-	echo -e "\n${BRed}Machine stats :$NC " ; uptime
-	echo -e "\n${BRed}Memory stats :$NC " ; free
-	echo -e "\n${BRed}Diskspace :$NC " ; mydf / $HOME
-	echo -e "\n${BRed}Local IP Address :$NC" ; my_ip
-	echo -e "\n${BRed}Open connections :$NC "; netstat -pan --inet;
-	echo
+function ii() { # Get current host related info.
+    echo -e "\nYou are logged on ${BRed}$HOST"
+    echo -e "\n${BRed}Additionnal information:$NC " ; uname -a
+    echo -e "\n${BRed}Users logged on:$NC " ; w -hs |
+    cut -d " " -f1 | sort | uniq
+    echo -e "\n${BRed}Current date :$NC " ; date
+    echo -e "\n${BRed}Machine stats :$NC " ; uptime
+    echo -e "\n${BRed}Memory stats :$NC " ; free
+    echo -e "\n${BRed}Diskspace :$NC " ; mydf / $HOME
+    echo -e "\n${BRed}Local IP Address :$NC" ; my_ip
+    echo -e "\n${BRed}Open connections :$NC "; netstat -pan --inet;
+    echo
 }
 
 mydiff(){
-	if [ $# -ne 2 ] ; then { 
-		echo "Usage: $FUNCNAME <old-file> <new-file>"; 
-		return 0;
-	}
-	fi
-        diff  	--old-line-format="%dn %L" 		--new-line-format="%dn %L"\
-		--old-group-format=$'\e[0;31m%<\e[0m'	--new-group-format=$'\e[0;32m%>\e[0m'\
-		--unchanged-group-format="" $1 $2
+    if [ $# -ne 2 ] ; then { 
+        echo "Usage: $FUNCNAME <old-file> <new-file>"; 
+        return 0;
+    }
+    fi
+        diff    --old-line-format="%dn %L"      --new-line-format="%dn %L"\
+        --old-group-format=$'\e[0;31m%<\e[0m'   --new-group-format=$'\e[0;32m%>\e[0m'\
+        --unchanged-group-format="" $1 $2
 }
-
-
 
 #GIT Version Control
 
@@ -294,11 +288,11 @@ alias gs="git status --untracked-files=no"
 alias gls="git log --date=local --pretty=format:\"%h%x09%C(cyan)%an%x09%ad:%Creset %s\""
 
 ##############################################
-#	TOOL (1) datec - Quickly find your age 
+#   TOOL (1) datec - Quickly find your age 
 ##############################################
 
 datec(){
-	echo `mysql -uUSER -pPASSWORD -e "SELECT MYDB.getDateDifferenceString('$1',NOW()) AS 'Difference is:'" `
+    echo `mysql -uUSER -pPASSWORD -e "SELECT MYDB.getDateDifferenceString('$1',NOW()) AS 'Difference is:'" `
 }
 #mysql> show create function kesavan.getDateDifferenceString \G
 #*************************** 1. row ***************************
@@ -313,39 +307,39 @@ datec(){
 
 
 ##################################################
-#	TOOL (2) software - List of software packs   
+#   TOOL (2) software - List of software packs   
 ##################################################
 
 software() { if [ $# -ne 1 ] ; then { echo "Usage: software <pack>"; }
-		else dpkg -l "*$@*"; fi
-	 }
+        else dpkg -l "*$@*"; fi
+     }
 #alias software="dpkg -l *$1* "
 
 #################################################################
-#	TOOL (3) cleanit - Remove unwanted logs & free more space   
+#   TOOL (3) cleanit - Remove unwanted logs & free more space   
 #################################################################
 
 cleanit() { 
 if [ $# -ne 0 ] ; then { echo  "Usage: $1" ;  } 
-else {	DIR='/var/log' ; 
-	find $DIR -maxdepth 1 -type f -size +1M -exec ls -lhS {} \; | awk '{ print $5,"",$9 }'|sort -nr | head -10
-	echo -n "Clean top 5? [y|n]:" ;
-	read -n 1 choice
-	echo 
-	if [ $choice == "y" ] ; then { 
-		echo -n Cleaning system...
-		find $DIR -maxdepth 1 -type f -size +1M -exec ls -lhS {} \; | awk '{ print $9 }'|sort -nr | head -5|xargs rm -f
-		echo System cleaned status!
-		find $DIR -maxdepth 1 -type f -size +1M -exec ls -lhS {} \; | awk '{ print $5,"",$9 }'|sort -nr | head -10
- 	}
-	else echo "System NOT CLEANED";
-	fi
+else {  DIR='/var/log' ; 
+    find $DIR -maxdepth 1 -type f -size +1M -exec ls -lhS {} \; | awk '{ print $5,"",$9 }'|sort -nr | head -10
+    echo -n "Clean top 5? [y|n]:" ;
+    read -n 1 choice
+    echo 
+    if [ $choice == "y" ] ; then { 
+        echo -n Cleaning system...
+        find $DIR -maxdepth 1 -type f -size +1M -exec ls -lhS {} \; | awk '{ print $9 }'|sort -nr | head -5|xargs rm -f
+        echo System cleaned status!
+        find $DIR -maxdepth 1 -type f -size +1M -exec ls -lhS {} \; | awk '{ print $5,"",$9 }'|sort -nr | head -10
+    }
+    else echo "System NOT CLEANED";
+    fi
 }
 fi
 }
 
 ##############################################################
-#	TOOL (4) yt - List the WebM cache files in local disk
+#   TOOL (4) yt - List the WebM cache files in local disk
 ##############################################################
 
 yt(){
@@ -395,31 +389,31 @@ function cleandebs(){
 }
 
 function msg(){
-	# http://askubuntu.com/questions/99703/how-to-get-colored-output-from-bash-script
-	# $1 - msg
-	# $2 - format  {greet ,warning, okay/good/positive , no/bad/negative,ul}
-	# $3 - extra , passed to echo as it is
-	# colors -  0Black,1Red,2Green,3yellow?,4Violet,5Pink,6Magenta,7grey
-	
-	B=`tput bold`   #BOLD
-	D=`tput dim`    #DIM
-	U=`tput sgr 0 1` #UNDERLINE
-	U2=`tput smul`  #UNDERLINE2
-	NOU=`tput rmul` #NO UNDERLINE
-	H=`tput smso`   #HIGHLIGHT
-	X=`tput sgr0`   #RESET
-	C='tput setaf '	#COLOR
+    # http://askubuntu.com/questions/99703/how-to-get-colored-output-from-bash-script
+    # $1 - msg
+    # $2 - format  {greet ,warning, okay/good/positive , no/bad/negative,ul}
+    # $3 - extra , passed to echo as it is
+    # colors -  0Black,1Red,2Green,3yellow?,4Violet,5Pink,6Magenta,7grey
+    
+    B=`tput bold`   #BOLD
+    D=`tput dim`    #DIM
+    U=`tput sgr 0 1` #UNDERLINE
+    U2=`tput smul`  #UNDERLINE2
+    NOU=`tput rmul` #NO UNDERLINE
+    H=`tput smso`   #HIGHLIGHT
+    X=`tput sgr0`   #RESET
+    C='tput setaf ' #COLOR
 
-	case "$2" in
-		warning		) i=3; c=`$C$i` && echo $3 $c${H}$1$X;;
-		greet		) i=6; c=`$C$i` && echo $3 $c${B}$1$X;;
-		bad|negative 	) i=1; c=`$C$i` && echo $3 $c${H}$1$X;;
-		good|okay	) i=2; c=`$C$i` && echo $3 $c${B}$1$X;;
-		bold		) 	c=`$C`  && echo $3 ${B}$1$X;;
-		ul		) 	c=`$C`  && echo $3 ${U}$1$X;;
-		ulbold		) i=2; c=`$C$i` && echo $3 $c${U2}$1$X;;	
-		normal		) i=2; c=`$C$i` && echo $3 $c$1$X;;
-	esac
+    case "$2" in
+        warning     ) i=3; c=`$C$i` && echo $3 $c${H}$1$X;;
+        greet       ) i=6; c=`$C$i` && echo $3 $c${B}$1$X;;
+        bad|negative    ) i=1; c=`$C$i` && echo $3 $c${H}$1$X;;
+        good|okay   ) i=2; c=`$C$i` && echo $3 $c${B}$1$X;;
+        bold        )   c=`$C`  && echo $3 ${B}$1$X;;
+        ul      )   c=`$C`  && echo $3 ${U}$1$X;;
+        ulbold      ) i=2; c=`$C$i` && echo $3 $c${U2}$1$X;;    
+        normal      ) i=2; c=`$C$i` && echo $3 $c$1$X;;
+    esac
 }
 
 function teachme(){
@@ -432,13 +426,6 @@ function teachme(){
         fi
 }
 
-shopt -s nocaseglob	# to match case insensitive patterns with ls
-
-msg "Be lazy" 'greet' ; msg "Be always double lazy" 'greet'
-msg "Your #TODO action(s)" "warning" ;  todo;
-
-msg "Try to learn something with 'teachme' today" 'greet'
-
 function parse_git_branch () {
         git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/|(\1)/'
 }
@@ -449,20 +436,37 @@ function git_branch(){
     else
         TMPUSER=$USER;
     fi;
-         for i in `find /data/TMPUSER/ -maxdepth 1 -type d|sort | grep -v brand` ; do cd $i 2>/dev/null ; printf "%s\t%s" "Code:$i" "Branch:" ; BR=`git branch 2>/    dev/null | grep \* | awk '{print $2}'`  ; if [ $BR ] ; then msg $BR 'good' ;else msg 'Not_a_git_repository' 'bad';fi ; cd .. ;  done | awk '{print $1 "\t" $2 }    '|column -t
+        for i in `find /data/$TMPUSER/ -maxdepth 1 -type d|sort | grep -v brand` ; do cd $i 2>/dev/null ; printf "%s\t%s" "Code:$i" "Branch:" ; BR=`git branch 2>/dev/null | grep \* | awk '{print $2}'`  ; if [ $BR ] ; then msg $BR 'good' ;else msg 'Not_a_git_repository' 'bad';fi ; cd .. ;  done | awk '{print $1 "\t" $2 }'|column -t
 }
 
 function git_branch_status(){
-	ORIG=`git branch|grep \* | sed -e 's/\* //g'` ; 
-	for i in `git branch|sed -e 's/\* //g' -e 's/ //g'` ; 
-	do git checkout $i 1> /tmp/$USER_git_warings.log; 
-	if [ /tmp/$USER_git_warings.log ] ; then 
-		if [ `grep up-to-date /tmp/$USER_git_warings.log  |wc -l` -eq 0 ] ; then ST='-w' ;  else ST='-g' ; fi ; 
-		cat /tmp/$USER_git_warings.log | msg2 $ST  ; 
-		rm -f /tmp/$USER_git_warings.log; fi ;
-	git diff --stat --cached origin/$i ; 
-	done ; 
-	git checkout $ORIG ;
+        ORIG=`git branch|grep \* | sed -e 's/\* //g'` ; 
+        for i in `git branch|sed -e 's/\* //g' -e 's/ //g'` ; 
+        do git checkout $i 1> /tmp/$USER_git_warings.log; 
+                if [ /tmp/$USER_git_warings.log ] ; then 
+                        if [ `grep up-to-date /tmp/$USER_git_warings.log  |wc -l` -eq 0 ] ; then ST='-w' ;  else ST='-g' ; fi ;
+                                cat /tmp/$USER_git_warings.log | msg2 $ST  ; 
+                rm -f /tmp/$USER_git_warings.log; fi ;
+                git diff --stat --cached origin/$i ; 
+        done ; 
+        git checkout $ORIG ;
+}
+
+function git_branch_status2(){
+        ORIG=`git branch|grep \* | sed -e 's/\* //g'` ;
+        for i in `git branch|sed -e 's/\* //g' -e 's/ //g'`; do
+                git checkout $i > /tmp/$USER_git_warings.log;
+                if [ `grep up-to-date /tmp/$USER_git_warings.log  |wc -l` -eq 0 ]; then ST='-w'; else ST='-g'; fi;
+                GIT_DIFF="git diff --stat --cached origin/$i"
+                if [ `$GIT_DIFF  |wc -l` -gt 10 ] ; then
+                        msg2 -l "there are `$GIT_DIFF  |wc -l` changes on $i branch"; 
+                        $GIT_DIFF  | head -10 ;
+                fi
+                $GIT_DIFF 1>/dev/null 2>> /tmp/$USER_git_warings.log;
+                if [ $? -ne 0 ] ; then  $GIT_DIFF ; ST='-e'; fi;
+                cat /tmp/$USER_git_warings.log | msg2 $ST; rm -i -f /tmp/$USER_git_warings.log;
+        done;
+        git checkout $ORIG ;
 }
 
 ###################################### COLORS ##################################################
@@ -477,6 +481,13 @@ function git_branch_status(){
    WHITE="\[\e[0;37m\]";  BOLD_WHITE="\[\e[1;37m\]";   UL_WHITE="\[\e[4;37m\]";  BG_WHITE="\e[47m\]";
  NO_COLOUR="\[\e[0m\]";          # Text Reset
 ####################################################################################################
- 
+
 PS1="$GREEN\u@\h$YELLOW|\w$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
+
 HISTTIMEFORMAT="%F %T "
+
+shopt -s nocaseglob # to match case insensitive patterns with ls?
+
+msg "Be lazy" 'greet' ; msg "Be always double lazy" 'greet'
+msg "Your #TODO action(s)" "warning" ;  todo;
+msg "Try to learn something with 'teachme' today" 'greet'
