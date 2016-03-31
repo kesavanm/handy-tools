@@ -482,7 +482,10 @@ function git_branch_status2(){
  NO_COLOUR="\[\e[0m\]";          # Text Reset
 ####################################################################################################
 
-PS1="$GREEN\u@\h$YELLOW|\w$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
+PS1="$GREEN\u@\h$YELLOW($(myip))|\w$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
+success="\342\234\223"; fail="\342\234\227" # tick marks showing last operation status
+PS1="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success success\";else echo \"$BOLD_RED $fail failed\";fi)$NO_COLOUR ________________________________________________________________________________\n$PS1"
+
 
 HISTTIMEFORMAT="%F %T "
 
