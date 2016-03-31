@@ -10,18 +10,20 @@ X=`tput sgr0`    #RESET
 C='tput setaf '  #COLOR
 
 function msghelp(){
-        echo "Valid options "
+        echo "Valid options:"
         echo "(w)warning,(g)greet,(e)bad|negative|error,(g|o)good|okay,(b)bold,(u)underline,(l)underline+bold,(n)normal";
         exit;
 }
 
-if   [ $# -lt 3 ]; then
-        msghelp;
-fi
-
-if [[ -z "$2" ]]  ; then
-        if test -t 0; then PIPE=0; echo ""; else PIPE=1 MSG="$(cat -)"; fi
-        set -- $1 $MSG
+if [ -t 0 ]; then
+        if   [ $# -lt 1 ]; then
+                msghelp;
+        fi
+else
+        if [[ -z "$2" ]]  ; then
+                if test -t 0; then PIPE=0; echo ""; else PIPE=1 MSG="$(cat -)"; fi
+                set -- $1 $MSG
+        fi
 fi
 
 while getopts ':w:g:e:o:g:b:u:l:n' FLAG ; do
@@ -38,4 +40,9 @@ case "$FLAG" in
         \?              ) msghelp ;;
 esac
 done
+
+#scenario 1  - echo abcd | msg2 -g
+#scenario 1b - printf xyz| msg2 -l
+#scenario 2  - cat  x.sh | msg2 -w
+#scenario 3  - msg2 -b wow
 
