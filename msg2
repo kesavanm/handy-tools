@@ -35,7 +35,7 @@ case "$FLAG" in
         u|ul            )       c=`$C`  && echo ${U}$@$X;;
         l|ulbold        ) i=2; c=`$C$i` && echo $c${U2}$@$X;;
         n|normal        ) i=2; c=`$C$i` && echo $c$@$X;;
-        \?              ) help ;;
+        \?              ) msghelp ;;
 esac
 done
 
