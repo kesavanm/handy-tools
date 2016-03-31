@@ -9,16 +9,20 @@ H=`tput smso`    #HIGHLIGHT
 X=`tput sgr0`    #RESET
 C='tput setaf '  #COLOR
 
-if [[ -z "$2" ]]  ; then
-        if test -t 0; then PIPE=0; echo ""; else PIPE=1 MSG="$(cat -)"; fi
-        set -- $1 $MSG
-fi
-
-function help(){
+function msghelp(){
         echo "Valid options "
         echo "(w)warning,(g)greet,(e)bad|negative|error,(g|o)good|okay,(b)bold,(u)underline,(l)underline+bold,(n)normal";
         exit;
 }
+
+if   [ $# -lt 3 ]; then
+        msghelp;
+fi
+
+if [[ -z "$2" ]]  ; then
+        if test -t 0; then PIPE=0; echo ""; else PIPE=1 MSG="$(cat -)"; fi
+        set -- $1 $MSG
+fi
 
 while getopts ':w:g:e:o:g:b:u:l:n' FLAG ; do
 shift
