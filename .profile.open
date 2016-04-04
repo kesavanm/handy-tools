@@ -2,7 +2,7 @@
 # auth : hi@kesavan.info
 # date : 2015-03-06
 # 
-# updated : 2016-03-30
+# updated : 2016-04-01
 #
 # PLEASE READ THIS STATEMENT 
 # 
@@ -26,6 +26,41 @@
 #
 # SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud 
 ############################################################################################################ 
+
+OPEN_PROFILE_VERSION=1.1
+
+function get_updated_profile()
+{
+        today=`date +%Y%m%d`
+        wget -q --no-check-certificate --tries=10 --timeout=20 'https://raw.githubusercontent.com/kesavanm/handy-tools/master/.profile.open' -O new.profile.open.$today
+
+        new_version=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today`
+
+        if [[ $? -ne 0 ]] ; then new_version=0.0 ;              # no version history , so start fresh 
+        else
+                INX=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today | head -1 | awk  '{printf("%s",$1)}'`
+                set -- "$INX";
+                IFS="="; declare -a Array=($*)
+                new_version="${Array[1]}"                       # avail_version
+        fi   
+
+        latest_avail=`bc <<< "$new_version>$OPEN_PROFILE_VERSION"`
+
+        echo new_version : $new_version  
+        echo curr_version: $OPEN_PROFILE_VERSION
+        echo latest_avail: $latest_avail
+
+        if [[ $latest_avail -eq 1  ]] ; then
+                echo "you're using the old version OPEN_PROFILE_VERSION:$OPEN_PROFILE_VERSION while $new_version is avail"
+                mv .profile.open .profile.open.bkup.`date +%Y%m%d`
+                mv new.profile.open.$today .profile.open ; chmod a+x .profile.open 
+                msg2 -o "OPEN_PROFILE updated to OPEN_PROFILE_VERSION:$new_version "
+                echo "your old profile backuped at .profile.open.bkup.`date +%Y%m%d`"
+                echo "save your work,logout & login for update"
+        else
+                echo "you're using the latest version OPEN_PROFILE_VERSION:$OPEN_PROFILE_VERSION"
+        fi
+}
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -178,7 +213,7 @@ function findtext(){
 
 function grepnln(){             # Grep it but Don't follow Symb Links
     if [ "$#" -ne "1" ]; then
-        msg "Usage: grepnln [text to search for, but not to follow sym links]" 'bad'
+        msg2 -e "Usage: grepnln [text to search for, but not to follow sym links]"
     else
         find . -type f -exec grep -H $1 '{}' \;  2>/dev/null
     fi
@@ -438,7 +473,7 @@ function msg2(){
 
         function msghelp(){
                 echo "Valid options:"
-                echo "(w)warning,(g)greet,(e)bad|negative|error,(g|o)good|okay,(b)bold,(u)underline,(l)underline+bold,(n)normal";
+                echo "(w)warning,(g)greet,(e)bad|negative|error,(o)good|okay,(b)bold,(u)underline,(l)underline+bold,(n)normal";
                 #scenario 1  - echo abcd | msg2 -g
                 #scenario 1b - printf xyz| msg2 -l
                 #scenario 2  - cat  x.sh | msg2 -w
@@ -451,7 +486,7 @@ function msg2(){
                 w|warning       ) i=3; c=`$C$i` && echo $c$H$@$X ;;
                 g|greet         ) i=6; c=`$C$i` && echo $c${B}$@$X;;
                 e|bad|negative  ) i=1; c=`$C$i` && echo $c${H}$@$X;;
-                g|good|okay     ) i=2; c=`$C$i` && echo $c${B}$@$X;;
+                o|good|okay     ) i=2; c=`$C$i` && echo $c${B}$@$X;;
                 b|bold          )       c=`$C`  && echo ${B}$@$X;;
                 u|ul            )       c=`$C`  && echo ${U}$@$X;;
                 l|ulbold        ) i=2; c=`$C$i` && echo $c${U2}$@$X;;
@@ -464,10 +499,10 @@ function msg2(){
 
 function teachme(){
         if [ "$#" -ne "1" ]; then
-                msg "Usage: $FUNCNAME [ pattern to learn something today]" 'good'
+                msg2 -o "Usage: $FUNCNAME [ pattern to learn something today]"
         else
 
-                msg 'Be sure to have latest .profile.open & quick-commands content on  ~/bin/.teachme.txt' 'warning'
+                msg2 -w 'Be sure to have latest .profile.open & quick-commands content on  ~/bin/.teachme.txt'
                 grep --color -in $1 ~/bin/.teachme.txt
         fi
 }
@@ -482,7 +517,7 @@ function git_branch(){
     else
         TMPUSER=$USER;
     fi;
-        for i in `find /data/$TMPUSER/ -maxdepth 1 -type d|sort | grep -v brand` ; do cd $i 2>/dev/null ; printf "%s\t%s" "Code:$i" "Branch:" ; BR=`git branch 2>/dev/null | grep \* | awk '{print $2}'`  ; if [ $BR ] ; then msg $BR 'good' ;else msg 'Not_a_git_repository' 'bad';fi ; cd .. ;  done | awk '{print $1 "\t" $2 }'|column -t
+        for i in `find /data/$TMPUSER/ -maxdepth 1 -type d|sort | grep -v brand` ; do cd $i 2>/dev/null ; printf "%s\t%s" "Code:$i" "Branch:" ; BR=`git branch 2>/dev/null | grep \* | awk '{print $2}'`  ; if [ $BR ] ; then msg2 -o $BR ;else msg2 -e 'Not_a_git_repository' ;fi ; cd .. ;  done | awk '{print $1 "\t" $2 }'|column -t
 }
 
 function git_branch_status(){
@@ -564,6 +599,6 @@ HISTTIMEFORMAT="%F %T "
 
 shopt -s nocaseglob # to match case insensitive patterns with ls?
 
-msg "Be lazy" 'greet' ; msg "Be always double lazy" 'greet'
-msg "Your #TODO action(s)" "warning" ;  todo;
-msg "Try to learn something with 'teachme' today" 'greet'
+msg2 -g "Be lazy" ; msg2 -g "Be always double lazy"
+msg2 -w "Your #TODO action(s)"  ;  todo;
+msg2 -g "Try to learn something with 'teachme' today"
