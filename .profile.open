@@ -24,7 +24,7 @@
 ############################################################################################################ 
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.511
+OPEN_PROFILE_VERSION=1.52
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -564,8 +564,8 @@ function get_updated_profile()
         today=`date +%Y%m%d`
         FILE_IN='.profile.open'; FILE_OUT="new.profile.open.$today";
         echo "looking for latest updates"
-                cmd_wget $FILE_IN $FILE_OUT;
-        echo -n 'running command:';msg2 -b "$CMD_WGET";
+        cmd_wget $FILE_IN $FILE_OUT;
+        #echo -n 'running command:';msg2 -b "$CMD_WGET";
         `$CMD_WGET`
 
         new_version=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today`
