@@ -23,7 +23,7 @@
 # SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud 
 ############################################################################################################ 
 
-OPEN_PROFILE_VERSION=1.31
+OPEN_PROFILE_VERSION=1.32
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -33,7 +33,7 @@ mkdir -p $HOME/bin ;
 
 #BASIC CMDS
 URL_RAW="https://raw.githubusercontent.com/kesavanm/handy-tools/master/"
-CMD_WGET="wget -q --no-check-certificate --tries=10 --timeout=20 $URL_RAW/$FILE_IN  -o $HOME/bin/$FILE_OUT " 
+CMD_WGET="wget -q --no-check-certificate --tries=10 --timeout=20 $URL_RAW/$FILE_IN  -O $HOME/bin/$FILE_OUT "
 
 #SETUP LOCAL TODO LIST
 if [ -f $HOME/bin/.todo ]; then
@@ -553,8 +553,9 @@ echo
 
 function get_updated_profile()
 {
+        cd $HOME/bin;
         today=`date +%Y%m%d`
-        FILE_IN='.profile.open'; FILE_OUT='new.profile.open.$today';
+        FILE_IN='.profile.open'; FILE_OUT="new.profile.open.$today";
         # echo -n 'running command:' ; msg2 -b "$CMD_WGET"
         `$CMD_WGET`
 
