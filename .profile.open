@@ -24,7 +24,7 @@
 ############################################################################################################ 
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.51
+OPEN_PROFILE_VERSION=1.511
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -627,6 +627,6 @@ HISTTIMEFORMAT="%F %T "
 shopt -s nocaseglob # to match case insensitive patterns with ls?
 
 msg2 -g "Be lazy" ; msg2 -g "Be always double lazy"
-msg2 -o "You're using OPEN_PROFILE_VERSION : $OPEN_PROFILE_VERSION. run *** get_updated_profile *** for latest from internet"
+msg2 -o "You're using OPEN_PROFILE_VERSION : $OPEN_PROFILE_VERSION. run get_updated_profile for latest from internet"
 msg2 -w "Your #TODO action(s)"  ;  todo;
 msg2 -g "Try to learn something with 'teachme' today"
