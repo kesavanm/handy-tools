@@ -24,7 +24,7 @@
 ############################################################################################################ 
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.5
+OPEN_PROFILE_VERSION=1.51
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -584,7 +584,7 @@ function get_updated_profile()
 
         if [[ $latest_avail -eq 1  ]] ; then {
                 echo "you're using the old version OPEN_PROFILE_VERSION:$OPEN_PROFILE_VERSION while $new_version is avail"
-                echo -n "wish to update ? y|n :" 
+                echo -n "wish to update ? [y|n]: "
                 read -n 1 choice
                 echo
                 if [ $choice == "y" ] ; then {
@@ -595,7 +595,6 @@ function get_updated_profile()
                         echo "your old profile backuped at .profile.open.bkup.`date +%Y%m%d`"
                         echo "save your work,logout & login for update"
                         . ~/bin/.profile.open  
-                        . ~/.profile
                 }
                 else
                         echo "Okay.You've some urgent work.Will update later"
@@ -628,5 +627,6 @@ HISTTIMEFORMAT="%F %T "
 shopt -s nocaseglob # to match case insensitive patterns with ls?
 
 msg2 -g "Be lazy" ; msg2 -g "Be always double lazy"
+msg2 -o "You're using OPEN_PROFILE_VERSION : $OPEN_PROFILE_VERSION. run *** get_updated_profile *** for latest from internet"
 msg2 -w "Your #TODO action(s)"  ;  todo;
 msg2 -g "Try to learn something with 'teachme' today"
