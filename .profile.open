@@ -23,7 +23,7 @@
 # SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud 
 ############################################################################################################ 
 
-OPEN_PROFILE_VERSION=1.32
+OPEN_PROFILE_VERSION=1.33
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -31,18 +31,24 @@ COLUMNS=250
 
 mkdir -p $HOME/bin ;
 
+CMD_WGET=
+
 #BASIC CMDS
-URL_RAW="https://raw.githubusercontent.com/kesavanm/handy-tools/master/"
-CMD_WGET="wget -q --no-check-certificate --tries=10 --timeout=20 $URL_RAW/$FILE_IN  -O $HOME/bin/$FILE_OUT "
+function cmd_wget(){
+        # cmd_wget in.ext out.ext
+        URL_RAW="https://raw.githubusercontent.com/kesavanm/handy-tools/master/"
+        export CMD_WGET="wget -q --no-check-certificate --tries=10 --timeout=20 $URL_RAW/$1 -O $HOME/bin/$2 "
+}
 
 #SETUP LOCAL TODO LIST
 if [ -f $HOME/bin/.todo ]; then
         touch $HOME/bin/.todo #In-case new to this .profile 
-else
-        ping -c 1 github.com
+else 
+        echo "no todo manager and list; creating new one for you";
+        ping -c 1 github.com > /dev/null
         if [[ $? -eq 0 ]] ; then 
-                FILE_IN=".todo" ;     FILE_OUT=".todo"     ; `$CMD_WGET` ; chmod +x $HOME/bin/.todo
-                FILE_IN=".todo_list" ;FILE_OUT=".todo_list"; `$CMD_WGET` ; chmod +x $HOME/bin/.todo_list
+                cmd_wget ".todo"      ".todo"     ; `$CMD_WGET` ; chmod +x $HOME/bin/.todo;
+                cmd_wget ".todo_list" ".todo_list"; `$CMD_WGET` ; chmod +x $HOME/bin/.todo_list;
         else
                 echo Appears no active internet connection.Please resolve.
         fi
@@ -556,7 +562,9 @@ function get_updated_profile()
         cd $HOME/bin;
         today=`date +%Y%m%d`
         FILE_IN='.profile.open'; FILE_OUT="new.profile.open.$today";
-        # echo -n 'running command:' ; msg2 -b "$CMD_WGET"
+        echo "looking for latest updates"
+                cmd_wget $FILE_IN $FILE_OUT;
+        echo -n 'running command:';msg2 -b "$CMD_WGET";
         `$CMD_WGET`
 
         new_version=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today`
@@ -575,7 +583,7 @@ function get_updated_profile()
 
         if [[ $latest_avail -eq 1  ]] ; then {
                 echo "you're using the old version OPEN_PROFILE_VERSION:$OPEN_PROFILE_VERSION while $new_version is avail"
-                echo "wish to update ? y|n " 
+                echo -n "wish to update ? y|n :" 
                 read -n 1 choice
                 echo
                 if [ $choice == "y" ] ; then {
