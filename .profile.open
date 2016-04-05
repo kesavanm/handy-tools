@@ -2,7 +2,7 @@
 # auth : hi@kesavan.info
 # date : 2015-03-06
 # 
-# updated : 2016-04-01
+# updated : 2016-04-05
 #
 # PLEASE READ THIS STATEMENT 
 # 
@@ -27,40 +27,7 @@
 # SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud 
 ############################################################################################################ 
 
-OPEN_PROFILE_VERSION=1.1
-
-function get_updated_profile()
-{
-        today=`date +%Y%m%d`
-        wget -q --no-check-certificate --tries=10 --timeout=20 'https://raw.githubusercontent.com/kesavanm/handy-tools/master/.profile.open' -O new.profile.open.$today
-
-        new_version=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today`
-
-        if [[ $? -ne 0 ]] ; then new_version=0.0 ;              # no version history , so start fresh 
-        else
-                INX=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today | head -1 | awk  '{printf("%s",$1)}'`
-                set -- "$INX";
-                IFS="="; declare -a Array=($*)
-                new_version="${Array[1]}"                       # avail_version
-        fi   
-
-        latest_avail=`bc <<< "$new_version>$OPEN_PROFILE_VERSION"`
-
-        echo new_version : $new_version  
-        echo curr_version: $OPEN_PROFILE_VERSION
-        echo latest_avail: $latest_avail
-
-        if [[ $latest_avail -eq 1  ]] ; then
-                echo "you're using the old version OPEN_PROFILE_VERSION:$OPEN_PROFILE_VERSION while $new_version is avail"
-                mv .profile.open .profile.open.bkup.`date +%Y%m%d`
-                mv new.profile.open.$today .profile.open ; chmod a+x .profile.open 
-                msg2 -o "OPEN_PROFILE updated to OPEN_PROFILE_VERSION:$new_version "
-                echo "your old profile backuped at .profile.open.bkup.`date +%Y%m%d`"
-                echo "save your work,logout & login for update"
-        else
-                echo "you're using the latest version OPEN_PROFILE_VERSION:$OPEN_PROFILE_VERSION"
-        fi
-}
+OPEN_PROFILE_VERSION=1.3
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -72,7 +39,7 @@ LTBLUE="\[\033[40;1;34m\]"
 CLEAR="\[\033[0m\]"
 LIGHT_GRAY="\[\033[40;1;33m\]"
 
-mkdir -p $HOME/bin ; touch $HOME/bin/.todo ; chmod a+wx $HOME/bin/.todo #In-case new to this .profile
+mkdir -p $HOME/bin ; touch $HOME/bin/.todo ; chmod +x $HOME/bin/.todo #In-case new to this .profile
 
 alias todo="$HOME/bin/.todo"
 alias findname="find . -name "
@@ -575,6 +542,49 @@ for FGs in '    m' '   1m' '  30m' '1;30m' '  31m' '1;31m' '  32m' \
 done
 echo
 
+}
+
+function get_updated_profile()
+{
+        today=`date +%Y%m%d`
+        wget -q --no-check-certificate --tries=10 --timeout=20 'https://raw.githubusercontent.com/kesavanm/handy-tools/master/.profile.open' -O new.profile.open.$today
+
+        new_version=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today`
+
+        if [[ $? -ne 0 ]] ; then new_version=0.0 ;              # no version history , so start fresh 
+        else
+                INX=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today | head -1 | awk  '{printf("%s",$1)}'`
+                new_version=`echo $INX | tr = \ | awk '{printf $2}'`
+        fi   
+
+        latest_avail=`bc <<< "$new_version>$OPEN_PROFILE_VERSION"`
+
+        echo new_version : $new_version  
+        echo curr_version: $OPEN_PROFILE_VERSION
+        echo latest_avail: $latest_avail
+
+        if [[ $latest_avail -eq 1  ]] ; then {
+                echo "you're using the old version OPEN_PROFILE_VERSION:$OPEN_PROFILE_VERSION while $new_version is avail"
+                echo "wish to update ? y|n " 
+                read -n 1 choice
+                echo
+                if [ $choice == "y" ] ; then {
+                        echo updating the profile
+                        mv .profile.open .profile.open.bkup.`date +%Y%m%d`
+                        mv new.profile.open.$today .profile.open ; chmod a+x .profile.open 
+                        echo "OPEN_PROFILE updated to OPEN_PROFILE_VERSION:$new_version"
+                        echo "your old profile backuped at .profile.open.bkup.`date +%Y%m%d`"
+                        echo "save your work,logout & login for update"
+                        . ~/bin/.profile.open  
+                        . ~/.profile
+                }
+                else
+                        echo "Okay.You've some urgent work.Will update later"
+                fi
+        }
+        else
+                echo "you're using the latest version OPEN_PROFILE_VERSION:$OPEN_PROFILE_VERSION"
+        fi
 }
 
 ###################################### COLORS ##################################################
