@@ -23,8 +23,8 @@
 # SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud 
 ############################################################################################################ 
 
-#I gonna <3 this 
-OPEN_PROFILE_VERSION=1.43       
+#I really gonna <3 this 
+OPEN_PROFILE_VERSION=1.433       
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
