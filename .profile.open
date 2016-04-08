@@ -1,6 +1,6 @@
 ############################################################################################################
 # auth : hi@kesavan.info
-# updated : 2016-04-05
+# updated : 2016-04-08
 #
 # PLEASE READ THIS STATEMENT 
 # 
@@ -24,7 +24,7 @@
 ############################################################################################################ 
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.53
+OPEN_PROFILE_VERSION=1.54
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -185,7 +185,7 @@ find . -type f -name "${2:-*}" -print0 | \
 }
 function findtext(){
     if [ "$#" -ne "1" ]; then
-            echo "Usage: ${0} [text to search for]"
+            echo "Usage:$FUNCNAME [text to search for]"
     else
             echo "Searching for \"${1}\" in current directory..."
             find . -exec grep -q "$1" '{}' \; -print
@@ -608,7 +608,7 @@ function get_updated_profile()
 function git-log-branch-who()
 {
         if [ "$#" -lt "4" ]; then
-                echo "Usage: ${0} -b branch -w developer1 [-w developer2 ...]"
+                echo "Usage: $FUNCNAME -b branch -w developer1 [-w developer2 ...]"
                 return 1
         fi
         WHO_LIST='';BRANCH='';
@@ -623,7 +623,6 @@ function git-log-branch-who()
         GIT_LOG_BRANCH_WHO="git log --stat --oneline --pretty=format:'%h - %an, %ar :  %s' --walk-reflogs $BRANCH ${WHO_LIST[@]}";
         msg2 -b "${GIT_LOG_BRANCH_WHO}";
         eval $GIT_LOG_BRANCH_WHO ;
-        unset WHO_LIST; unset ${WHO_LIST[@]} ; unset $BRANCH
 }
 
 ###################################### COLORS ##################################################
