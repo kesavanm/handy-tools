@@ -24,7 +24,7 @@
 ############################################################################################################ 
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.52
+OPEN_PROFILE_VERSION=1.53
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -603,6 +603,27 @@ function get_updated_profile()
         else
                 echo "you're using the latest version OPEN_PROFILE_VERSION:$OPEN_PROFILE_VERSION"
         fi
+}
+
+function git-log-branch-who()
+{
+        if [ "$#" -lt "4" ]; then
+                echo "Usage: ${0} -b branch -w developer1 [-w developer2 ...]"
+                return 1
+        fi
+        WHO_LIST='';BRANCH='';
+        OPTIND=1                                        # Required when in function() ;
+        while getopts ":w:b:" FLAG ; do
+        case "${FLAG}" in
+                b|branch ) BRANCH=${OPTARG} ;;
+                w|who    ) WHO_LIST+=("--author='$OPTARG'") ;;
+        esac
+        done
+
+        GIT_LOG_BRANCH_WHO="git log --stat --oneline --pretty=format:'%h - %an, %ar :  %s' --walk-reflogs $BRANCH ${WHO_LIST[@]}";
+        msg2 -b "${GIT_LOG_BRANCH_WHO}";
+        eval $GIT_LOG_BRANCH_WHO ;
+        unset WHO_LIST; unset ${WHO_LIST[@]} ; unset $BRANCH
 }
 
 ###################################### COLORS ##################################################
