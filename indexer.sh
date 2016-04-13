@@ -67,8 +67,26 @@ fi
 #remove first td+tr 
 	sed "s#</td> </tr>##" < $TMP/_indexer.html > indexer_`date +%F_%k_%M_%S`.htm
 
+
+
+# All-in-One
+ALLINONE="all-in-one_`date +%F_%k_%M_%S`.html";
+echo "<!doctype html> <html> <head> "                   >  $ALLINONE;
+echo " <script>    <!-- jQuery --> "                    >> $ALLINONE;
+cat "$TMP/.indexer_ki/jquery.js"                        >> $ALLINONE;
+cat "$TMP/.indexer_ki/jquery.dataTables.js"             >> $ALLINONE;
+echo " </script>        "                               >> $ALLINONE;
+cat  $TMP/.indexer_ki/indexer.js  $TMP/_3full.html      >> $ALLINONE;
+#misc & #remove first td+tr
+grep -v 'href="."' $ALLINONE  >  $ALLINONE.2
+awk '{gsub("</thead><tr>", "</thead>"); print}'   $ALLINONE.2 >  $ALLINONE.3
+mv $ALLINONE.3 "$ALLINONE.final.html"
+
 #remove all
 	rm -f $TMP/_*html
+        rm -f $ALLINONE.2 $ALLINONE ; mv "$ALLINONE.final.html" $ALLINONE
 
-echo "indexer.htm generated"	
-exit 0	
+echo "indexer_`date +%F_%k_%M_%S`.htm generated"
+echo "also created portable: $ALLINONE file for your handy portability"
+
+return 0
