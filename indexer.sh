@@ -2,6 +2,19 @@
 # indexer - make a html from dir
 # auth - hi@kesavan.info
 
+
+#TODO 
+# 1 - Add version control
+# 2 - Remove the bugos code on sed and UI 
+
+
+err_report() {
+            echo "Error on line $1"
+    }
+
+trap 'err_report $LINENO' ERR
+
+
 TMP='../tmp'		# Define Temp Dir
 
 #1 tree the dir
@@ -55,6 +68,7 @@ else
 	wget -O $TMP/.indexer_ki/jquery.dataTables.js 	-o $TMP/.indexer_ki/log/jq.dt.log 	"http://kesavan.info/jquery/dataTable/jquery.dataTables.js"
 	wget -O $TMP/.indexer_ki/indexer.js 		-o $TMP/.indexer_ki/log/jq.index.log	"http://kesavan.info/jquery/jq.indexer.js"
 	wget -O $TMP/.indexer_ki/sorticon.gif		-o $TMP/.indexer_ki/log/img.log		"http://kesavan.info/jquery/sorticon.gif"
+        wget -O $TMP/.indexer_ki/demo_table.css         -o $TMP/.indexer_ki/log/dt.css.log      "http://kesavan.info/jquery/dataTable/css/demo_table.css"
 fi
 
 #combine all
@@ -77,14 +91,39 @@ cat "$TMP/.indexer_ki/jquery.js"                        >> $ALLINONE;
 cat "$TMP/.indexer_ki/jquery.dataTables.js"             >> $ALLINONE;
 echo " </script>        "                               >> $ALLINONE;
 cat  $TMP/.indexer_ki/indexer.js  $TMP/_3full.html      >> $ALLINONE;
+echo '<style type="text/css">'                          >> $ALLINONE;
+cat "$TMP/.indexer_ki/demo_table.css"                   >> $ALLINONE;
+echo '</style>'                                         >> $ALLINONE;
+
+#sort-imgs
+CSS_IMG_SORT_BOTH="background: url('../images/sort_both.png') no-repeat center right;"
+CSS_IMG_SORT_D_UP="background: url('../images/sort_asc_disabled.png') no-repeat center right;"
+CSS_IMG_SORT_UP="background: url('../images/sort_asc.png') no-repeat center right;"
+CSS_IMG_SORT_D_DOWN="background: url('../images/sort_desc_disabled.png') no-repeat center right;"
+CSS_IMG_SORT_DOWN="background: url('../images/sort_desc_disabled.png') no-repeat center right;"
+BASE64_SORT_BOTH="background:url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIUnC2nKLnT4or00PvyrQwrPzUZshQAOw==) no-repeat center right;"
+BASE64_SORT_UP="background:url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIRnC2nKLnT4or00Puy3rx7VQAAOw==) no-repeat center right;"
+BASE64_SORT_DOWN="background:url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIPnI+py+0/hJzz0IruwjsVADs=) no-repeat center right;"
+
+sed "s#$CSS_IMG_SORT_BOTH#$BASE64_SORT_BOTH#"   < $ALLINONE     > $ALLINONE.1.5
+sed "s#$CSS_IMG_SORT_D_UP#$BASE64_SORT_UP#"     < $ALLINONE.1.5 > $ALLINONE.1.6
+sed "s#$CSS_IMG_SORT_UP#$BASE64_SORT_UP#"       < $ALLINONE.1.6 > $ALLINONE.1.7
+sed "s#$CSS_IMG_SORT_D_DOWN#$BASE64_SORT_DOWN#" < $ALLINONE.1.7 > $ALLINONE.1.8
+sed "s#$CSS_IMG_SORT_DOWN#$BASE64_SORT_DOWN#"   < $ALLINONE.1.8 > $ALLINONE.1.9
+
+SORTICON="<img src='../tmp/.indexer_ki/sorticon.gif'>"
+
 #misc & #remove first td+tr
-grep -v 'href="."' $ALLINONE  >  $ALLINONE.2
+grep -v 'href="."' $ALLINONE.1.9  >  $ALLINONE.2
 awk '{gsub("</thead><tr>", "</thead>"); print}'   $ALLINONE.2 >  $ALLINONE.3
-mv $ALLINONE.3 "$ALLINONE.final.html"
+sed "s#$SORTICON# #"                             < $ALLINONE.3 >$ALLINONE.3.5
+sed "s#<img src='../tmp/.indexer_ki/sorticon.gif'># #"  < $ALLINONE.3.5 > $ALLINONE.4
+mv $ALLINONE.4 "$ALLINONE.final.html"
 
 #remove all
 	rm -f $TMP/_*html
-        rm -f $ALLINONE.2 $ALLINONE ; mv "$ALLINONE.final.html" $ALLINONE
+        rm -f $ALLINONE.1.5 $ALLINONE.1.6 $ALLINONE.1.7 $ALLINONE.1.8 $ALLINONE.1.8.5 $ALLINONE.1.9
+        rm -f $ALLINONE.2   $ALLINONE.3  $ALLINONE.3.5  $ALLINONE; mv "$ALLINONE.final.html" $ALLINONE
 
 echo "indexer_`date +%F_%k_%M_%S`.htm generated"
 echo "also created portable: $ALLINONE file for your handy portability"
