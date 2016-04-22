@@ -671,3 +671,13 @@ msg2 -g "Be lazy" ; msg2 -g "Be always double lazy"
 msg2 -o "You're using OPEN_PROFILE_VERSION : $OPEN_PROFILE_VERSION. run get_updated_profile for latest from internet"
 msg2 -w "Your #TODO action(s)"  ;  todo;
 msg2 -g "Try to learn something with 'teachme' today"
+
+
+
+
+#WIP
+
+function ZZZ(){
+for i in `ls -R . --color=never | awk '/:$/&&f{s=$0;f=0} /:$/&&!f{sub(/:$/,"");s=$0;f=1;next} NF&&f{ print s"/"$0 }'`;     do  echo -n `ls --color=never -hl  --time-style=+"%Y-%m-%d %H:%M:%S" $i  | awk '{print "<tr>  <td> "  $1 "</td>   <td> " $3   " </td>  <td>" $5  " </td>  <td>"   $6 " </td>  <td>" $8  "</td> </td>"}' && file -b $i ` ;  echo " </td> </tr>" ;      done
+
+}
