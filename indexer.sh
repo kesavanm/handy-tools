@@ -34,6 +34,25 @@ TMP='../tmp'		# Define Temp Dir
 # strip all
 	sed -e "/<\/table>/,+50d" $TMP/_index4.html > $TMP/_index5.html
 
+
+
+function ls_html(){
+        for i in `ls -R . --color=never | awk '/:$/&&f{s=$0;f=0} /:$/&&!f{sub(/:$/,"");s=$0;f=1;next} NF&&f{ print s"/"$0 }'`;     
+        do  
+             echo -n `ls --color=never -hl  --time-style=+"%Y-%m-%d %H:%M:%S" $i  | 
+                awk '{print "<tr>  <td> "  $1 "</td>   <td> " $3   " </td>  <td>" $5  " </td>  <td>"   $6 " </td>  <td>" $8  "</td> </td    >"}' 
+                && file -b $i ` ;  
+                echo " </td> </tr>" ;      
+     done
+
+}
+
+
+
+
+
+
+
 	TABLE=" class='display' id='books' border='1' cellpadding='0' cellspacing='0' align='left'>	\
 		<thead>											\
 			<tr> 										\
