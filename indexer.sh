@@ -14,6 +14,7 @@ err_report() {
 
 trap 'err_report $LINENO' ERR
 
+NEW_VERSION="v2";
 
 TMP='../tmp'		# Define Temp Dir
 
@@ -35,23 +36,24 @@ TMP='../tmp'		# Define Temp Dir
 	sed -e "/<\/table>/,+50d" $TMP/_index4.html > $TMP/_index5.html
 
 
+#v2
 
-function ls_html(){
-        for i in `ls -R . --color=never | awk '/:$/&&f{s=$0;f=0} /:$/&&!f{sub(/:$/,"");s=$0;f=1;next} NF&&f{ print s"/"$0 }'`;     
-        do  
-             echo -n `ls --color=never -hl  --time-style=+"%Y-%m-%d %H:%M:%S" $i  | 
-                awk '{print "<tr>  <td> "  $1 "</td>   <td> " $3   " </td>  <td>" $5  " </td>  <td>"   $6 " </td>  <td>" $8  "</td> </td    >"}' 
-                && file -b $i ` ;  
-                echo " </td> </tr>" ;      
-     done
+        if [ "$NEW_VERSION" == "v2" ] ; then
+                echo running in v2 mode
+                function ls_html(){
+                        LS_TO_TREE="."
+                        for i in `ls -R $LS_TO_TREE --color=never|
+                                  awk '/:$/&&f{s=$0;f=0} /:$/&&!f{sub(/:$/,"");s=$0;f=1;next} NF&&f{ print s"/"$0 }'`;
+                        do echo -n `ls --color=never -hl  --time-style=+"%Y-%m-%d %H:%M:%S" $i  |
+                           awk '{print "<tr> <td> "  $1 "</td>   <td> " $3   " </td>  <td>" $5  " </td> <td>"   $6 " </td>  <td>" $8  "</td> <td> \n"}' &&
+                           file -b $i ` &&
+                           echo " </td> </tr>" ;
+                        done >> $TMP/_index5.html
+                }
 
-}
-
-
-
-
-
-
+                echo '<html><body> <table> <tr><td align=left ><table STARTXXX>' > $TMP/_index5.html
+                ls_html ;
+        fi
 
 	TABLE=" class='display' id='books' border='1' cellpadding='0' cellspacing='0' align='left'>	\
 		<thead>											\
@@ -61,20 +63,40 @@ function ls_html(){
 			<\/tr>										\
 		<\/thead	"	
 
+#v2
+        if [ "$NEW_VERSION" == "v2" ] ; then 
+                TABLE=" class='display' id='books' border='1' cellpadding='0' cellspacing='0' align='left'>     \
+                        <thead>                                                                                 \
+                                <tr> 										\
+                                        <th>Information<\/th> 	\
+                                        <th>Owner</th>          \
+                                        <th>Size</th>           \
+                                        <th>Updated </th>       \
+                                        <th>File </th>          \
+                                        <th>Notes <\/th> 	\
+                                <\/tr>			        \
+                        <\/thead	"
+        fi
+
 	sed "s#STARTXXX#$TABLE#g" < $TMP/_index5.html > $TMP/_index6.html
 
 	head -n -2  $TMP/_index6.html >  $TMP/_index7.html
+#v2        
+        if [ "$NEW_VERSION" == "v2" ] ; then command cp  $TMP/_index6.html $TMP/_index7.html ; fi #TODO  think about unalias cp
 
 # finish it
 	echo " </table>   </td></tr></table>  </body> </html>" >> $TMP/_index7.html		#PSESUDO TABLE
 	tail -n +4 $TMP/_index7.html >  $TMP/_3full.html
+
+#v2
+        if [ "$NEW_VERSION" == "v2" ] ; then command cp $TMP/_index7.html $TMP/_3full.html ; fi      #TODO  think about `yes|cp`
+
 
 echo 	"<!doctype html> <html> <head>		\
 	 <!-- jQuery -->			\
 		<script type="text/javascript" language="javascript" src="$TMP/.indexer_ki/jquery.js"></script>			\
 		<script type="text/javascript" language="javascript" src="$TMP/.indexer_ki/jquery.dataTables.js"></script> 	\
 	"	> $TMP/_0.html
-
 
 echo "Checks for supporting files"
 if [ -f $TMP/.indexer_ki/jquery.js  -a -f $TMP/.indexer_ki/jquery.dataTables.js  -a -f $TMP/.indexer_ki/indexer.js -a -f $TMP/.indexer_ki/sorticon.gif  ] 
@@ -146,5 +168,7 @@ mv $ALLINONE.4 "$ALLINONE.final.html"
 
 echo "indexer_`date +%F_%k_%M_%S`.htm generated"
 echo "also created portable: $ALLINONE file for your handy portability"
+
+NEW_VERSION=
 
 return 0
