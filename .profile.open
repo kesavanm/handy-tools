@@ -24,7 +24,7 @@
 ############################################################################################################ 
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.55
+OPEN_PROFILE_VERSION=1.56
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -267,8 +267,9 @@ function mydf() {   # Pretty-print of 'df' output.
     done
 }
 function myip() {   # Get IP adress on ethernet.
-    MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' |
-    sed -e s/addr://)
+    MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' |    sed -e s/addr://)
+    [[ -f /etc/sysconfig/network-scripts/ifcfg-bond1 ]] && MYIP2=$(/sbin/ifconfig bond1| awk '/inet/ { print $2 } ' |  sed -e s/addr://)  || MYIP2="No Network bond1" 
+    [[ -z $MY_IP ]] && IP="$MYIP2" || IP="$MY_IP"
     echo ${MY_IP:-"Not connected"}
 }
 function ii() { # Get current host related info.
@@ -641,6 +642,12 @@ function qls()
                         echo `ls --color=never -hl $i && file -b $i`;
                 fi;
         done
+
+
+        function qls_htm(){
+                for i in `ls -R . --color=never | awk '/:$/&&f{s=$0;f=0} /:$/&&!f{sub(/:$/,"");s=$0;f=1;next} NF&&f{ print s"/"$0 }'`;     do  echo -n `ls --color=never -hl  --time-style=+"%Y-%m-%d %H:%M:%S" $i  | awk '{print "<tr>  <td> "  $1 "</td>   <td> " $3   " </td>  <td>" $5  " </td>  <td>"   $6 " </td>  <td>" $8  "</td> </td>"}' && file -b $i ` ;  echo " </td> </tr>" ;      done
+
+        }
 }
 
 
@@ -677,7 +684,4 @@ msg2 -g "Try to learn something with 'teachme' today"
 
 #WIP
 
-function ZZZ(){
-for i in `ls -R . --color=never | awk '/:$/&&f{s=$0;f=0} /:$/&&!f{sub(/:$/,"");s=$0;f=1;next} NF&&f{ print s"/"$0 }'`;     do  echo -n `ls --color=never -hl  --time-style=+"%Y-%m-%d %H:%M:%S" $i  | awk '{print "<tr>  <td> "  $1 "</td>   <td> " $3   " </td>  <td>" $5  " </td>  <td>"   $6 " </td>  <td>" $8  "</td> </td>"}' && file -b $i ` ;  echo " </td> </tr>" ;      done
 
-}
