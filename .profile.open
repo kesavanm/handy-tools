@@ -1,6 +1,6 @@
 ############################################################################################################
 # auth : hi@kesavan.info
-# updated : 2016-05-26
+# updated : 2016-07-05
 #
 # PLEASE READ THIS STATEMENT 
 # 
@@ -24,7 +24,7 @@
 ############################################################################################################ 
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.561
+OPEN_PROFILE_VERSION=1.562
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -629,12 +629,38 @@ function git-log-branch-who()
 
 function qls()
 {
+    OPTIND=1;     QLSPARAMS="";
+    while getopts ":r:" FLAG; do
+        shift;
+        case "${FLAG}" in
+            r | recursive)
+                echo "in recursive mode";
+                QLSPARAMS='-R'
+            ;;
+        esac;
+    done;
+
+
         # Can be used in indexer v2 ? 
-        if [ -z $1 ] ; then QLS_DIR='.'
-        else QLS_DIR="$1";
+        if [ -z $1 ] ;
+        then
+                QLS_DIR='.';
+        else
+                QLS_DIR="$1";
         fi
 
-        for i in `ls -R $QLS_DIR --color=never | awk '/:$/&&f{s=$0;f=0} /:$/&&!f{sub(/:$/,"");s=$0;f=1;next} NF&&f{ print s"/"$0 }'`; 
+        if [ "$QLSPARAMS"  == '-R' ] ;
+        then
+#              echo "using ls -R $QLS_DIR deeply ";
+               LIST=(`ls $QLSPARAMS $QLS_DIR --color=never|awk '/:$/&&f{s=$0;f=0} /:$/&&!f{sub(/:$/,"");s=$0;f=1;next} NF&&f{ print s"/"$0 }'`)
+        else
+#              echo "using find $QLS_DIR -maxdepth 1 locally"
+               LIST=(`find $QLS_DIR -maxdepth 1` ) ;
+        fi
+
+        return 0;
+
+        for i in ${LIST[@]} ;
         do 
                 if [ -d $i ] ; then 
                         echo `ls --color=never -dl $i && file -b $i`; 
