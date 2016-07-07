@@ -633,15 +633,15 @@ function git-log-branch-who()
 function qls()
 {
     RECPARAM=' -maxdepth 1 ';
-    HIDPARAM=' \( ! -regex ".*/\..*" \) ';
-    PAR=();
+#    HIDPARAM=" ! -regex '.*/\..*' " 
+HIDPARAM="  ( ! -name '.*'  )"
 
     OPTIND=1                                        # This saves my life :)
-    while getopts "xy" FLAG; do
+    while getopts "ar" FLAG; do
         case $FLAG in
-                x) PAR+=('a'); echo 'got hid param' ; HIDPARAM=''; ;;
-                y) PAR+=('r'); echo 'got rec param' ; RECPARAM=''; ;;
-                \?) echo "Invalid option: -$OPTARG" >&2; return 1;;
+                a) echo 'got hid param' ; HIDPARAM=''; ;;
+                r) echo 'got rec param' ; RECPARAM=''; ;;
+               \?) echo "Invalid option: -$OPTARG" >&2; return 1;;
                 *) echo "Wrong choice" ; return 0 ;;
         esac
     done
@@ -653,18 +653,17 @@ function qls()
         if [ -z "$RECPARAM"  ] ; then echo -n "listing recursive "; else echo -n "listing locally  " ; fi
         if [ -z "$HIDPARAM"  ] ; then echo "but including hidden"; else echo "but excluding hidden" ; fi
 
-        #for arg in $PAR; do  ;                 echo $arg ;         done;
-
-        CMD="find $QLS_DIR $RECPARAM $HIDPARAM"
-        echo $CMD
-
+        CMD="find $QLS_DIR"
+        CMD+=$RECPARAM 
+        CMD+=$HIDPARAM ;  echo $CMD;
+        LIST=(`$CMD`) ;
         unset RECPARAM ; unset HIDPARAM ;
-        return 0;
-
-        LIST=(`find $QLS_DIR $RECPARAM $HIDPARAM` ) ;
+        unset $RECPARAM ; unset $HIDPARAM ;
 
         for i in ${LIST[@]} ;
+               
         do 
+                echo "running for $i \n "
                 if [ -d $i ] ; then 
                         echo `ls --color=never -dl $i && file -b $i`; 
                 else 
@@ -676,6 +675,8 @@ function qls()
                 for i in `ls -R . --color=never | awk '/:$/&&f{s=$0;f=0} /:$/&&!f{sub(/:$/,"");s=$0;f=1;next} NF&&f{ print s"/"$0 }'`;     do  echo -n `ls --color=never -hl  --time-style=+"%Y-%m-%d %H:%M:%S" $i  | awk '{print "<tr>  <td> "  $1 "</td>   <td> " $3   " </td>  <td>" $5  " </td>  <td>"   $6 " </td>  <td>" $8  "</td> </td>"}' && file -b $i ` ;  echo " </td> </tr>" ;      done
 
         }
+
+        return 0 ;
 }
 
 
