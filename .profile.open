@@ -1,6 +1,6 @@
 ############################################################################################################
 # auth : hi@kesavan.info
-# updated : 2016-07-05
+# updated : 2016-12-05
 #
 # PLEASE READ THIS STATEMENT 
 # 
@@ -23,11 +23,18 @@
 # SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud 
 ############################################################################################################ 
 
-err_report() { echo "Error on line $1"; }
-trap 'err_report $LINENO' ERR
+# Enable ERR Reporting
+#err_report() { echo "Error on line $1"; }
+#trap 'err_report $LINENO' ERR
+
+# Disable ERR Reporting
+#trap -  SIGINT SIGQUIT SIGTSTP # only on these exit signals
+#trap '' ERR                     # trap off on all exit signals
+
+
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.562
+OPEN_PROFILE_VERSION=1.572
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -493,7 +500,21 @@ function teachme(){
 }
 
 function parse_git_branch () {
-        git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/|(\1)/'
+        BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+        if [ -z $BRANCH ]; then
+                echo "" ;
+        else
+                $(git status | grep "nothing to commit" > /dev/null 2>&1;)
+                if [ "$?" -eq "0" ]; then
+                        msg2 -g "($BRANCH)"
+                else
+                        msg2 -e "{$BRANCH}"
+                fi
+        fi
+}
+
+function parse_git_last_pull(){
+        stat -c %y .git/FETCH_HEAD | awk -F'.' '{print $1}'
 }
 
 function git_branch(){
@@ -632,44 +653,76 @@ function git-log-branch-who()
 
 function qls()
 {
+        #TODO BOGUS VERSION
     RECPARAM=' -maxdepth 1 ';
-#    HIDPARAM=" ! -regex '.*/\..*' " 
-HIDPARAM="  ( ! -name '.*'  )"
+#    HIDPARAM=" ! -regex '.*/\..*' "
+        HIDPARAM="  ! -name '.*'  "
+        NUMM=0
 
     OPTIND=1                                        # This saves my life :)
     while getopts "ar" FLAG; do
         case $FLAG in
-                a) echo 'got hid param' ; HIDPARAM=''; ;;
-                r) echo 'got rec param' ; RECPARAM=''; ;;
+                a) echo 'got hid param' ; HIDPARAM=''; NUMM=$(( $NUMM + 1 ))   ;;
+                r) echo 'got rec param' ; RECPARAM=''; NUMM=$(( $NUMM + 2 )) ;;
                \?) echo "Invalid option: -$OPTARG" >&2; return 1;;
                 *) echo "Wrong choice" ; return 0 ;;
         esac
     done
     shift $((OPTIND-1))
 
+    echo "Value of NUMM is $NUMM "
+
         # Can be used in indexer v2 ? 
         if [ -z $1 ] ; then QLS_DIR='.'; else QLS_DIR="$1"; fi
 
-        if [ -z "$RECPARAM"  ] ; then echo -n "listing recursive "; else echo -n "listing locally  " ; fi
-        if [ -z "$HIDPARAM"  ] ; then echo "but including hidden"; else echo "but excluding hidden" ; fi
+       # if [ -z "$RECPARAM"  ] ; then echo -n "listing recursive ";NUMM=$(( $NUMM + 2 )) ;  else echo -n "listing locally  " ; fi
+       # if [ -z "$HIDPARAM"  ] ; then echo "but including hidden"; NUMM=$(( $NUMM + 1 )) ; else echo "but excluding hidden" ; fi
 
-        CMD="find $QLS_DIR"
-        CMD+=$RECPARAM 
-        CMD+=$HIDPARAM ;  echo $CMD;
-        LIST=(`$CMD`) ;
+        CMD="find $QLS_DIR" ;         CMD+=$RECPARAM  ;        CMD+=$HIDPARAM ;
+        msg2 '-w' "$CMD " ;
+
+#       LIST=(`$CMD ` )
         unset RECPARAM ; unset HIDPARAM ;
         unset $RECPARAM ; unset $HIDPARAM ;
 
-        for i in ${LIST[@]} ;
-               
+#       printf '%s\n' "${LIST[@]}";
+
+        case "$NUMM" in
+                '0')    echo "with no option ; default mode ; searching $QLS_DIR locally , non-recursive & non-hidden";
+                        LIST_R=(`find $QLS_DIR -maxdepth 1 ! -name '.*'`) ;
+                        ;;
+                '1')    echo "with  a option ;     all mode ; searching $QLS_DIR locally    , non-recursive & hidden ";
+                        LIST_R=(`find $QLS_DIR -maxdepth 1  `) ;
+                        ;;
+                '2')    echo "with  r option ;     rec mode ; searching $QLS_DIR non-local  , recursivelly  & non-hidden";
+                        LIST_R=(`find $QLS_DIR ! -name '.*'`) ;
+                        ;;
+                '3')    echo "with  a&r option;   all+rec mode ; searching $QLS_DIR non-local,recursivelly  & hidden";
+                        LIST_R=(`find $QLS_DIR`) ;
+                        ;;
+        esac
+
+        NUMM=
+
+#        for element in $(seq 0 $((${#arrayname[@]} - 1)))
+#        do
+#                echo "${arrayname[$element]}"
+#        done
+
+
+#       for i in ${LIST[@]} ;
+        for i in ${LIST_R[@]} ;
         do 
-                echo "running for $i \n "
+#                echo "running for $i \n "
                 if [ -d $i ] ; then 
                         echo `ls --color=never -dl $i && file -b $i`; 
                 else 
                         echo `ls --color=never -hl $i && file -b $i`;
                 fi;
         done
+
+
+        LIST_R=()
 
         function qls_htm(){
                 for i in `ls -R . --color=never | awk '/:$/&&f{s=$0;f=0} /:$/&&!f{sub(/:$/,"");s=$0;f=1;next} NF&&f{ print s"/"$0 }'`;     do  echo -n `ls --color=never -hl  --time-style=+"%Y-%m-%d %H:%M:%S" $i  | awk '{print "<tr>  <td> "  $1 "</td>   <td> " $3   " </td>  <td>" $5  " </td>  <td>"   $6 " </td>  <td>" $8  "</td> </td>"}' && file -b $i ` ;  echo " </td> </tr>" ;      done
@@ -678,9 +731,6 @@ HIDPARAM="  ( ! -name '.*'  )"
 
         return 0 ;
 }
-
-
-
 
 ###################################### COLORS ##################################################
 #  REGULAR               BOLD                           UNDERLINE                BACKGROUND
@@ -695,9 +745,9 @@ HIDPARAM="  ( ! -name '.*'  )"
  NO_COLOUR="\[\e[0m\]";          # Text Reset
 ####################################################################################################
 
-PS1="$GREEN\u@\h$YELLOW($(myip))|\w$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
-success="\342\234\223"; fail="\342\234\227" # tick marks showing last operation status
-PS1="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success success\";else echo \"$BOLD_RED $fail failed\";fi)$NO_COLOUR ________________________________________________________________________________\n$PS1"
+PS1="$GREEN\u@\h$YELLOW($(myip))|$CYAN\jjobs|\$(/usr/bin/tty|/bin/sed -e 's:/dev/::')|$PURPLE\w|$GREEN\$(/bin/ls -1|/usr/bin/wc -l|/bin/sed 's: ::g')files \$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
+success="\342\234\223 success ^_^"; fail="\342\234\227 failed O_O" # tick marks showing last operation status
+PS1="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n$PS1"
 
 HISTTIMEFORMAT="%F %T "
 
