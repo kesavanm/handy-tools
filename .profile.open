@@ -24,8 +24,8 @@
 ############################################################################################################ 
 
 # Enable ERR Reporting
-#err_report() { echo "Error on line $1"; }
-#trap 'err_report $LINENO' ERR
+err_report() { echo "Error on line $1"; }
+trap 'err_report $LINENO' ERR
 
 # Disable ERR Reporting
 #trap -  SIGINT SIGQUIT SIGTSTP # only on these exit signals
@@ -34,7 +34,7 @@
 
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.572
+OPEN_PROFILE_VERSION=1.582
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -732,6 +732,18 @@ function qls()
         return 0 ;
 }
 
+function ps1-stat(){
+        if [ "$#" -lt "1" ]; then
+                echo "Usage: $FUNCNAME [short|sweet|normal|full]"
+                echo "current ps1-stat is $ps1_status"
+                return 1
+        fi
+        echo "setting $1 as ps1-stat now"
+        export ps1_status=$1
+        f_ps1  ;
+        return 0
+}
+
 ###################################### COLORS ##################################################
 #  REGULAR               BOLD                           UNDERLINE                BACKGROUND
    BLACK="\[\e[0;30m\]";  BOLD_BLACK="\[\e[1;30m\]";   UL_BLACK="\[\e[4;30m\]";  BG_BLACK="\e[40m\]";
@@ -745,10 +757,34 @@ function qls()
  NO_COLOUR="\[\e[0m\]";          # Text Reset
 ####################################################################################################
 
-PS1="$GREEN\u@\h$YELLOW($(myip))|$CYAN\jjobs|\$(/usr/bin/tty|/bin/sed -e 's:/dev/::')|$PURPLE\w|$GREEN\$(/bin/ls -1|/usr/bin/wc -l|/bin/sed 's: ::g')files \$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
-success="\342\234\223 success ^_^"; fail="\342\234\227 failed O_O" # tick marks showing last operation status
-PS1="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n$PS1"
+function f_ps1(){
+       # [short|sweet|normal|full|auto] 
+        success="\342\234\223 success ^_^"; fail="\342\234\227 failed O_O" # tick marks showing last operation status
 
+        if [ "$ps1_status" == 'full' ] ; then 
+
+        PS1="$GREEN\u@\h$YELLOW($(myip))|$CYAN\jjobs|\$(/usr/bin/tty|/bin/sed -e 's:/dev/::')|$PURPLE\w|$GREEN\$(/bin/ls -1|/usr/bin/wc -l|/bin/sed 's: ::g')files \$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
+        PS1="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n$PS1"
+        fi
+
+        if [ "$ps1_status" == 'normal' ] ; then 
+
+        PS1="$GREEN\u@\h$YELLOW($(myip))|$GREEN\w$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
+        PS1="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n$PS1"
+        fi
+
+        if [ "$ps1_status" == 'sweet' ] ; then 
+
+        PS1="$GREEN\u@\h$YELLOW($(myip))|$GREEN\w$RED\$(parse_git_branch)$NO_COLOUR\n\$"
+        PS1="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR __________________________________________\n$PS1"
+        fi
+
+        if [ "$ps1_status" == 'short' ] ; then 
+        PS1="$BOLD_WHITE\$?$GREEN\u@\h|$YELLOW\w$NO_COLOUR\$"
+        fi
+}
+
+f_ps1 ;
 HISTTIMEFORMAT="%F %T "
 
 shopt -s nocaseglob # to match case insensitive patterns with ls?
