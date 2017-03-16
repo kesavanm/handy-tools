@@ -38,13 +38,16 @@ TMP='../tmp'		# Define Temp Dir
 
 #v2
 
+# FIX for removing `total`
+
+
         if [ "$NEW_VERSION" == "v2" ] ; then
                 echo running in v2 mode
                 function ls_html(){
                         LS_TO_TREE="."
                         for i in `ls -R $LS_TO_TREE --color=never|
                                   awk '/:$/&&f{s=$0;f=0} /:$/&&!f{sub(/:$/,"");s=$0;f=1;next} NF&&f{ print s"/"$0 }'`;
-                        do echo -n `ls --color=never -hl  --time-style=+"%Y-%m-%d %H:%M:%S" $i  |
+                        do echo -n `ls --color=never -hl  --time-style=+"%Y-%m-%d %H:%M:%S" $i |grep -e '^total\s[0-9.]\+[bBMmGgkK]$' -v |
                            awk '{print "<tr> <td> "  $1 "</td>   <td> " $3   " </td>  <td>" $5  " </td> <td>"   $6 " </td>  <td>" $8  "</td> <td> \n"}' &&
                            file -b $i ` &&
                            echo " </td> </tr>" ;
