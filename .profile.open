@@ -23,6 +23,9 @@
 # SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud 
 ############################################################################################################ 
 
+
+
+
 # Enable ERR Reporting
 #err_report() { echo "Error on line $1"; }
 #trap 'err_report $LINENO' ERR
@@ -30,6 +33,9 @@
 # Disable ERR Reporting
 trap -  SIGINT SIGQUIT SIGTSTP # only on these exit signals
 trap '' ERR                     # trap off on all exit signals
+
+# INCASE IF YOU'RE IN CYG ENV ON WIN_X , CHANGE THE ENCODINGS
+# sed -i 's/\r$//' .profile.open
 
 
 
@@ -279,6 +285,12 @@ function mydf() {   # Pretty-print of 'df' output.
 function myip() {   # Get IP adress on ethernet.
     MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' |    sed -e s/addr://)
     [[ -f /etc/sysconfig/network-scripts/ifcfg-bond1 ]] && MYIP2=$(/sbin/ifconfig bond1| awk '/inet/ { print $2 } ' |  sed -e s/addr://)  || MYIP2="No Network bond1" 
+
+	#CYGWIN
+	if [[ `uname` == *"CYGWIN"* ]]; then
+		MY_IP=`ipconfig.exe | grep IPv4 | awk 'NF>1{print $NF}' | head -1`
+	fi
+
     [[ -z $MY_IP ]] && IP="$MYIP2" || IP="$MY_IP"
     echo ${IP:-"Not connected"}
 }
@@ -399,7 +411,7 @@ function cleandebs(){
                 sudo aptitude clean
                 sudo aptitude install localepurge       # removes unneeded locale files and localized man page
                 sudo apt-get install deborphan          # removes orphaned packages
-                sudo deborphan | xargs sudo apt-get -y remove â€“purge
+                sudo deborphan | xargs sudo apt-get -y remove –purge
                 ";
 
         echo -n "Clean the debian orphan files? You may need to run as root/sudo ? [y|n]:" ;
@@ -409,7 +421,7 @@ function cleandebs(){
                 sudo aptitude clean;
                 sudo aptitude install localepurge
                 sudo apt-get install deborphan
-                sudo deborphan | xargs sudo apt-get -y remove â€“purge
+                sudo deborphan | xargs sudo apt-get -y remove –purge
         }
         else echo "Debian orphan files not cleaned";
         fi
