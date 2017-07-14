@@ -325,6 +325,7 @@ alias gl="git log"
 alias gs="git status --untracked-files=no"
 #alias gls="git log --pretty=format:\"%h%x09%an%x09%ad%x09%s\""
 alias gls="git log --date=local --pretty=format:\"%h%x09%C(cyan)%an%x09%ad:%Creset %s\""
+alias gwalk="git log --stat --oneline --pretty=format:\"%h - %an, %ar : %s\"  --walk-reflogs"
 
 ##############################################
 #   TOOL (1) datec - Quickly find your age 
