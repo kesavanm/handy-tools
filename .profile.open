@@ -1,6 +1,6 @@
 ############################################################################################################
 # auth : hi@kesavan.info
-# updated : 2016-12-05
+# updated : 2017-07-14
 #
 # PLEASE READ THIS STATEMENT 
 # 
@@ -29,12 +29,13 @@ trap 'err_report $LINENO' ERR
 
 # Disable ERR Reporting
 #trap -  SIGINT SIGQUIT SIGTSTP # only on these exit signals
-#trap '' ERR                     # trap off on all exit signals
+#trap '' ERR                    # trap off on all exit signals
 
-
+# INCASE IF YOU'RE IN CYG ENV ON WIN_X , CHANGE THE ENCODINGS
+# sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.582
+OPEN_PROFILE_VERSION=1.585
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -309,10 +310,11 @@ mydiff(){
 
 #GIT Version Control
 
-alias gl="git log"
-alias gs="git status --untracked-files=no"
-#alias gls="git log --pretty=format:\"%h%x09%an%x09%ad%x09%s\""
-alias gls="git log --date=local --pretty=format:\"%h%x09%C(cyan)%an%x09%ad:%Creset %s\""
+#alias  gls="git log --pretty=format:\"%h%x09%an%x09%ad%x09%s\""
+alias    gl="git log"
+alias    gs="git status --untracked-files=no"
+alias   gls="git log --date=local --pretty=format:\"%h%x09%C(cyan)%an%x09%ad:%Creset %s\""
+alias gwalk="git log --stat --oneline --pretty=format:\"%h - %an, %ar : %s\"  --walk-reflogs"
 
 ##############################################
 #   TOOL (1) datec - Quickly find your age 
