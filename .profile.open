@@ -1,6 +1,6 @@
 ############################################################################################################
 # auth : hi@kesavan.info
-# updated : 2017-07-14
+# updated : 2017-07-18
 #
 # PLEASE READ THIS STATEMENT 
 # 
@@ -24,8 +24,8 @@
 ############################################################################################################ 
 
 # Enable ERR Reporting
-err_report() { echo "Error on line $1"; }
-trap 'err_report $LINENO' ERR
+#err_report() { echo "Error on line $1"; }
+#trap 'err_report $LINENO' ERR
 
 # Disable ERR Reporting
 #trap -  SIGINT SIGQUIT SIGTSTP # only on these exit signals
@@ -35,7 +35,7 @@ trap 'err_report $LINENO' ERR
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.585
+OPEN_PROFILE_VERSION=1.586
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -280,6 +280,12 @@ function mydf() {   # Pretty-print of 'df' output.
 function myip() {   # Get IP adress on ethernet.
     MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' |    sed -e s/addr://)
     [[ -f /etc/sysconfig/network-scripts/ifcfg-bond1 ]] && MYIP2=$(/sbin/ifconfig bond1| awk '/inet/ { print $2 } ' |  sed -e s/addr://)  || MYIP2="No Network bond1" 
+
+	#CYGWIN
+	if [[ `uname` == *"CYGWIN"* ]]; then
+		MY_IP=`ipconfig.exe | grep IPv4 | awk 'NF>1{print $NF}' | head -1`
+	fi
+
     [[ -z $MY_IP ]] && IP="$MYIP2" || IP="$MY_IP"
     echo ${IP:-"Not connected"}
 }
@@ -499,6 +505,42 @@ function teachme(){
                 msg2 -w 'Be sure to have latest .profile.open & quick-commands content on  ~/bin/.teachme.txt'
                 grep --color -in $1 ~/bin/.teachme.txt
         fi
+}
+
+function mydb(){
+       if [ "$#" -eq "1" ]; then
+                DB=$1
+                msg2 -g "DB set to $1";return 0
+       fi
+       if [ "$DB" ]; then
+               msg2 -g "Current DB : $DB"; return 0
+       else
+               msg2 -e "No db as of now"; echo -n "type the db name:"
+               read db;DB=$db; return 0
+       fi
+}
+
+function mytables(){
+        if [ -z $DB ]; then  mydb; fi;
+        if [ "$#" -lt "1" ]; then
+                msg2 -o "Usage: $FUNCNAME TABLE "
+        else
+                repdb $DB -te "show tables like  '%$1%'" ;
+        fi
+}
+
+function mydesc(){
+        if [ -z $DB ]; then  mydb; fi;
+        if [ "$#" -lt "1" ]; then
+                msg2 -o "Usage: $FUNCNAME TABLE COL1[ COL2 ...] "
+        else
+                repdb $DB -te "desc  $1"|egrep "Extra|---|$2"
+        fi
+}
+
+function myq(){
+        if [ -z $DB ]; then  mydb; fi;
+        repdb $DB -te "$*"
 }
 
 function parse_git_branch () {
@@ -738,7 +780,7 @@ function ps1-stat(){
         if [ "$#" -lt "1" ]; then
                 echo "Usage: $FUNCNAME [short|sweet|normal|full]"
                 echo "current ps1-stat is $ps1_status"
-                return 1
+                return 0
         fi
         echo "setting $1 as ps1-stat now"
         export ps1_status=$1
@@ -760,6 +802,11 @@ function ps1-stat(){
 ####################################################################################################
 
 function f_ps1(){
+
+        if [ -z "$ps1_status" ] ; then
+                export ps1_status='normal';
+        fi
+
        # [short|sweet|normal|full|auto] 
         success="\342\234\223 success ^_^"; fail="\342\234\227 failed O_O" # tick marks showing last operation status
 
