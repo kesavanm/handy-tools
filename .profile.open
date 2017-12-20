@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.586
+OPEN_PROFILE_VERSION=1.587
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -286,6 +286,8 @@ function myip() {   # Get IP adress on ethernet.
 		MY_IP=`ipconfig.exe | grep IPv4 | awk 'NF>1{print $NF}' | head -1`
 	fi
 
+    [[ -z $MYIP2 ]]
+	MYIP2=$(dig +short myip.opendns.com @resolver1.opendns.com)
     [[ -z $MY_IP ]] && IP="$MYIP2" || IP="$MY_IP"
     echo ${IP:-"Not connected"}
 }
