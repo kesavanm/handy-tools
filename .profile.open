@@ -1,12 +1,12 @@
 ############################################################################################################
 # auth : hi@kesavan.info
-# updated : 2017-07-18
+# updated : 2017-12-20
 #
 # PLEASE READ THIS STATEMENT 
 # 
 # 1 - dos2unix .profile.open
-# 2 - to include this this file into your profile , add the following to your existing profile file on top
-#     .profile or .bashrc or whatever it is 
+# 2 - to include this this file into your profile , add the following to your existing profile file
+#     .bashrc (recommended)  (or .profile or whatever it is )
 #
 #     if [ -f ~/.profile.open ]; then
 #           . ~/.profile.open
@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.587
+OPEN_PROFILE_VERSION=1.588
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -278,8 +278,11 @@ function mydf() {   # Pretty-print of 'df' output.
     done
 }
 function myip() {   # Get IP adress on ethernet.
-    MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' |    sed -e s/addr://)
-    [[ -f /etc/sysconfig/network-scripts/ifcfg-bond1 ]] && MYIP2=$(/sbin/ifconfig bond1| awk '/inet/ { print $2 } ' |  sed -e s/addr://)  || MYIP2="No Network bond1" 
+	if [ /sbin/ifconfig eth0 2> /dev/null ] ; then
+		MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' |    sed -e s/addr://)
+	fi
+
+        [[ -f /etc/sysconfig/network-scripts/ifcfg-bond1 ]] && MYIP2=$(/sbin/ifconfig bond1| awk '/inet/ { print $2 } ' |  sed -e s/addr://)  || MYIP2="No Network bond1"
 
 	#CYGWIN
 	if [[ `uname` == *"CYGWIN"* ]]; then
