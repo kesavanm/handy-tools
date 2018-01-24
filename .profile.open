@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.586
+OPEN_PROFILE_VERSION=1.588
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -65,6 +65,31 @@ else
                 echo Appears no active internet connection.Please resolve.
         fi
 fi
+
+
+
+function cmatrixbuild()
+{
+  cd $HOME
+  git clone https://github.com/abishekvashok/cmatrix.git  >cmatrix.log 2>cmatrix.log
+  cd cmatrix
+  ./configure --prefix=$HOME --without-fonts >cmatrix.log 2>cmatrix.log 
+  make >cmatrix.log 2>cmatrix.log
+  make install >cmatrix.log 2>cmatrix.log
+  cd $HOME
+  #  cmatrix
+}
+
+
+
+
+if [ -z $(command -v cmatrix) ];  then
+        cmatrixbuild
+        #else echo cmatrix there 
+fi
+
+
+
 
 alias todo="$HOME/bin/.todo"
 alias findname="find . -name "
@@ -519,6 +544,11 @@ function mydb(){
                read db;DB=$db; return 0
        fi
 }
+function myq(){
+        if [ -z $DB ]; then  mydb; fi;
+        repdb $DB -te "$*"
+
+}
 
 function mytables(){
         if [ -z $DB ]; then  mydb; fi;
@@ -610,7 +640,7 @@ function colors(){
 
 T='gYw'   # The test text
 
-echo -e "\n                 40m     41m     42m     43m\
+echo -e "\n  FG/BG          40m     41m     42m     43m\
      44m     45m     46m     47m";
 
 for FGs in '    m' '   1m' '  30m' '1;30m' '  31m' '1;31m' '  32m' \
@@ -788,6 +818,9 @@ function ps1-stat(){
         return 0
 }
 
+
+
+
 ###################################### COLORS ##################################################
 #  REGULAR               BOLD                           UNDERLINE                BACKGROUND
    BLACK="\[\e[0;30m\]";  BOLD_BLACK="\[\e[1;30m\]";   UL_BLACK="\[\e[4;30m\]";  BG_BLACK="\e[40m\]";
@@ -813,13 +846,14 @@ function f_ps1(){
         if [ "$ps1_status" == 'full' ] ; then 
 
         PS1="$GREEN\u@\h$YELLOW($(myip))|$CYAN\jjobs|\$(/usr/bin/tty|/bin/sed -e 's:/dev/::')|$PURPLE\w|$GREEN\$(/bin/ls -1|/usr/bin/wc -l|/bin/sed 's: ::g')files \$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
-        PS1="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n$PS1"
+        PS1="$BOLD_WHITE[\!]\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n$PS1"
         fi
 
         if [ "$ps1_status" == 'normal' ] ; then 
 
         PS1="$GREEN\u@\h$YELLOW($(myip))|$GREEN\w$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
         PS1="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n$PS1"
+#       PS1='$(printf "%*s\r%s" $(( COLUMNS-1 )) "[$(git branch 2>/dev/null | grep '^*' | sed s/..//)] $(date +%H:%M:%S)" "$GREEN\u@\h$YELLOW($(myip))|$GREEN\w")'
         fi
 
         if [ "$ps1_status" == 'sweet' ] ; then 
@@ -843,9 +877,11 @@ msg2 -o "You're using OPEN_PROFILE_VERSION : $OPEN_PROFILE_VERSION. run get_upda
 msg2 -w "Your #TODO action(s)"  ;  todo;
 msg2 -g "Try to learn something with 'teachme' today"
 
-
+cmatrix -s
 
 
 #WIP
+alias fz='fzf --preview "[[ $(file --mime {}\) =~ binary ]] &&   echo {} is a binary file || (highlight -O ansi -l {} ||              coderay {} ||              rougify {} ||              cat {}) 2> /dev/null | head -500"'
+
 
 
