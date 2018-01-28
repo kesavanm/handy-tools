@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.588
+OPEN_PROFILE_VERSION=1.589
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -316,7 +316,12 @@ function myip() {   # Get IP adress on ethernet.
 
     [[ -z $MYIP2 ]]
 	MYIP2=$(dig +short myip.opendns.com @resolver1.opendns.com)
-    [[ -z $MY_IP ]] && IP="$MYIP2" || IP="$MY_IP"
+
+    [[ -z $MYIP3 ]]
+    MYIP3=$(wget http://ipecho.net/plain -qO-)
+
+    [[ -z $MY_IP ]] &&  IP="$MYIP2" || IP="$MY_IP"
+    [[ -z $MY_IP ]] &&  IP="$MYIP3" || IP="$MY_IP"
     echo ${IP:-"Not connected"}
 }
 function ii() { # Get current host related info.
@@ -889,4 +894,5 @@ cmatrix -s
 alias fz='fzf --preview "[[ $(file --mime {}\) =~ binary ]] &&   echo {} is a binary file || (highlight -O ansi -l {} ||              coderay {} ||              rougify {} ||              cat {}) 2> /dev/null | head -500"'
 
 
-
+zip=$(curl ipinfo.io/$(myip) 2>&1| grep postal |awk '{print $2}'|sed -r 's/"//g')
+curl wttr.in/$zip
