@@ -13,7 +13,7 @@ hardstatus alwayslastline
 hardstatus string "%-w%{= BW}%50>%n %t%{-}%+w%<"
 
 hardstatus string "%{.kG}%-Lw%{.KW}%n%f %t%{-}%+Lw %=%{..G} %H %{..W} %d/%m %C%a "
-hardstatus alwayslastline "%S%{= kw}%{g}[ %{G}%H %{g}] %{Y}pkgs: %{w}%1` %{g}[%=%{ =kw}%{w}%-w%{Y}[%{W}%n-%t%{Y}]%{w}%+w%=%{g}][ %{w}%d-%m %{Y}%c %{g}]"
+hardstatus alwayslastline "%{= kw}%{g}[ %{G}%S %{g}] %{Y}pkgs: %{w}%1` %{g}[%=%{ =kw}%{w}%-w%{Y}[%{W}%n-%t%{Y}]%{w}%+w%=%{g}][ %{w}%Y-%m-%d %{Y}%c:%s %{g}]"
 
 termcapinfo xterm* ti@:te@
 # From Stephen Shirley
