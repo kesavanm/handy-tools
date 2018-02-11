@@ -1,16 +1,13 @@
 <?php
-//tamil
-$song = " ஓடிய நீளந்தன்னை ஓரெட்டு கூறதாக்கி கூறிலே ஒன்று தள்ளி
-          குன்றத்தில் பாதி சேர்த்தால் வருவது கர்ணம் தானே. 
-          ";
-$sample = array(array(5,12),array(10,24),array(6,8),array(4,3), array(8,15), array(24,7),array(9,40));
+echo  " ஓடிய நீளந்தன்னை ஓரெட்டு கூறதாக்கி கூறிலே ஒன்று தள்ளி
+          குன்றத்தில் பாதி சேர்த்தால் வருவது கர்ணம் தானே. \n ";
+$sample = array(array(5,12),array(10,24),array(6,8),array(4,3), 
+                array(9,12),array(8,15),array(24,7),array(9,40));
 $fact = 40;
-
 for($i=0;$i<10;$i++){
          $sample2[] = array(rand(40*$fact,100*$fact),rand(10*$fact,50*$fact));
 }
 
-echo $song; echo "\n" ;
 $mask = "|%8.8s |%8.8s | %16.16s| %15.15s |%-8.8s |\n";
 print_ln();
 printf($mask,'length','height','hypotenuse_tamil','hypotenuse_pythagoras','match%');
