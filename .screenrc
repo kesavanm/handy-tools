@@ -9,11 +9,11 @@ bindkey "^[Oc" next  # change window with ctrl-right
 startup_message off
 
 # Window list at the bottom.
-hardstatus alwayslastline
-hardstatus string "%-w%{= BW}%50>%n %t%{-}%+w%<"
-
-hardstatus string "%{.kG}%-Lw%{.KW}%n%f %t%{-}%+Lw %=%{..G} %H %{..W} %d/%m %C%a "
-hardstatus alwayslastline "%{= kw}%{g}[ %{G}%S %{g}] %{Y}pkgs: %{w}%1` %{g}[%=%{ =kw}%{w}%-w%{Y}[%{W}%n-%t%{Y}]%{w}%+w%=%{g}][ %{w}%Y-%m-%d %{Y}%c:%s %{g}]"
+#hardstatus alwayslastline
+#hardstatus string "%-w%{= BW}%50>%n %t%{-}%+w%<"
+#hardstatus string "%{.kG}%-Lw%{.KW}%n%f %t%{-}%+Lw %=%{..G} %H %{..W} %d/%m %C%a "
+#%Y-%m-%d %{Y}%c:%s	=> 2018-02-07 12:23:12 
+hardstatus alwayslastline "%{= kw}%{g}[ %{G}%S %{g}] %{Y}pkgs: %{w}%1` %{g}[%=%{ =kw}%{w}%-w%{Y}[%{W}%n-%t%{Y}]%{w}%+w%=%{g}][ %{w}%Y-%m-%d %{Y}%C%a %{g}]"
 
 termcapinfo xterm* ti@:te@
 # From Stephen Shirley
@@ -36,3 +36,12 @@ altscreen on
 attrcolor b ".I"
 # tell screen how to set colors. AB = background, AF=foreground
 #termcapinfo xterm-256color 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+mousetrack on
+
+
+#attrcolor b ".I"
+#termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E38;5;%dm'
+#defbce "on"
+#
+#
+term screen-256color
