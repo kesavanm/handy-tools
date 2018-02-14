@@ -43,5 +43,6 @@ mousetrack on
 #termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E38;5;%dm'
 #defbce "on"
 #
-#
+
+#also update the PuTTY 'xterm-256color' for [Terminal-type string] under Data , Connection
 term screen-256color
