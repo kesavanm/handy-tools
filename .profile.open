@@ -73,6 +73,7 @@ function cmatrixbuild()
   cd $HOME
   git clone https://github.com/abishekvashok/cmatrix.git  >cmatrix.log 2>cmatrix.log
   cd cmatrix
+  autoreconf -i  # skip if using released tarball #thanks @manjil
   ./configure --prefix=$HOME --without-fonts >cmatrix.log 2>cmatrix.log 
   make >cmatrix.log 2>cmatrix.log
   make install >cmatrix.log 2>cmatrix.log
