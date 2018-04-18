@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.589
+OPEN_PROFILE_VERSION=1.590
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -586,7 +586,7 @@ function myq(){
 
 function parse_git_branch () {
         BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
-        if [ -z $BRANCH ]; then
+        if [ -z "$BRANCH" ]; then
                 echo "" ;
         else
                 $(git status | grep "nothing to commit" > /dev/null 2>&1;)
