@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.590
+OPEN_PROFILE_VERSION=1.591
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -856,7 +856,8 @@ function f_ps1(){
 
         if [ "$ps1_status" == 'full' ] ; then 
 
-        PS1="$GREEN\u@\h$YELLOW($(myip))|$CYAN\jjobs|\$(/usr/bin/tty|/bin/sed -e 's:/dev/::')|$PURPLE\w|$GREEN\$(/bin/ls -1|/usr/bin/wc -l|/bin/sed 's: ::g')files \$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
+          free=$(df . -aT | tail -1 | awk '{printf $5}')
+          PS1="$GREEN\u@\h$YELLOW($(myip))|$CYAN\jjobs|\$(/usr/bin/tty|/bin/sed -e 's:/dev/::')|$PURPLE\w|$GREEN\$(/bin/ls -1|/usr/bin/wc -l|/bin/sed 's: ::g')files \$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b$PURPLE|$free free|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
         PS1="$BOLD_WHITE[\!]\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n$PS1"
         fi
 
