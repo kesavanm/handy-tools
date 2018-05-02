@@ -2,22 +2,22 @@
 # .profile for kmuthuvel  This is specific to Work
 
 #1 Get the aliases and functions for WORK
-if [ -f ~/bin/.profile.de ]; then
-	source ~/bin/.profile.de
-elif [ -f /home/kmuthuvel/bin/.profile.de ]; then
-        source /home/kmuthuvel/bin/.profile.de
+if [ -f ~/bin/.profile.work ]; then
+	source ~/bin/.profile.work
+elif [ -f /home/kmuthuvel/bin/.profile.work ]; then
+    source /home/kmuthuvel/bin/.profile.work
 fi
 
 #2 Get the aliases and functions from OPEN
 if [ -f ~/bin/.profile.open ]; then
 	source ~/bin/.profile.open
 elif [ -f /home/kmuthuvel/bin/.profile.open ]; then
-        source /home/kmuthuvel/bin/.profile.open
+    source /home/kmuthuvel/bin/.profile.open
 fi
 
 #3 Git Completion
 if [ -f /home/kmuthuvel/bin/.git-completion.bash ]; then
-        source /home/kmuthuvel/bin/.git-completion.bash
+    source /home/kmuthuvel/bin/.git-completion.bash
 fi
 
 #4 fizzy-finder
@@ -35,5 +35,4 @@ alias mrbe="php /home/kmuthuvel/mrbe.php"
 
 source /home/kmuthuvel/x.sh
 
-
-
+export HOUSE="__̴ı̴̴ ̡͌l̡̡ ̡͌l̡*̡̡ ̴̡ı̴̴ ̡̡|̲͡ ̲▫̲͡ ̲͡π̲͡ ̲͡▫̲͡ ̲|̡̡ ̡ ̴̡ı̴̡ ̡͌l̡̡.___"

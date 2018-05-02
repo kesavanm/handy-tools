@@ -668,6 +668,8 @@ echo
 
 }
 
+alias colors256='perl $HOME/bin/colors256.pl'
+
 function get_updated_profile()
 {
         cd $HOME/bin;
@@ -733,6 +735,24 @@ function git-log-branch-who()
         GIT_LOG_BRANCH_WHO="git log --stat --oneline --pretty=format:'%h - %an, %ar :  %s' --walk-reflogs $BRANCH ${WHO_LIST[@]}";
         msg2 -b "${GIT_LOG_BRANCH_WHO}";
         eval $GIT_LOG_BRANCH_WHO ;
+}
+
+
+function git-del(){
+  P="$1"
+  GIT=$(which git)
+
+  if [ $# -ne 1 ] ;then
+          echo "usage : $0 <file/dir> # list on which commit file deleted"
+          exit 0 ;
+  fi
+
+  for cmt in $($GIT log --pretty=%H -- "${P}"); do
+      X=$($GIT ls-tree -r "${cmt}" -- "${P}");
+      [[ -z "${X}" ]] && { echo "The folder/file $1 has been deleted in commit: ${cmt}:";
+          $GIT  show --name-status "${cmt}";
+      }
+  done
 }
 
 
@@ -817,6 +837,20 @@ function qls()
         return 0 ;
 }
 
+function statc(){
+  #echo zero is $0;echo one is $1
+  if [ "$#" != 1 ] ; then
+    echo "usage: $0 /path/to/file.ext";
+    exit 127 ;
+  fi ;
+
+  if [ -d $1 ] ;
+    then echo `ls --color=never -dl $1 && file -b $1`
+    else echo `ls --color=never -hl $1 && file -b $1`
+  fi
+  return 0;
+}
+
 function ps1-stat(){
         if [ "$#" -lt "1" ]; then
                 echo "Usage: $FUNCNAME [short|sweet|normal|full]"
@@ -889,7 +923,7 @@ msg2 -o "You're using OPEN_PROFILE_VERSION : $OPEN_PROFILE_VERSION. run get_upda
 msg2 -w "Your #TODO action(s)"  ;  todo;
 msg2 -g "Try to learn something with 'teachme' today"
 
-cmatrix -s
+/home/kmuthuvel/bin/cmatrix -s
 
 
 #WIP
