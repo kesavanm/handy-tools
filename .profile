@@ -1,7 +1,7 @@
 #!/bin/bash
 # .profile for kmuthuvel  This is specific to Work
 
-HOME_ALT="HOME_ALT"
+HOME_ALT="/home/kmuthuvel"
 
 #1 Get the aliases and functions for WORK
 if [ -f ~/bin/.profile.work ]; then
