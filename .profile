@@ -1,37 +1,39 @@
 #!/bin/bash
 # .profile for kmuthuvel  This is specific to Work
 
+HOME_ALT="HOME_ALT"
+
 #1 Get the aliases and functions for WORK
 if [ -f ~/bin/.profile.work ]; then
 	source ~/bin/.profile.work
-elif [ -f /home/kmuthuvel/bin/.profile.work ]; then
-    source /home/kmuthuvel/bin/.profile.work
+elif [ -f $HOME_ALT/bin/.profile.work ]; then
+    source $HOME_ALT/bin/.profile.work
 fi
 
 #2 Get the aliases and functions from OPEN
 if [ -f ~/bin/.profile.open ]; then
 	source ~/bin/.profile.open
-elif [ -f /home/kmuthuvel/bin/.profile.open ]; then
-    source /home/kmuthuvel/bin/.profile.open
+elif [ -f $HOME_ALT/bin/.profile.open ]; then
+    source $HOME_ALT/bin/.profile.open
 fi
 
 #3 Git Completion
-if [ -f /home/kmuthuvel/bin/.git-completion.bash ]; then
-    source /home/kmuthuvel/bin/.git-completion.bash
+if [ -f $HOME_ALT/bin/.git-completion.bash ]; then
+    source $HOME_ALT/bin/.git-completion.bash
 else
     msg2 -2 "***warning:\`git-completion\` not found***"
 fi
 
 #4 fizzy-finder
-[ -f /home/kmuthuvel/.fzf.bash ] && source /home/kmuthuvel/.fzf.bash || msg2 -w "***warning:\`fzf\` not found***"
-source /home/kmuthuvel/git-heart-fzf/functions.sh
+[ -f $HOME_ALT/.fzf.bash ] && source $HOME_ALT/.fzf.bash || msg2 -w "***warning:\`fzf\` not found***"
+source $HOME_ALT/git-heart-fzf/functions.sh
 
 #5 - misc/rest
-alias   vi="/home/kmuthuvel/bin/vim"
-alias  vim="/home/kmuthuvel/bin/vim"
-alias  mrs="php /home/kmuthuvel/mrs.php"
-alias mrbe="php /home/kmuthuvel/mrbe.php"
+alias   vi="$HOME_ALT/bin/vim"
+alias  vim="$HOME_ALT/bin/vim"
+alias  mrs="php $HOME_ALT/mrs.php"
+alias mrbe="php $HOME_ALT/mrbe.php"
 
-source /home/kmuthuvel/sonar.status
+source $HOME_ALT/sonar.status
 
 export HOUSE="__̴ı̴̴ ̡͌l̡̡ ̡͌l̡*̡̡ ̴̡ı̴̴ ̡̡|̲͡ ̲▫̲͡ ̲͡π̲͡ ̲͡▫̲͡ ̲|̡̡ ̡ ̴̡ı̴̡ ̡͌l̡̡.___"
