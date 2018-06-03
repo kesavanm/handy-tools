@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.597
+OPEN_PROFILE_VERSION=1.598
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -929,7 +929,14 @@ shopt -s nocaseglob # to match case insensitive patterns with ls?
 
 #daily weather report
 zip=$(curl ipinfo.io/$(myip) 2>&1| grep postal |awk '{print $2}'|sed -r 's/"//g')
-curl wttr.in/$zip
+
+# check for US zip
+if [ ${#zip} -eq '5' ] ; then
+  curl wttr.in/$zip
+else
+  city=$(curl ipinfo.io/$(myip) 2>&1| grep city |awk '{print $2}'|sed -r 's/"//g')
+  curl wttr.in/$city
+fi
 
 msg2 -g "Be lazy" ; msg2 -g "Be always double lazy"
 msg2 -o "You're using OPEN_PROFILE_VERSION : $OPEN_PROFILE_VERSION. run get_updated_profile for latest from internet"
