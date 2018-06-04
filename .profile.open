@@ -944,4 +944,5 @@ msg2 -w "Your #TODO action(s)"  ;  todo;
 msg2 -g "Try to learn something with 'teachme' today"
 
 #Get into MATRIX
-/home/kmuthuvel/bin/cmatrix -s
+#/home/kmuthuvel/bin/cmatrix -s
+$(command -v cmatrix)
