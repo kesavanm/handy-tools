@@ -930,6 +930,12 @@ shopt -s nocaseglob # to match case insensitive patterns with ls?
 #daily weather report
 zip=$(curl ipinfo.io/$(myip) 2>&1| grep postal |awk '{print $2}'|sed -r 's/"//g')
 
+# default zip if no zip retrieveable
+if [[ -z "$zip" ]]; then
+  zip=77477
+fi
+
+
 # check for US zip
 if [ ${#zip} -eq '5' ] ; then
   curl wttr.in/$zip
