@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.598
+OPEN_PROFILE_VERSION=1.599
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -81,15 +81,24 @@ function cmatrixbuild()
   #  cmatrix
 }
 
-
-
+function sl_build()
+{
+  cd $HOME
+  git clone https://github.com/Fykec/sl-mac.git > sl.log 2>sl.log
+  cd sl-mac
+  make
+  cp -p sl $HOME/bin && chmod a+x $HOME/bin/sl
+  cd $HOME
+}
 
 if [ -z $(command -v cmatrix) ];  then
         cmatrixbuild
         #else echo cmatrix there 
 fi
 
-
+if [ -z $(command -v sl) ]; then
+  sl_build
+fi
 
 
 alias todo="$HOME/bin/.todo"
@@ -917,7 +926,7 @@ f_ps1 ;
 HISTTIMEFORMAT="%F %T "
 
 #fzf
-alias fzf="/home/kmuthuvel/.fzf/bin/fzf"
+alias fzf="$HOME/.fzf/bin/fzf"
 alias  fz="fzf --preview 'cat {} 2> /dev/null | head -50'"          # Expose binary
 alias  fz='fzf --preview
             "[[ $(file --mime {}\) =~ binary ]] &&  echo {} is a binary file || 
