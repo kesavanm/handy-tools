@@ -1,6 +1,6 @@
 ############################################################################################################
 # auth : hi@kesavan.info
-# updated : 2017-12-20
+# updated : 2018-05-03
 #
 # PLEASE READ THIS STATEMENT 
 # 
@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.595
+OPEN_PROFILE_VERSION=1.599
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -81,15 +81,24 @@ function cmatrixbuild()
   #  cmatrix
 }
 
-
-
+function sl_build()
+{
+  cd $HOME
+  git clone https://github.com/Fykec/sl-mac.git > sl.log 2>sl.log
+  cd sl-mac
+  make
+  cp -p sl $HOME/bin && chmod a+x $HOME/bin/sl
+  cd $HOME
+}
 
 if [ -z $(command -v cmatrix) ];  then
         cmatrixbuild
         #else echo cmatrix there 
 fi
 
-
+if [ -z $(command -v sl) ]; then
+  sl_build
+fi
 
 
 alias todo="$HOME/bin/.todo"
@@ -917,7 +926,7 @@ f_ps1 ;
 HISTTIMEFORMAT="%F %T "
 
 #fzf
-alias fzf="/home/kmuthuvel/.fzf/bin/fzf"
+alias fzf="$HOME/.fzf/bin/fzf"
 alias  fz="fzf --preview 'cat {} 2> /dev/null | head -50'"          # Expose binary
 alias  fz='fzf --preview
             "[[ $(file --mime {}\) =~ binary ]] &&  echo {} is a binary file || 
@@ -929,7 +938,20 @@ shopt -s nocaseglob # to match case insensitive patterns with ls?
 
 #daily weather report
 zip=$(curl ipinfo.io/$(myip) 2>&1| grep postal |awk '{print $2}'|sed -r 's/"//g')
-curl wttr.in/$zip
+
+# default zip if no zip retrieveable
+if [[ -z "$zip" ]]; then
+  zip=77477
+fi
+
+
+# check for US zip
+if [ ${#zip} -eq '5' ] ; then
+  curl wttr.in/$zip
+else
+  city=$(curl ipinfo.io/$(myip) 2>&1| grep city |awk '{print $2}'|sed -r 's/"//g')
+  curl wttr.in/$city
+fi
 
 msg2 -g "Be lazy" ; msg2 -g "Be always double lazy"
 msg2 -o "You're using OPEN_PROFILE_VERSION : $OPEN_PROFILE_VERSION. run get_updated_profile for latest from internet"
@@ -937,4 +959,5 @@ msg2 -w "Your #TODO action(s)"  ;  todo;
 msg2 -g "Try to learn something with 'teachme' today"
 
 #Get into MATRIX
-/home/kmuthuvel/bin/cmatrix -s
+#/home/kmuthuvel/bin/cmatrix -s
+$(command -v cmatrix)
