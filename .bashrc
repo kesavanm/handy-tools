@@ -1,3 +1,2 @@
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-TERM=xterm-256color
+#TERM=xterm-256color

@@ -26,7 +26,7 @@ fi
 
 #4 fizzy-finder
 [ -f $HOME_ALT/.fzf.bash ] && source $HOME_ALT/.fzf.bash || msg2 -w "***warning:\`fzf\` not found***"
-source $HOME_ALT/git-heart-fzf/functions.sh
+[ -f $HOME_ALT/git-heart-fzf/functions.sh ] && source $HOME_ALT/git-heart-fzf/functions.sh || msg2 -w "***warning:\`git-heart-fzf\` not found***"
 
 #5 - misc/rest
 alias   vi="$HOME_ALT/bin/vim"
