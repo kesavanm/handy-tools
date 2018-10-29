@@ -678,7 +678,7 @@ echo
 }
 
 alias colors256='perl $HOME/bin/colors256.pl'
-
+alias shred='shred -uvzn 3'
 function get_updated_profile()
 {
         cd $HOME/bin;
