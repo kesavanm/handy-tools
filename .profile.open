@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.599
+OPEN_PROFILE_VERSION=1.600
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -366,7 +366,17 @@ alias    gl="git log"
 alias    gs="git status --untracked-files=no"
 alias   gls="git log --date=local --pretty=format:\"%h%x09%C(cyan)%an%x09%ad:%Creset %s\""
 alias gwalk="git log --stat --oneline --pretty=format:\"%h - %an, %ar : %s\"  --walk-reflogs"
+alias   gfp="git fetch origin && git pull"
+alias   gld="git log  --date=short --pretty=format:\"%h%x09%C(cyan)%an%x09%ad:%Creset %s\" --all --"
+function gll(){
+  if [ $# -ne 1 ] ; then {
+      echo "Usage: $FUNCNAME deleted-file";
+      return 0;
+  }
+  fi
 
+  gls --all -- **/$1.*
+}
 ##############################################
 #   TOOL (1) datec - Quickly find your age 
 ##############################################
