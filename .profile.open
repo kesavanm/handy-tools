@@ -2,8 +2,8 @@
 # auth : hi@kesavan.info
 # updated : 2018-05-03
 #
-# PLEASE READ THIS STATEMENT 
-# 
+# PLEASE READ THIS STATEMENT
+#
 # 1 - dos2unix .profile.open
 # 2 - to include this this file into your profile , add the following to your existing profile file
 #     .bashrc (recommended)  (or .profile or whatever it is )
@@ -12,7 +12,7 @@
 #           . ~/.profile.open
 #     fi
 #
-# Additional packs you may need : 
+# Additional packs you may need :
 # 1 - .vimrc
 # 2 - .todo  & .todo_list
 #
@@ -20,8 +20,8 @@
 # 1 - https://github.com/kesavanm/handy-tools/  (.profile.open)     [ recommended ]
 # 2 - https://kesavan.info/books.pl ( BASH PROFILE )                [ depreciated ]
 #
-# SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud 
-############################################################################################################ 
+# SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud
+############################################################################################################
 
 # Enable ERR Reporting
 #err_report() { echo "Error on line $1"; }
@@ -54,11 +54,11 @@ function cmd_wget(){
 
 #SETUP LOCAL TODO LIST
 if [ -f $HOME/bin/.todo ]; then
-        touch $HOME/bin/.todo #In-case new to this .profile 
-else 
+        touch $HOME/bin/.todo #In-case new to this .profile
+else
         echo "no todo manager and list; creating new one for you";
         ping -c 1 github.com > /dev/null
-        if [[ $? -eq 0 ]] ; then 
+        if [[ $? -eq 0 ]] ; then
                 cmd_wget ".todo"      ".todo"     ; `$CMD_WGET` ; chmod +x $HOME/bin/.todo;
                 cmd_wget ".todo_list" ".todo_list"; `$CMD_WGET` ; chmod +x $HOME/bin/.todo_list;
         else
@@ -74,7 +74,7 @@ function cmatrixbuild()
   git clone https://github.com/abishekvashok/cmatrix.git  >cmatrix.log 2>cmatrix.log
   cd cmatrix
   autoreconf -i  # skip if using released tarball #thanks @manjil
-  ./configure --prefix=$HOME --without-fonts >cmatrix.log 2>cmatrix.log 
+  ./configure --prefix=$HOME --without-fonts >cmatrix.log 2>cmatrix.log
   make >cmatrix.log 2>cmatrix.log
   make install >cmatrix.log 2>cmatrix.log
   cd $HOME
@@ -93,7 +93,7 @@ function sl_build()
 
 if [ -z $(command -v cmatrix) ];  then
         cmatrixbuild
-        #else echo cmatrix there 
+        #else echo cmatrix there
 fi
 
 if [ -z $(command -v sl) ]; then
@@ -113,7 +113,7 @@ fi
 #list in numeric mode
 lsn(){  ls -l $* | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf("%0o ",k);print}'; }
 
-#Disk Usage 
+#Disk Usage
 LS(){
 if   [ $# -ne 0 ]; then
         for DIR in $*
@@ -127,19 +127,19 @@ fi;
 }
 
 #show ln only
-function lns(){ 
+function lns(){
     ll $*| grep -E '^l';
 }
 #alias lsmod="ls -l | awk '{k=0;s=0;for( i=0; i <= 8; i++ ){k += ( ( substr( $1, i+2, 1 ) ~ /[rwxst]/ ) * 2 ^( 8 - i ) )}j=4;for( i=4; i <= 10; i += 3 ){ s += ( ( substr( $1, i, 1 ) ~ /[stST]/ )*j);j/=2;} if (k){printf( "%0o%0o ",s,k);} print;}'  "
 #alias "lsmod=ls -al|awk '{k=0;s=0;for(i=0;i<=8;i++){;k+=((substr(\$1,i+2,1)~/[rwxst]/)*2^(8-i));};j=4;for(i=4;i<=10;i+=3){;s+=((substr(\$1,i,1)~/[stST]/)*j);j/=2;};if(k){;printf(\"%0o%0o \",s,k);};print;}'"
-function kps(){ 
+function kps(){
     ps -eF|head -1;
 
-        if [ $# -eq 1 ] ; then 
+        if [ $# -eq 1 ] ; then
             ps -eF|grep $1 |grep -v grep;
         else
-                for id in "$@" 
-                do 
+                for id in "$@"
+                do
                    ps -eF|grep "$id" |grep -v grep;
                 done
         fi
@@ -193,7 +193,7 @@ alias lr='ll -R' # Recursive ls.
 alias la='ll -A' # Show hidden files.
 alias tree='tree -Csuh' # Nice alternative to 'recursive ls' ...
 
-#php syntax error 
+#php syntax error
 alias phpk="php -d display_errors=1 -d error_reporting=E_ALL -l"
 alias phpx="php -d xdebug.profiler_output_dir=$HOME/profile -d xdebug.profiler_enable=On"
 
@@ -204,7 +204,7 @@ alias phpx="php -d xdebug.profiler_output_dir=$HOME/profile -d xdebug.profiler_e
 function ff() { find . -type f -iname '*'"$*"'*' -ls ; }
 # Find a file with pattern $1 in name and Execute $2 on it:
 function fe() { find . -type f -iname '*'"${1:-}"'*' \
-    -exec ${2:-file} {} \; ; 
+    -exec ${2:-file} {} \; ;
 }
 # Find a pattern in a set of files and highlight them:
 # (needs a recent version of egrep).
@@ -349,8 +349,8 @@ function ii() { # Get current host related info.
 }
 
 mydiff(){
-    if [ $# -ne 2 ] ; then { 
-        echo "Usage: $FUNCNAME <old-file> <new-file>"; 
+    if [ $# -ne 2 ] ; then {
+        echo "Usage: $FUNCNAME <old-file> <new-file>";
         return 0;
     }
     fi
@@ -378,7 +378,7 @@ function gll(){
   gls --all -- **/$1.*
 }
 ##############################################
-#   TOOL (1) datec - Quickly find your age 
+#   TOOL (1) datec - Quickly find your age
 ##############################################
 
 datec(){
@@ -387,7 +387,7 @@ datec(){
 #mysql> show create function kesavan.getDateDifferenceString \G
 #*************************** 1. row ***************************
 #           Function: getDateDifferenceString
-#            sql_mode: 
+#            sql_mode:
 #     Create Function: CREATE DEFINER=`root`@`localhost` FUNCTION `getDateDifferenceString`(date1 DATE, date2 DATE) RETURNS varchar(30) CHARSET latin1
 #RETURN CONCAT(    @years := TIMESTAMPDIFF(YEAR, date1, date2),  IF (@years = 1, ' year, ', ' years, '),    @months := TIMESTAMPDIFF(MONTH, DATE_ADD(date1, INTERVAL @years YEAR), date2),  IF (@months = 1, ' month, ', ' months, '),    @days := TIMESTAMPDIFF(DAY, DATE_ADD(date1, INTERVAL @years * 12 + @months MONTH), date2),  IF (@days = 1, ' day', ' days')  )
 #character_set_client: latin1
@@ -397,7 +397,7 @@ datec(){
 
 
 ##################################################
-#   TOOL (2) software - List of software packs   
+#   TOOL (2) software - List of software packs
 ##################################################
 
 software() { if [ $# -ne 1 ] ; then { echo "Usage: software <pack>"; }
@@ -406,17 +406,17 @@ software() { if [ $# -ne 1 ] ; then { echo "Usage: software <pack>"; }
 #alias software="dpkg -l *$1* "
 
 #################################################################
-#   TOOL (3) cleanit - Remove unwanted logs & free more space   
+#   TOOL (3) cleanit - Remove unwanted logs & free more space
 #################################################################
 
-cleanit() { 
-if [ $# -ne 0 ] ; then { echo  "Usage: $1" ;  } 
-else {  DIR='/var/log' ; 
+cleanit() {
+if [ $# -ne 0 ] ; then { echo  "Usage: $1" ;  }
+else {  DIR='/var/log' ;
     find $DIR -maxdepth 1 -type f -size +1M -exec ls -lhS {} \; | awk '{ print $5,"",$9 }'|sort -nr | head -10
     echo -n "Clean top 5? [y|n]:" ;
     read -n 1 choice
-    echo 
-    if [ $choice == "y" ] ; then { 
+    echo
+    if [ $choice == "y" ] ; then {
         echo -n Cleaning system...
         find $DIR -maxdepth 1 -type f -size +1M -exec ls -lhS {} \; | awk '{ print $9 }'|sort -nr | head -5|xargs rm -f
         echo System cleaned status!
@@ -448,9 +448,9 @@ yt2(){
         if [ $FX != '' ] ; then {
                 echo /proc/$FX/fd/;
                 ll /proc/$FX/fd/|grep media_cache
-        }   
-        else echo 'No running firefox';return 0;  
-        fi; 
+        }
+        else echo 'No running firefox';return 0;
+        fi;
 
 }
 
@@ -484,7 +484,7 @@ function msg(){
     # $2 - format  {greet ,warning, okay/good/positive , no/bad/negative,ul}
     # $3 - extra , passed to echo as it is
     # colors -  0Black,1Red,2Green,3yellow?,4Violet,5Pink,6Magenta,7grey
-    
+
     B=`tput bold`   #BOLD
     D=`tput dim`    #DIM
     U=`tput sgr 0 1` #UNDERLINE
@@ -501,7 +501,7 @@ function msg(){
         good|okay   ) i=2; c=`$C$i` && echo $3 $c${B}$1$X;;
         bold        )   c=`$C`  && echo $3 ${B}$1$X;;
         ul      )   c=`$C`  && echo $3 ${U}$1$X;;
-        ulbold      ) i=2; c=`$C$i` && echo $3 $c${U2}$1$X;;    
+        ulbold      ) i=2; c=`$C$i` && echo $3 $c${U2}$1$X;;
         normal      ) i=2; c=`$C$i` && echo $3 $c$1$X;;
     esac
 }
@@ -631,15 +631,15 @@ function git_branch(){
 }
 
 function git_branch_status(){
-        ORIG=`git branch|grep \* | sed -e 's/\* //g'` ; 
-        for i in `git branch|sed -e 's/\* //g' -e 's/ //g'` ; 
-        do git checkout $i 1> /tmp/$USER_git_warings.log; 
-                if [ /tmp/$USER_git_warings.log ] ; then 
+        ORIG=`git branch|grep \* | sed -e 's/\* //g'` ;
+        for i in `git branch|sed -e 's/\* //g' -e 's/ //g'` ;
+        do git checkout $i 1> /tmp/$USER_git_warings.log;
+                if [ /tmp/$USER_git_warings.log ] ; then
                         if [ `grep up-to-date /tmp/$USER_git_warings.log  |wc -l` -eq 0 ] ; then ST='-w' ;  else ST='-g' ; fi ;
-                                cat /tmp/$USER_git_warings.log | msg2 $ST  ; 
+                                cat /tmp/$USER_git_warings.log | msg2 $ST  ;
                 rm -f /tmp/$USER_git_warings.log; fi ;
-                git diff --stat --cached origin/$i ; 
-        done ; 
+                git diff --stat --cached origin/$i ;
+        done ;
         git checkout $ORIG ;
 }
 
@@ -650,7 +650,7 @@ function git_branch_status2(){
                 if [ `grep up-to-date /tmp/$USER_git_warings.log  |wc -l` -eq 0 ]; then ST='-w'; else ST='-g'; fi;
                 GIT_DIFF="git diff --stat --cached origin/$i"
                 if [ `$GIT_DIFF  |wc -l` -gt 10 ] ; then
-                        msg2 -l "there are `$GIT_DIFF  |wc -l` changes on $i branch"; 
+                        msg2 -l "there are `$GIT_DIFF  |wc -l` changes on $i branch";
                         $GIT_DIFF  | head -10 ;
                 fi
                 $GIT_DIFF 1>/dev/null 2>> /tmp/$USER_git_warings.log;
@@ -701,15 +701,15 @@ function get_updated_profile()
 
         new_version=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today`
 
-        if [[ $? -ne 0 ]] ; then new_version=0.0 ;              # no version history , so start fresh 
+        if [[ $? -ne 0 ]] ; then new_version=0.0 ;              # no version history , so start fresh
         else
                 INX=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today | head -1 | awk  '{printf("%s",$1)}'`
                 new_version=`echo $INX | tr = \ | awk '{printf $2}'`
-        fi   
+        fi
 
         latest_avail=`bc <<< "$new_version>$OPEN_PROFILE_VERSION"`
 
-        echo new_version : $new_version  
+        echo new_version : $new_version
         echo curr_version: $OPEN_PROFILE_VERSION
         echo latest_avail: $latest_avail
 
@@ -721,11 +721,11 @@ function get_updated_profile()
                 if [ $choice == "y" ] ; then {
                         echo updating the profile
                         mv .profile.open .profile.open.bkup.`date +%Y%m%d`
-                        mv new.profile.open.$today .profile.open ; chmod a+x .profile.open 
+                        mv new.profile.open.$today .profile.open ; chmod a+x .profile.open
                         echo "OPEN_PROFILE updated to OPEN_PROFILE_VERSION:$new_version"
                         echo "your old profile backuped at .profile.open.bkup.`date +%Y%m%d`"
                         echo "save your work,logout & login for update"
-                        . ~/bin/.profile.open  
+                        . ~/bin/.profile.open
                 }
                 else
                         echo "Okay.You've some urgent work.Will update later"
@@ -796,7 +796,7 @@ function qls()
 
     echo "Value of NUMM is $NUMM "
 
-        # Can be used in indexer v2 ? 
+        # Can be used in indexer v2 ?
         if [ -z $1 ] ; then QLS_DIR='.'; else QLS_DIR="$1"; fi
 
        # if [ -z "$RECPARAM"  ] ; then echo -n "listing recursive ";NUMM=$(( $NUMM + 2 )) ;  else echo -n "listing locally  " ; fi
@@ -836,11 +836,11 @@ function qls()
 
 #       for i in ${LIST[@]} ;
         for i in ${LIST_R[@]} ;
-        do 
+        do
 #                echo "running for $i \n "
-                if [ -d $i ] ; then 
-                        echo `ls --color=never -dl $i && file -b $i`; 
-                else 
+                if [ -d $i ] ; then
+                        echo `ls --color=never -dl $i && file -b $i`;
+                else
                         echo `ls --color=never -hl $i && file -b $i`;
                 fi;
         done
@@ -867,6 +867,17 @@ function statc(){
     then echo `ls --color=never -dl $1 && file -b $1`
     else echo `ls --color=never -hl $1 && file -b $1`
   fi
+  return 0;
+}
+
+function battery(){
+  #for old kernel
+  #upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state|to\ full|percentage"
+  #current status & percentage
+  echo $(cat /sys/class/power_supply/BAT0/status) :  $(echo "scale=2;
+    $(cat /sys/class/power_supply/BAT0/charge_now)*100/$(cat /sys/class/power_supply/BAT0/charge_full)"| bc)%
+  upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E --color=no "to\ full"
+  echo
   return 0;
 }
 
@@ -904,30 +915,30 @@ function f_ps1(){
                 export ps1_status='normal';
         fi
 
-       # [short|sweet|normal|full|auto] 
+       # [short|sweet|normal|full|auto]
         success="\342\234\223 success ^_^"; fail="\342\234\227 failed O_O" # tick marks showing last operation status
 
-        if [ "$ps1_status" == 'full' ] ; then 
+        if [ "$ps1_status" == 'full' ] ; then
 
           free=$(df . -aT | tail -1 | awk '{printf $5}')
           PS1="$GREEN\u@\h$YELLOW($(myip))|$CYAN\jjobs|\$(/usr/bin/tty|/bin/sed -e 's:/dev/::')|$PURPLE\w|$GREEN\$(/bin/ls -1|/usr/bin/wc -l|/bin/sed 's: ::g')files \$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b$PURPLE|$free free|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
         PS1="$BOLD_WHITE[\!]\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n$PS1"
         fi
 
-        if [ "$ps1_status" == 'normal' ] ; then 
+        if [ "$ps1_status" == 'normal' ] ; then
 
         PS1="$GREEN\u@\h$YELLOW($(myip))|$GREEN\w$PURPLE|\D{%F %T}$RED\$(parse_git_branch)$NO_COLOUR\n\$"
         PS1="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n$PS1"
 #       PS1='$(printf "%*s\r%s" $(( COLUMNS-1 )) "[$(git branch 2>/dev/null | grep '^*' | sed s/..//)] $(date +%H:%M:%S)" "$GREEN\u@\h$YELLOW($(myip))|$GREEN\w")'
         fi
 
-        if [ "$ps1_status" == 'sweet' ] ; then 
+        if [ "$ps1_status" == 'sweet' ] ; then
 
         PS1="$GREEN\u@\h$YELLOW($(myip))|$GREEN\w$RED\$(parse_git_branch)$NO_COLOUR\n\$"
         PS1="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR __________________________________________\n$PS1"
         fi
 
-        if [ "$ps1_status" == 'short' ] ; then 
+        if [ "$ps1_status" == 'short' ] ; then
         PS1="$BOLD_WHITE\$?$GREEN\u@\h|$YELLOW\w$NO_COLOUR\$"
         fi
 }
@@ -939,8 +950,8 @@ HISTTIMEFORMAT="%F %T "
 alias fzf="$HOME/.fzf/bin/fzf"
 alias  fz="fzf --preview 'cat {} 2> /dev/null | head -50'"          # Expose binary
 alias  fz='fzf --preview
-            "[[ $(file --mime {}\) =~ binary ]] &&  echo {} is a binary file || 
-            (highlight -O ansi -l {} || coderay {} || rougify {} ||  cat {}) 2> /dev/null | 
+            "[[ $(file --mime {}\) =~ binary ]] &&  echo {} is a binary file ||
+            (highlight -O ansi -l {} || coderay {} || rougify {} ||  cat {}) 2> /dev/null |
             head -500"'
 alias fz2="fzf --height 40% --reverse --preview 'file {}' --preview-window down:1"
 
