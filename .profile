@@ -2,6 +2,7 @@
 # .profile for kmuthuvel  This is specific to Work
 
 HOME_ALT="/home/kmuthuvel"
+HANDY="$HOME/handy-tools"
 
 #1 Get the aliases and functions for WORK
 if [ -f ~/bin/.profile.work ]; then
@@ -18,15 +19,15 @@ elif [ -f $HOME_ALT/bin/.profile.open ]; then
 fi
 
 #3 Git Completion
-if [ -f $HOME_ALT/bin/.git-completion.bash ]; then
-    source $HOME_ALT/bin/.git-completion.bash
+if [ -f $HANDY/bin/.git-completion.bash ]; then
+    source $HANDY/bin/.git-completion.bash
 else
     msg2 -2 "***warning:\`git-completion\` not found***"
 fi
 
 #4 fizzy-finder
 [ -f $HOME_ALT/.fzf.bash ] && source $HOME_ALT/.fzf.bash || msg2 -w "***warning:\`fzf\` not found***"
-[ -f $HOME_ALT/git-heart-fzf/functions.sh ] && source $HOME_ALT/git-heart-fzf/functions.sh || msg2 -w "***warning:\`git-heart-fzf\` not found***"
+[ -f $HANDY/git-heart-fzf/functions.sh ] && source $HANDY/git-heart-fzf/functions.sh || msg2 -w "***warning:\`git-heart-fzf\` not found***"
 
 #5 - misc/rest
 alias   vi="$HOME_ALT/bin/vim"
