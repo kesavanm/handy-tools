@@ -469,10 +469,13 @@ function cleandebs(){
         read -n 1 choice
         echo
         if [ $choice == "y" ] ; then {
-                sudo aptitude clean;
-                sudo aptitude install localepurge
+                #sudo aptitude clean;
+                sudo apt-get clean
+                #sudo aptitude install localepurge
                 sudo apt-get install deborphan
-                sudo deborphan | xargs sudo apt-get -y remove –purge
+                #sudo deborphan | xargs sudo apt-get -y remove –purge
+                sudo deborphan | xargs sudo apt-get -y purge
+                sudo apt autoremove
         }
         else echo "Debian orphan files not cleaned";
         fi
@@ -874,10 +877,9 @@ function battery(){
   #for old kernel
   #upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state|to\ full|percentage"
   #current status & percentage
-  echo $(cat /sys/class/power_supply/BAT0/status) :  $(echo "scale=2;
+  echo -n $(cat /sys/class/power_supply/BAT0/status) :  $(echo "scale=2;
     $(cat /sys/class/power_supply/BAT0/charge_now)*100/$(cat /sys/class/power_supply/BAT0/charge_full)"| bc)%
-  upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E --color=no "to\ full"
-  echo
+  echo  $(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E --color=no "to\ full")
   return 0;
 }
 
