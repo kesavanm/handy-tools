@@ -1,7 +1,7 @@
 #!/bin/bash
 # .profile for kmuthuvel  This is specific to Work
 
-HOME_ALT="/home/kmuthuvel"
+HOME_ALT="$HOME"
 HANDY="$HOME/handy-tools"
 
 #1 Get the aliases and functions for WORK
