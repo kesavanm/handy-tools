@@ -1,65 +1,134 @@
 ##############################################################################
 # auth : hi@kesavan.info
-# date : 2015-03-19
-# 
+# date : 2016-06-22
+#
 # Updated version always avail at
+# 0 - curl -o quick-commands https://kesavan.info/files/quick-commands-web-dev.txt
 # 1 - https://github.com/kesavanm/handy-tools/ 	(quick-commands)	and/or
 # 2 - https://kesavan.info/books.pl ( quick-commands-web-dev.txt )
 #
-# SELFNOTE - Keep this sync with Work & GitHub & ownCloud 
+# SELFNOTE - Keep this sync with Work & GitHub & ownCloud
 ##############################################################################
 
 VI(M)
-	The following commands could be entered to display the information shown. 
+	The following commands could be entered to display the information shown.
 	=========================================================================
-	:echo @%  def/my.txt	directory/name of file  
-	:echo expand('%:t')	my.txt  name of file ('tail')  
-	:echo expand('%:p')	/abc/def/my.txt  full path  
-	:echo expand('%:p:h')	/abc/def  directory containing file ('head')  
-	
+	:echo @%  def/my.txt	directory/name of file
+	:echo expand('%:t')	my.txt  name of file ('tail')
+	:echo expand('%:p')	/abc/def/my.txt  full path
+	:echo expand('%:p:h')	/abc/def  directory containing file ('head')
+
 	:set hlsearch
-	
+	:set incsearch	#perform incremental searches as you type
+	:set smartcase
+
 	:hi! link Comment Comment 	# Hide the commands
 	:hi! link Comment Ignore 	# Show the comments
-	
-	:setlocal noautoindent nocindent nosmartindent indentexpr= nonu
+
+	:setlocal noautoindent nocindent nosmartindent indentexpr= nonu			(:set autoindent)
 	:setlocal nocindent
 	:setlocal nosmartindent
 	:setlocal indentexpr=
 
-	:diffoff & :diffthis		# Turn Off/On Colors during Diff
+	:diffoff & :diffthis					# Turn Off/On Colors during Diff
 	:diffupdate
-	
-	:set tabstop=4 shiftwidth=4 expandtab	# Tab to 4 WHITESPACE 
+
+	:set tabstop=4 shiftwidth=4 expandtab	# Tab to 4 WHITESPACE
 	:retab
 
-	:set syntax=whitespace			#show spaces
-	:set listchars=tab:▸\ ,eol:¬		#show tabs,eol
+	:set tabstop=4 noexpandtab				# 4 WHITESPACE  to  Tab
+	:%retab!
 
-	
+	:set syntax=whitespace					#show spaces
+	:set listchars=tab:▸\ ,eol:¬			#show tabs,eol
+
 	:set ts=4
 	:set et
-	:659,723retab!								#tabs to 4spaces from 659 to 723 lines
+	:659,723retab!							#tabs to 4spaces from 659 to 723 lines
+
 	
-BASH	
+	:so %	" :source (current file name) or :so $MYVIMRC(currently active .vimrc)
+
+
+	vimdiff commands
+
+	]c :        - next difference
+	[c :        - previous difference
+	do          - diff obtain
+	dp          - diff put
+	zo          - open folded text
+	zc          - close folded text
+	:diffupdate - re-scan the files for differences
+
+	syntax off
+	set nohlsearch
+	set t_Co=0 # 7/8 colors ,
+
+
+	C-W C-W 						#lets you toggle between the diff columns
+	:set diffopt+=iwhite			#To avoid whitespace comparison
+	CTRL+W twice 					#lets you toggle between the diff columns
+	ctrl-w l ctrl-w h 				#vim philosipy h-left , l-right
+
+
+	Vim-as-IDE
+	==========
+	ctags -R --languages=php .		# Make a tags file
+	ctags -R --links=no --languages=php --exclude=*.html,*.js,*.css .
+	:set tags=$project/tags			# Set that in .vimrc
+	Ctrl+]	-	Goto Definition		# Play around
+	Ctrl+t	-	Back to Code
+	
+	autocmd setlocal tags=/path/to/your/global/c/tags,./tags;/,tags;/
+
+	:set foldmethod=indent
+	:set foldlevel=2	# 9 - off ; 0 - class level ; 1,2,3 ...
+
+	vertical-edit
+	=============
+    ctrl+shift+v (or ctrl+v)	# select the column
+		r to replace highlighted text, 
+		d to delete, 
+		c to change... etc.     
+		shift+i to insert text at the beginning of the column, 
+		shift+a to append text 
+    ESC 						#when done. !!!DONT FORGET ME!!!
+
+	explorer
+	========
+	:e ~/path/to/file - Opens the file as a buffer. 
+
+	:sp ~/path/to/file - Opens the file in a new (Window) view port.
+	:Bclose - Close the particular buffer. :q should be avoided unless need.
+	:tabe ~/path/to/file - Opens for edit in a tab. Use :tabclose once done.
+	:Sex ~ or :Sexplore - Opens a quick (split) explorer of the argument (Home dir ~   in this case)
+	:Tex & :Vex - Native vim options beside :Sex
+	
+mc	# midnight commander
+
+	C-o		# switch to shell <> shell
+	A-s		# search pattern, the cursor will jump to the matches sequentially
+	C-\		# directory hotlist
+	
+BASH
 
 	Find files (man find ; or link http://en.wikipedia.org/wiki/Find)
 	=================================================================
 	find /home/tmpdir -type f -name "*string*" 	-print	# f-file d-dir l-link	-iname “*.pl”
 	find ~ -name \*.c -print		#Instead of doing things this way, you should enclose the pattern in quotes or escape the wildcard
 
-	# Expressions &  RANGES 
+	# Expressions &  RANGES
 	# xtime 	# x in  - data (m)odified ; data+inode+permission (c)hanges ; file read-only (a)ccess
 	# -n - less than n days (RECENT CHANGES)
 	# +n - more than n days (OLDER CHANGES)
 	#  n - exactly n days
-	# 
+	#
     # ( expr ) Force precedence.
     # ! expr True if expr is false.
     # expr1 expr2 And (implied); expr2 is not evaluated if expr1 is false.
     # expr1 -a expr2 Same as expr1 expr2.
     # expr1 -o expr2 Or; expr2 is not evaluated if expr1 is true.
-	#      
+	#
 
 	find . -ctime n															# File's status was last changed n*24 hours ago
 																			# (data+inode+permission changes )
@@ -67,52 +136,69 @@ BASH
 																			# finds files changed in the last week
 	find . -mtime -7 -type f												# file's data modified less than 7 days	ago
 	find www/code/ -mtime 8 -mtime -10 -iname "*.pl" 						# perl files modified less than 10 days & more than 8 days ago
-																			# ie , modified between 8-10 days 
+																			# ie , modified between 8-10 days
 	find ~ -type f -name test.txt -newermt 2014-11-04 ! -newermt 2014-11-04	# files modified between dates
-	
+
 	find  . -type f -name '*.php' -mmin -60									# php files modified in last one hour
 
 
 
-	#find with REGEX - Read more if need : -regextype posix-extended	
-	find ~ ! -regex '.*/\..*'  -type f										# REGEX to filter non-hidden files/directories/links	
+	#find with REGEX - Read more if need : -regextype posix-extended
+	find ~ ! -regex '.*/\..*'  -type f										# REGEX to filter non-hidden files/directories/links
 	find ~ -regex '^(?!\.)(.*)todo.*' -type f								# REGEX to filter *todo* files/directories/links
 	find ~ -type f ! -regex '.*/\..*' -a -regex '.*todo.*'					# REGEX to filter non-hidden *todo* files
 	find ~ -type f  \( -regex '.*/\..*' \) -regex '.*todo.*'				# REGEX to filter hidden *todo* files
-	
+
 	Find & Grep		# list files with patterns
 	===========================================
 	# Combining find & grep is strongly depreciated ; Just for learning. Go with GNU grep (below)
-	find . -name "*.php" 	  -exec grep -H "some_string" {} \;	
+	find . -name "*.php" 	  -exec grep -H "some_string" {} \;
 	find / -iname "*checkin*" -exec grep 'Confirm Password' {} \;
-	
+
 	find . -type f -exec grep -H PATTERN '{}' \;  2>/dev/null	#NO SYMB LINK FOLLOW
+	
+	
+	find  . -name '*php'   -exec grep -ilHn --color=always pattern {} \; -exec grep -n pattern {} \;
 
 	Grep files with a particular string in the file name
 	====================================================
 	grep -rH "string" www/code/				# -r recursive
 	grep -ir  -E 'get|wcl' sample.php|tail	# -i case-insensitive
 	grep -H ERROR  www/log					# -H force to print --with-filename; default nature
-	
+
 
 	grep -C3 error  www/log					# -Cn prints n lines before & after the matching lines
 											# -(A)bove (B)elow (C)ombined
 
+	grep -ir --include \*.php pattern  ./*	# only particular file type , recursive
+	
+	
+	grep-with-regex
+	===============
+	ifconfig  | grep -E  'inet\W' |awk -F ":" '{print $2}' |awk  '{ print "\033[1;34m" $1 "\033[0m" }'
+	
+
 	#Numbering the occurance
 	perl -ne 'print ++$a." $_" if /pattern/' file.ext
-	
+
 	#recursive statistics on file types in directory
 	================================================
 	find . -type f | sed 's/.*\.//' | sort | uniq -c
 	   16 avi
 	   29 jpg
 	  136 mp3
-	    3 mp4
+		3 mp4
 
-	Xargs 
+	#fzf - quick find/search for a file	
+	updatedb --require-visibility 0 -o ~/.locate.db		#indexing locally
+	locate
+	
+	Xargs
 	=====
-	# list files of date & remove them 
-	ll /tmp/*wsdl-bou*|grep 'Jul 24'|awk '{print $9}'|xargs rm 
+	
+	ll /tmp/*wsdl-bou*|grep 'Jul 24'|awk '{print $9}'|xargs rm		# list files of date & remove them
+	ls -a | grep \~ | xargs mv -t tmp+bak+tilde						# list files with ~ & move them
+
 
 	Search for a file for all users with matching pattern:
 	======================================================
@@ -151,19 +237,19 @@ BASH
 
 	SED / AWk
 	=========
-	sed -n -e 's/.*<name>\(.*\)<\/name>.*/\1/p'  persons.txt 	#kesavan 
-	
-	Mount Disk list	
+	sed -n -e 's/.*<name>\(.*\)<\/name>.*/\1/p'  persons.txt 	#kesavan
+
+	Mount Disk list
 	===============
 	sudo lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT,LABEL
 	sudo fdisk -l
 	sudo cat /etc/fstab		# Currently mounted items
 	sudo ls /dev
-	
+
 	kmuthuvel@localhost:atlas:~$ for user in bsatishraj ktoufique kthokala rkema gkasim snagotu vgunnam pdurgaprakash  ; do echo $user `grep km_db /data/$user/code/core/config/env_db.php|wc -l`;   done;
 
-	$ export PS1="\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\$"	#lovely PROMPT1
-	
+	$ export PS1="\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\$"
+
 	#TODO
 	ps -elF|head -1;ps -elF| grep listen_for_events_pa
 	ps -elf|head -1;ps -elf| grep listen_for_events_pa
@@ -173,88 +259,122 @@ BASH
 
 	htop
 	
+	echo -ne $(cat color-coded-file.txt | sed  's/$/\\n/' | sed 's/ /\\a /g')	#read your files with colors
+
+	shopt -s -o ignoreeof	#prevent accidental logout
+	
 	Disk Usage
 	==========
-		du -sch * 2>/dev/null				# disk usage by every file/directory 
-		du -sch * 2>/dev/null |tail -1		# disk usage by current directory 	
-		du -sch * 2>/dev/null |sort -hr		# disk usage , sort by size 
-		du -sh * | sort -hr |head -10		# disk usage , top 10 
+		du -sch * 2>/dev/null				# disk usage by every file/directory
+		du -sch * 2>/dev/null |tail -1		# disk usage by current directory
+		du -sch * 2>/dev/null |sort -hr		# disk usage , sort by size
+		du -sh * | sort -hr |head -10		# disk usage , top 10
 
 	Permissions:
 	============
-	Permissions take a different meaning for directories. 
+	Permissions take a different meaning for directories.
 		read 	- determines if a user can view the directory's contents, i.e. do ls in it.
 		write 	- determines if a user can create new files or delete file in the directory. (Note here that this essentially means that a user with write access toa directory can delete files in the directory even if he/she doesn't have write permissions for the file! So be careful with this.)
 		execute	- determines if the user can cd into the directory.
-		
-		
+
+
 	DIFF
-		diff --old-group-format=$'\e[0;31m%<\e[0m'      --new-group-format=$'\e[0;33m%>\e[0m'      --unchanged-group-format=$'\e[0;32m%=\e[0m' /home/tmpdir/migrating_active_collections_report.php code/core/goodyear/scripts/migrating_active_collections_report.php	
-		
-		diff --old-group-format=$'\e[0;31m%<\e[0m'      --new-group-format=$'\e[0;32m%>\e[0m'      --unchanged-group-format=$'\e[0;32m%=\e[0m' /home/tmpdir/migrating_active_collections_report.php code/core/goodyear/scripts/migrating_active_collections_report.php			
-		
-		diff --old-group-format=$'\e[0;31m%<\e[0m'      --new-group-format=$'\e[0;32m%>\e[0m'       /home/tmpdir/migrating_active_collections_report.php code/core/goodyear/scripts/migrating_active_collections_report.php	
+		diff --old-group-format=$'\e[0;31m%<\e[0m'      --new-group-format=$'\e[0;33m%>\e[0m'      --unchanged-group-format=$'\e[0;32m%=\e[0m' /home/tmpdir/migrating_active_collections_report.php code/core/goodyear/scripts/migrating_active_collections_report.php
+
+		diff --old-group-format=$'\e[0;31m%<\e[0m'      --new-group-format=$'\e[0;32m%>\e[0m'      --unchanged-group-format=$'\e[0;32m%=\e[0m' /home/tmpdir/migrating_active_collections_report.php code/core/goodyear/scripts/migrating_active_collections_report.php
+
+		diff --old-group-format=$'\e[0;31m%<\e[0m'      --new-group-format=$'\e[0;32m%>\e[0m'       /home/tmpdir/migrating_active_collections_report.php code/core/goodyear/scripts/migrating_active_collections_report.php
 	MYDIFF
 			diff --new-line-format="%dn%L"  --old-line-format="%dn%L"  --unchanged-group-format="" --old-group-format=$'\e[0;31m%<\e[0m'      --new-group-format=$'\e[0;32m%>\e[0m'       /home/tmpdir/migrating_active_collections_report.php code/core/goodyear/scripts/migrating_active_collections_report.php
 
+	CRONJOBS
+		crontab -l >.crontab ;vi .crontab ; sleep 2 && crontab .crontab		# Current cronjobs , saved locally
+		alias crontab="vi ~/.crontab"										# Edit cron jobs directly
+
+		# Refer : http://unix.stackexchange.com/questions/136350/recover-cron-jobs-accidently-removed-with-crontab-r
+		/var/spool/cron/crontabs/*					#	Backup this regularly
+
+	BASH ERROR REPORTING
+		err_report() { echo "Error on line $1"; }
+		trap 'err_report $LINENO' ERR
+
+	WORKING WITH FILES STARTS WITH CHAR '-'
+		ls ./-sample-idotic-file
+
+	Check who configured what:
+	==========================
+	for user in `/bin/ls /data/`; do for envdb in `find /data/$user -maxdepth 5 -type f -name 'env_db.php'` ; do grep -E 'DB_DATABASE|DB_SLAVE_DATABASE|DB_WEATHER_DATABASE' $envdb|grep 'define(' |awk {'print $2 '}|sort|uniq |xargs echo -e "$user - $envdb \t\t -" ; done; done
 	
-IRC 
+	TEE
+	===	
+	((main_job|tee /dev/fd/5|job_1 >/dev/fd/4)5>&1|job_2)4>&1
+	((main_job|tee /dev/fd/5|(job_2 >/dev/fd/4))5>&1|job_1)4>&1
+	(( ps -ef | tee /dev/fd/5 |grep wow >/dev/fd/4 ) 5>&1 | grep cmprod)4>&1
+
+
+IRC
 			/msg nickserv identify kesavan <your-passcode>
-		
+
 MySQL
 	-- PROCESSLIST
-	SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE Command='Query' AND `INFO` LIKE 'SELECT %'; ORDER BY STATE ;
-	
+	SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE Command='Query' AND `INFO` LIKE 'SELECT %' ORDER BY STATE ;
+
 	-- Pager  MySQL > PAGER(STDOUT)	> STDOUT
-	\P 		grep -v Sleep						-- (\P === pager)	-- MySQL > PAGER(grep) > STDOUT	
-	pager 	grep -v Sleep | more; 
+	\P 		grep -v Sleep						-- (\P === pager)	-- MySQL > PAGER(grep) > STDOUT
+	pager 	grep -v Sleep | more;
 		SHOW FULL PROCESSLIST; -- OR whatever SQL
 	\P											-- Default pager wasn't set, using stdout. '
-	
-	-- More on Pager 
+
+	-- More on Pager
 	mysql> pager less  /** http://www.percona.com/blog/2008/06/23/neat-tricks-for-the-mysql-command-line-pager/ **/
 
 	-- Find Column & Tables
-	SELECT DISTINCT TABLE_SCHEMA,TABLE_NAME,COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
-	WHERE 
-	COLUMN_NAME 	LIKE '%order%' 		AND 
+	SELECT DISTINCT TABLE_SCHEMA,TABLE_NAME,COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+	WHERE
+	COLUMN_NAME 	LIKE '%order%' 		AND
 	TABLE_NAME 		LIKE '%867%' 		AND
-	TABLE_SCHEMA 	IN (SELECT DATABASE()); 
+	TABLE_SCHEMA 	IN (SELECT DATABASE());
 
 	SELECT DISTINCT TABLE_SCHEMA,TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%kesavan%' ;
+
+	-- METADATA
+	-- select table_schema,table_name,create_time  from information_schema.tables where table_schema like  'kmuthuvel5' limit 5 ;
 
 	--REGEXP
 	SELECT id,book_name FROM books WHERE Order_Status REGEXP 'Time|Relativity|Gravity';
 
+	--STRING
+	mysql> select customer_id,substring_index(substring_index(xml_log,'<line_of_business>',-1),'</line_of_business>',1) lob
+    -> from kmuthuvel.orders_xml where order_id = 12345;
+
 	-- Copy Table
 	CREATE TABLE km_dup.table1 SELECT * FROM km_orig.table1
 
-	-- SQL to fetch latest from same table V1 
-	SELECT * FROM (SELECT id,customer_id,note,date_created FROM customer 
-	WHERE customer_id =  123 AND note LIKE 'Customer not happy%' ORDER BY id DESC ) AS LATEST GROUP BY customer_id
+	-- SQL to fetch latest from same table V1
+	SELECT * FROM (SELECT id,customer_id,note,date_created FROM customer WHERE customer_id =  123 AND note LIKE 'Customer not happy%' ORDER BY id DESC ) AS LATEST GROUP BY customer_id
 	-- SQL to fetch latest from same table  V2 Tuned
 	SELECT ccn.id , ccn.customer_id ,ccn.note , ccn.date_created FROM customer ccn LEFT JOIN customer ccn2
 	ON (ccn.customer_id = ccn2.customer_id AND ccn.date_created < ccn2.date_created AND  ccn.note = ccn2.note
 	) WHERE ccn2.date_created IS NULL AND ccn.customer_id = 123 AND ccn.note LIKE 'Customer not happy%' ;
-	
+
 	-- Example V1
-	SELECT * FROM (	SELECT id,customer_id,note,date FROM customer_log ORDER BY id DESC ) AS LATEST 
+	SELECT * FROM (	SELECT id,customer_id,note,date FROM customer_log ORDER BY id DESC ) AS LATEST
 	GROUP BY customer_id ORDER BY date DESC ;
-	
+
 	-- Example V2
-	SELECT c1.* FROM customer_log c1 
-	LEFT JOIN customer_log c2 ON (c1.customer_id = c2.customer_id AND c1.date < c2.date ) 
+	SELECT c1.* FROM customer_log c1
+	LEFT JOIN customer_log c2 ON (c1.customer_id = c2.customer_id AND c1.date < c2.date )
 	WHERE c2.date IS NULL ;
 
 
-	
-	SELECT id,report_id, CONVERT(params USING utf8) params,last_updated ,run_every,notes,active  FROM autoreports ORDER BY id DESC LIMIT 5; 
-	
+
+	SELECT id,report_id, CONVERT(params USING utf8) params,last_updated ,run_every,notes,active  FROM autoreports ORDER BY id DESC LIMIT 5;
+
 	TIGGERS
 	========
 	mysqldump --routines --no-create-info --no-data --no-create-db --skip-opt -hlocalhost --ukmuthuvel -pXXXXXXXXXXXX my_database   > ~/my_database.routines.sql
 	mysql -hlocalhost -ukmuthuvel -pXXXXXXXXXXXX kmuth_new < my_database.routines.sql
-
+	mysqldump -h<host> -u<username> -p<password> <database> --no-data --no-create-db --no-create-info --skip-opt --triggers > trigger.sql
 
 PHP
 	ob_start();var_dump(); user_error(ob_get_contents()); ob_get_clean();
@@ -264,17 +384,17 @@ PHP
 	define('DEV',0);
 	if(DEV) error_log(date('c')."\t ==>$sql<== with  ==> ".var_export($anything,true)."<== \n",3,"/tmp/dev.log");
 
-	echo "<pre>";	print_r($_POST); 
+	echo "<pre>";	print_r($_POST);
 	echo "<pre>";	var_dump($_POST); exit;
 
-	service php-fpm restart	
-	
+	service php-fpm restart
+
 	<?php
 	error_reporting(E_ERROR);
 	ini_set('display_errors',1);
 
 	echo 'Syntax Error here";
-	'?>	
+	'?>
 
 	Try-Catch
 	=========
@@ -291,40 +411,82 @@ PHP
 	self::profiler('Going to kill me!!! ');
 	$total_orders = count($orders); $i =1;$startTime= microtime(true);
 
-	
 	public static function profiler($msg){
 		$message = date('Y-m-d H:i:s')." Memory:".round(memory_get_usage()/(1024*1024)).
-			"MB MemoryPeak:".round(memory_get_peak_usage()/(1024*1024))."MB ".var_export($msg,true)."\n";
-
-
-
-
-		error_log($message,3,'/tmp/sql.log');	
-
+			"MB MemoryPeak:".round(memory_get_peak_usage()/(1024*1024))."MB  \t".
+			 number_format(( microtime(true) - $startTime), 4)." Seconds \t".
+			.var_export($msg,true)."\n";
+		error_log($message,3,'/tmp/sql.log');
 	}
 
 	Color'd echo
 	============
 	echo " \e[1;34m ". date(c)." \e[35m error-message \e[0m ";
-	
-GIT 
+
+	Included files/functions
+	========================
+	var_dump(get_defined_functions());
+	var_dump(get_included_files());
+
+	Custom Error Backtracing
+	========================
+
+	$caller =debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,2)[1]['function'];
+	$caller2 =debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,3)[2]['function'];
+	echo date('c')."\t".__FILE__.__CLASS__. __METHOD__ . __LINE__ . "leaving now \n";
+	echo date('c')."\t". __FILE__.__CLASS__."Inside method:". __METHOD__."@ line#" . __LINE__ ."Called by:$caller |  calling getResults \n";
+	echo date('c')."\t".__CLASS__."Inside method():".__METHOD__."@ line#".__LINE__."==>".var_export($incFile,1)."<==\n";
+
+	echo date('c')." ".basename(__FILE__)."|". __METHOD__."|".__LINE__.'==>calling:Basic_report->genericAutoReport<=='."\n";
+	echo date('c')." ".basename(__FILE__)."|". __METHOD__."|".__LINE__."==>is_auto\n";
+
+	Console-Table foramtted output
+	==============================
+	$x = include 'data.php';	# input array
+
+	$mask = "|%5.5s |%-20.20s| %-13.13s |\n";
+	printf("+------------------------------------+\n");
+	printf($mask,'brand','brand_name','aliases');
+	printf("+------------------------------------+\n");
+	foreach ($x as $brand => $data)
+			list($brand_name,$aliases) = $data;
+			printf($mask,$brand,$brand_name,$aliases);
+	printf("+-------------------------------------+\n");
+
+	progressBar
+	===========
+	function progressBar($done, $total) {
+    $perc = floor(($done / $total) * 100);
+    $left = 100 - $perc;
+    $write = sprintf("\033[0G\033[2K[%'={$perc}s>%-{$left}s] - $perc%% - $done/$total", "", "");
+    fwrite(STDERR, $write);
+}
+
+GIT
 	Normal Flow
 	===========
-		git status					#Show the current status
-		git branch 	new_enchancements		#Creates new Branch (Local)
-		git checkout 	new_enchancements		#Switch to branch (new_enchancements)		
+		git status								#Show the current status
+		git branch 	new_enchancements			#Creates new Branch (Local)
+		git checkout 	new_enchancements		#Switch to branch (new_enchancements)
 		git checkout -b new_enchancements		#Creates & Switch to new_enchancements branch (Local)
-		git add file.php				#Adding new file to git
+		git add file.php						#Adding new file to git
 		git commit -m "Fixed,all files"			#Commit the file
 		git push origin new_enchancements		#Send to origin
-		
+
 		git checkout --f new_enchancements		#Switch to branch by force
-		git remote -v					#git remote info
-		
+
+		git remote -v							#git remote info
+
+		git reset filename.txt					#remove a file from the current index, the "about to be committed" area,
+												#without changing anything else.
+		git reset								#undo `git add .`
+
+
+		git -c color.ui=always	<git_command>	#force color output
 	Branching
-	=========	
+	=========
 		Always create new branch from `development` only. Else you may conflicts raising from the branch from where you create the new.
-		
+
 		Right-way:
 		==========
 				 -------new-feature----------> 5 changes (new feature added )
@@ -332,10 +494,10 @@ GIT
 		-------/--------development----------> 0 changes (upto date with master)
 					       \
 					        \---hotfix-------> 2 changes (quick hotfix;go by eod )
-					 
+
 		0 ---- 1 ---- 2 ---- 3 ---- Time --->
-		
-		
+
+
 		Avoid:
 		=====
 					        /---hotfix-------> 7 changes (combines with new feature)
@@ -345,17 +507,17 @@ GIT
 		-------/--------development----------> 0 changes (upto date with master)
 
 		0 ---- 1 ---- 2 ---- 3 ---- Time ---->
-		
+
 	Save changes to temp & goto other branch & come back
     ====================================================
-	
+
 	$git branch								#list branches						#10:00 AM
-	 development                                                                
-	 *my-branch                                                                 
-	 master	                                                                    
+	 development
+	 *my-branch
+	 master
 	$git status								#current status						#10:30 AM
-	 modified:                                                                  
-		abc.txt                                                                 
+	 modified:
+		abc.txt
 	$git stash								#move changes to temp location		#10:31 AM
 	$git checkout very_new_branch			#switch to other branch				#10:40 AM
 	$git add new.file.ext					#work on other branch				#02:30 PM
@@ -363,18 +525,23 @@ GIT
 	$git checkout my-branch					#back to original branch			#03:00 PM
 	$git stash pop							#get the changes from stash			#03:03 PM
 
-		
+	Revert to previous commit
+	=========================
+	git reset --hard  2454tb6
+	git push -f origin kmuth-branch
+
+
 	Revert To Original/Old - Entire directory (code base)
 	=====================================================
 		git pull ?
 		git stash; git fetch origin; git reset --hard origin/development	#Entire directory to REMOTE_MASTER/REMOTE_BRANCH
-		git reset --hard df2bcfac7cabc0fd14d5c5abce22d65589e458a1 		#Entire directory to particular version
-		
+		git reset --hard df2bcfac7cabc0fd14d5c5abce22d65589e458a1 			#Entire directory to particular version
+
 	Revert To Original/Old version - File level (single file)
 	=========================================================
-		git checkout -b old_is_gold						#Creates & Switch to branch old_is_gold
-		git checkout HEAD path/to/file						#Single File , from Master 
-		git checkout d279318b40657be62accea2130ef2fdf9b150b26 -- [full/path]	#Single File , from particular commit 
+		git checkout -b old_is_gold												#Creates & Switch to branch old_is_gold
+		git checkout HEAD path/to/file											#Single File , from Master
+		git checkout d279318b40657be62accea2130ef2fdf9b150b26 -- [full/path]	#Single File , from particular commit
 
 	Revert To Original/Old version - Branch level (From remote into local) (Multiple files)
 	=======================================================================================
@@ -385,44 +552,85 @@ GIT
 	Get changes from master into branch in git
 	============================================
 		git rebase master
-	
+
+
+	Pick & Squash
+	=============
+		git rebase -pi development		# If nothing shows on squash , try -i only
+			pick 	f7f3f6d commit 1
+			squash 	310154e commit 2
+			squash 	a5f4a0d commit 3
+		git push -f origin hot-fix-branch
+
+		git rebase -pi development
+			#first on as pick , rest all squash
+			>> Refusing to squash a merge: 7daa8381fc40294b9616ebe28466a0cc2aabdca3
+		git status
+			>>rebase in progress; onto 3f688ad
+			>>You are currently editing a commit while rebasing branch 'kmuth-hot-fix' on '3f688ad'
+
+		git rebase --continue
+			#removed all the commit messages
+			>>Successfully rebased and updated refs/heads/kmuth-hot-fix.
+		git push -f origin kmuth-hot-fix
+
+	Squashing with conflict resolved merges
+	=======================================
+		git checkout development						# Move to development
+		git branch -D hf_with_5changes_8commits			# Delete <branch> from locally
+		git pull origin development						# Make sure git is upto date
+		git checkout -b hf_with_5changes_8commits		# Create & checkout <branch> from development
+		git apply ~/5changes.patch.diff					# Apply the diff (from gitlab) on <branch>
+		git push -f origin hf_with_5changes_8commits	# Git push all the final changes
+
+
+	Patch apply
+	===========
+		git apply --stat ~/fix_affleck_upload.patch
+		git apply --check ~/fix_affleck_upload.patch
+		git apply ~/fix_affleck_upload.patch
+		git add
+		git commit -m "patch added"
+		git push origin <new_branch>
+
 	Copy branch to branch
 	=====================
 		git checkout -b new_branch old_branch
 
 
-	Example
-	=======	
-	git checkout development
-		Switched to branch 'development'
-		Your branch is up-to-date with 'origin/development'.
-	git merge --no-ff diff_branch
-		Auto-merging module/sub/no_issue_file.ext
-		Auto-merging module/sub/clean_file.ext
-		CONFLICT (content): Merge conflict in module/sub/conflict.php
-		Automatic merge failed; fix conflicts and then commit the result.
-	git push origin development
-		Everything up-to-date	
-		
+		Example
+		=======
+		git checkout development
+			Switched to branch 'development'
+			Your branch is up-to-date with 'origin/development'.
+		git merge --no-ff heavy_reports
+			Auto-merging sonar/system/application/views/reporting.php
+			Auto-merging core/build/classes/core/reporting/classes/orders_report.php.php
+			Auto-merging core/build/classes/core/reporting/classes/KPI_Report.php
+			CONFLICT (content): Merge conflict in core/build/classes/core/reporting/classes/KPI_Report.php
+			Automatic merge failed; fix conflicts and then commit the result.
+		git push origin development
+			Everything up-to-date
+
 	Get single file from different branch from remote
 	=================================================
-
-
-		cd $WORKSPACE				#go to WORKSPACE
+		cd /data/kmuthuvel/code		#go to top code level
 		git checkout origin/diff_branch full/path/to/file.ext
+		git checkout origin/smt_usage_emails core/build/classes/core/ercot/SmtDataDailyPeer.php
 
+		git checkout origin/master  <file_path> #to live
 
 	Clean
 	======
 		git clean -f 				# remove-local-untracked-files
-		
-	Remove/Delete remote/local branch
-	=================================	
-		git branch -d <branchName>		#local only		
-		git push origin --delete <branchName>	#remove remote(if you know what you are doing!)
-		git push origin :<branchName>		#alias of above	
 
-	Unable to commit ? 
+	Remove/Delete remote/local branch
+	=================================
+		git branch -d <branchName>		#local only
+		git push origin --delete <branchName>	#remove remote(if you know what you are doing!)
+		git push origin :<branchName>		#alias of above
+
+	Unable to commit ?
 	==================
 		To git@198.123.45.678:kmuthuvel/code.git
 		 ! [rejected]        new_enchancements -> new_enchancements (non-fast-forward)
@@ -431,9 +639,10 @@ GIT
 		hint: its remote counterpart. Integrate the remote changes (e.g.
 		hint: 'git pull ...') before pushing again.
 		hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-		
+
+		[Option #1]
 		git push origin --delete new_enchancements		#1 remove remote branch
-		cd /data/kmuthuvel; rm -rf code					#2 remove local setup	
+		cd /data/kmuthuvel; rm -rf code					#2 remove local setup
 		git clone git@198.123.45.678:kmuthuvel/code.git	#3 setup fresh code
 		git branch new_enchancements (git branch -a)	#4 create unique branch
 		git checkout new_enchancements					#5 switch to new branch
@@ -442,51 +651,246 @@ GIT
 		git status;git add file1 file2 ;				#8 add files and status
 		git commit -m 'Reports enchanced'				#9 commit changes
 		git push -u origin new_enchancements			#10 done!
+		
+		[Option #2]
+		$git push -u -f origin fix-pogo-bulk-orders
+		Counting objects: 2, done.
+		Delta compression using up to 8 threads.
+		Compressing objects: 100% (2/2), done.
+		Writing objects: 100% (2/2), 263 bytes | 0 bytes/s, done.
+		Total 2 (delta 1), reused 0 (delta 0)
+		remote:
+		remote: View merge request for fix-pogo-bulk-orders:
+		remote:   https://de-gitlab.engine.host/fireengine/code/merge_requests/3903
+		remote:
+		To git@de-gitlab.engine.host:fireengine/code.git
+		 + a752aaa...cf10736 fix-pogo-bulk-orders -> fix-pogo-bulk-orders (forced update)
+		Branch fix-pogo-bulk-orders set up to track remote branch fix-pogo-bulk-orders from origin.
 
 
 	Diff & Logs
-	===========	
+	===========
 		git diff <old_source_commit> <new_target_commit> file.ext	# Compare latest to Old
-		git diff a268ab7670c5430a2a98638cb04820516f8b1b9e 85cfd5ae0e4a1d888eb9611d99c6eac2ba92740f  git_is_good.php
-		git diff HEAD^ HEAD [git_is_good.php]
+		git diff a268ab7670c5430a2a98638cb04820516f8b1b9e 85cfd5ae0e4a1d888eb9611d99c6eac2ba92740f  orders_report.php.php
+		git diff HEAD^ HEAD [users_controller.php]
+
+		git diff --text 								# Diff over bin files
+
+		#.gitconfig
+		[diff "hex"]
+		    textconv = hexdump -v -C
+		    binary 	 = true
+
+		git log -Spattern -- orders_report.php	#accepts a string
+		git log -Gpattern -- orders_report.php	#accepts a regex
 		
-		git log -S'unique_identifier' -- git_is_good.php
-		git log -G'unique_identifier' -- git_is_good.php
+		git grep [-e] case_sensitive_pattern ro 
+		git grep -i case_insenstive_pattern
 		
+		git log --grep=word			#find all commits where commit message contains given word
+
 		git show 211dbe40cd784b06932122f7ba67d656ed438b01	# Particular commit
 
-		[TIP]	#http://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History
-		
-		git log --pretty=format:"%h - %an, %ar : %s" -S'unique_identifier' -- git_is_good.php
-		git log --pretty=format:"%h - %an, %ar : %s" git_is_good.php
-		git log --pretty=format:"%H - %an, %ar : %s" git_is_good.php
-		git log --author=kesavanm	
-		git log --author="\(kmuthuvel\)\|\(rms\)|\(einstein\)"		#to filter for set of users
-		git log --pretty=format:"%h %s" --graph --author=kesavanm
-		git log --no-merges master	
+		git diff --unified=0 -- filename.ext  # git diff with line numbers (aka git diff -U0)
 
-		#List all the modified files for a commit
+		[TIP]	#http://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History
+
+		git log --pretty=format:"%h - %an, %ar : %s" -S'unique_identifier' -- orders_report.php
+		git log --pretty=format:"%h - %an, %ar : %s" orders_report.php
+		git log --pretty=format:"%H - %an, %ar : %s" orders_report.php
+		git log --author=kmuthuvel
+		git log --author="\(kmuthuvel\)\|\(rms\)|\(einstein\)"
+		git log --pretty=format:"%h %s" --graph --author=kmuthuvel
+		git log --no-merges master
+
+		git log --all -- this-is-deleted-file.pl			#who deletes this file ; tracks all the history of file that got deleted.
+
+		#List all the modified files for a commit (better version below)
 		git diff-tree --no-commit-id --name-only -r 2bc51f53a15da1428f8320d9ee93f8e7069a05a2
-		
+
+		#Quick summary on a commit ( --stat & --name-status)
+		git show --stat --summary 66064dbfb18f2562261588c64f8e74a9c941ab00
+		git show --name-status a5e347198e93a6ecb69077ac2cd1491337531671
+
 		git show --name-only 581c968d50ca3259b94081ac428969184ed51eab
-		
+
 		git diff --name-only | xargs  ls -lt 		# latest modified files
 
-		git log --name-only --pretty=format:"%H - %h - %an, %ar : %s"  --author=kmuthuvel  --walk-reflogs   my_hot_fix			# log on only that specific branch my_hot_fix
-		git log --stat --oneline --pretty=format:"%h - %an, %ar : %s" --author="\(kmuthuvel\)\|\(raju\)" --walk-reflogs welcome-offshore 
+		git log --name-only --pretty=format:"%H - %h - %an, %ar : %s"  --author=kmuthuvel  --walk-reflogs   my_hot_fix			# log on only that specific branch
+		git log --stat --oneline --pretty=format:"%h - %an, %ar : %s" --author="\(kmuthuvel\)\|\(raju\)" --walk-reflogs welcome-offshore
 
+		GIT TIME maching
+		================
+		git reflog # ref log on current local repo
+
+		# you will see a list of every thing you've done in git, across all branches!
+		# each one has an index HEAD@{index}
+		# find the one before you broke everything
+		git reset HEAD@{index}
+		# magic time machine
+
+		#digging for an info
+		git log --pretty=format:"%h - %an, %ar : %s"  * | grep -i -E 'social|ssn'
+		#digging log with modified files
+		git log --name-status --author=kmuthuvel --pretty=format:"%h - %an,%ar| %f : %s " * | grep -A2 -i -E 'social sec|ssn'
+
+
+		git log --graph --pretty=format:"%x09%h | %<(10,trunc)%cd |%<(25,trunc)%d | %s" --date=short
+
+		//R-n-d
+		git log --graph --pretty=format:"%x09%h | %<(10,trunc)%cd |%<(25,trunc)%d | %s" --date=short
+		git log --graph --pretty=format:'%Cred%h%Creset %ad %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
+		git log --graph --pretty=format:'%Cred%h%Creset %ad %s %C(yellow)%d%Creset %C(bold blue)<%an>%Creset' --date=short
+		git log --graph --pretty=format:"%C(yellow)%H%C(green)%d%C(reset)%n%x20%cd%n%x20%cn%x20(%ce)%n%x20%s%n" --color --all
+		git log --graph --pretty=format:"%x1b[31m%h(green)%ad %x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m" --date=short --full-history --all --color
+
+		
+		Changed files:
+		==============
+		git diff --name-only development
+		git log --oneline --pretty="format:" --name-only development.. | awk 'NF' | sort -u
+
+
+	FIX CONFLICTS
+	=============
+	git clean -f								# clean your local
+	git fetch origin							# fetch all
+	git checkout -b hot-fix origin/hot-fix		# make sure you don't any existing branch with same name
+	git merge --no-ff origin/development		# try to fix automatic and you'll see errors
+	vim core/conflict.php						# remove conflicts manually
+	git commit -am 'fixed conflicts on 1234'	# add and commit to git
+	git merge --no-ff origin/development		# it should work now
+	git push origin hot-fix						# job done
+	git checkout development					# back to development
+	git branch -d hot-fix						# delete the hot-fix that no more need
+
+	MISC
+	=====
+		git fetch origin
+		git checkout -b new_enchancements origin/new_enchancements
+		git checkout development
+		git merge --no-ff new_enchancements
+		git push origin development
+
+		git checkout development			#Always checkout development
+		git branch
+		git add file.php					#Adding new file to git
+		git commit -m "Fixed,all files"		#Commit the file
+		git push origin new_enchancements	#Send to origin
+
+		On branch development
+		Your branch is up-to-date with 'origin/development'.
+
+		git pull
+		git push -u origin new_enchancements	#Send to origin
+
+		# quick view on all branches
+		ORIG=`git branch|grep \* | sed -e 's/\* //g'` ; for i in `git branch|sed -e 's/\* //g' -e 's/ //g'` ; do git checkout $i 1> /tmp/$USER_git_warings.log; if [ /tmp/$USER_git_warings.log ] ; then if [ `grep up-to-date /tmp/$USER_git_warings.log  |wc -l` -eq 0 ] ; then ST='-w' ;  else ST='-g' ; fi ; cat /tmp/$USER_git_warings.log | msg2 $ST  ; rm -f /tmp/$USER_git_warings.log;   fi ;git diff --stat --cached origin/$i ; done  ; git checkout $ORIG ;
+
+		#Git Repository Deleted File Recovery Method
+		http://www.gitguys.com/how-to-recover-a-deleted-a-file-from-my-git-repository/
+
+		Undo a commit and redo
+		======================
+		git commit -m "Something terribly misguided"              (1)
+		git reset --soft HEAD~                                    (2)
+		<< edit files as necessary >>                             (3)
+		git add ...                                               (4)
+		git commit -c ORIG_HEAD                                   (5)
+			(Thanks:http://stackoverflow.com/questions/927358)
+
+		git commit --amend -m "New commit message"		#Amending the most recent commit message
+														#Edit an incorrect commit message in Git
+
+
+
+
+		$git rm --cached <dir>	#deal with error “Git: fatal: Pathspec is in submodule
+
+		Delete the last commit
+		======================
+		git reset HEAD^ --hard
+		git push origin/branch_name -f
+		
+		#bring a clean env
+		git update-index --assume-unchanged  .gitignore
+		git update-index --no-assume-unchanged .gitignore
+	
+	Merge into MASTER
+	=================
+		git checkout master
+		git pull               # to update the state to the latest remote master state
+		git merge develop      # to bring changes to local master from your develop branch
+		git push origin master # push current HEAD to remote master branch	
+
+Splunk
+
+	index="access_log" "/account/login" POST mobile host="de-*" | timechart span="1d" count
+	index="access_log" "/account/login" POST mobile host="de-*" Android Firefox
+
+	host="de-*" index="myaccount_frontend_dce" | table _time customer_id order_id mobile browser platform service_state
+	host="de-*" 382450 | table _time
+
+	host="de-*" "direct-your-energy"  sourcetype=fe_metrics | table _time customer_id order_id total_execution_time customer_service_state
+
+	host="de-*" uri="*direct-your-energy*" sourcetype=access_log phpsessid!=''|eval session=phpsessid | eval  os = case(match(user_agent,"Windows .. 5\.1"),"Windows XP",match(user_agent,"droid"),"Android",  match(user_agent,"Windows NT 610"),"Win10", match(user_agent,"Mac"),"Mac",          match(user_agent,"Windows NT 6.1"),"Windows 7"    )   | eval browser = case(match(user_agent,"MSIE 10.0"),"Internet Explorer 10.0",match(user_agent,"Trident"),"IE11", match(user_agent,"Chrome"),"Chrome",match(user_agent,"Safari/"),"Safari") | eval arch = case(match(user_agent,"droid"),"android",match(user_agent,"iPad"),"ipad",match(user_agent,"iPod"),"ipod")  |table os browser uri session|join session [search host="de-*" sourcetype=fe_metrics | table _time session order_id customer_id customer_service_state]
+
+	host="de-w*"  confirmation_page_trace order_id=2417516 OR order_id=2417512 OR order_id=2417509|rex field=_raw "confirmation_page_trace: (?<method>[^XYZ]+):" | table _time order_id customer_id session_id host method view |sort -_time
+	host="de-w*"  confirmation_page_trace order_id=2417516 OR order_id=2417512 OR order_id=2417509|rex field=_raw "confirmation_page_trace: (?<method>[^XYZ]+):" | table _time customer_id order_id session_id host method view |sort  order_id _time
+
+	//Multi XML element extraction
+	host="de-w*" credit_check_id|rex field=_raw "\<order_id\>(?<order>[^\<]+)" | rex field=_raw "\<credit_check_id\>(?<credit_check_id>[^\<]+)"|table _time credit_check_id order
+	host="de-w*" credit_check_id|rex field=_raw "\<order_id\>(?<order_id>[^\<]+)" | rex field=_raw "\<credit_check_id\>(?<credit_check_id>[^\<]+)"| rex field=_raw "\<customer_id\>(?<customer_id>[^\<]+)"|table _time credit_check_id order_id customer_id | sort -_time
+	
+	index="de_apps_containers"  carom  rule |table _time _raw
+	index="de_apps_containers" "apps_apps-nginx" "de-admin" (upstream OR 504)
+	
+	cakeerror index="tigger_log" | stats count by host | sort - count 
+	cakeerror index="flubbar_log"
+	
+	index="php_error_log" host="de-w01"
+	
+	host="de-w*" address-unserviceable | table _time ip host phpsessid|  iplocation ip  table clientip, status, City,State, Country
+	host="de-w*" address-unserviceable |table _time ip phpsessid host sourcetype | iplocation ip  clientip, status, City,State, Country | stats count by  Region | sort - count	
+	
+	"/address-unserviceable" source="*access.log" |  convert timeformat="%m/%d/%Y" ctime(_time) AS datex | table datex| stats count by  datex 
+	
+	index="de_apps_containers" admin "timed out"   proxy_read_timeout 180;	
+	
+	code=5** OR code=4** |  stats count by host, code | eventstats sum(count) as hostx by host| eval percent=count/hostx |
+	table host,code,count,percent|timechart span="1d" count
+
+	code=5** OR code=4** |  stats count by host, code |timechart span="1d" count
+
+	code=5** OR code=4** | iplocation ip  clientip, status, City,State, Country|eval  os = case(match(user_agent,"Windows .. 5\.1"),"Windows XP",match(user_agent,"droid"),"Android",  match(user_agent,"Windows NT 610"),"Win10", match(user_agent,"Mac"),"Mac",match(user_agent,"Windows NT 6.1"),"Windows 7",match(user_agent,"iPhone"),"iPhone")| eval browser = case(match(user_agent,"MSIE 10.0"),"Internet Explorer 10.0",match(user_agent,"Trident"),"IE11", match(user_agent,"Chrome"),"Chrome",match(user_agent,"Safari/"),"Safari") | eval arch = case(match(user_agent,"droid"),"android",match(user_agent,"iPad"),"ipad",match(user_agent,"iPod"),"ipod") |  table host code uri method sourcetype request_time referer user_agent os browser ip,City,State, Country 
+
+	"QuickPay error: msg='Server was unable to process request. ---> CISTranslator.CISTranslatorException: System.NullReferenceException: Object reference not set to an instance of an object." order_id |eval hostx= case(match(host,"de-w*"), "de",match(host,"wtu-w*"), "wtu",match(host,"fcp-w*"), "fcp",match(host,"cpl-w*"), "cpl") |table hostx,_time|timechart span="1month" count by hostx
+
+	
+	/api/v1/dye/bill/cycle code=500|table _time phpsessid ip code _raw | eval session = case(match(phpsessid,"-"),"empty", !match(phpsessid,"-"),"not-empty") | 
+stats count by session | eventstats sum(count) as perc | eval perc=round(count*100/perc,2)
+
+
+
+(host="de-w*" OR host="fcp-w*" ) index="access_log" sourcetype="access_log" (date_hour>=4 date_hour<=5) (date_wday=tuesday ) | 
+eval  brand = case(match(host,"de-w"),"de",match(host,"fcp"),"fcp"    ) | table _time ip brand 
+| timechart span="1d" dc(ip) count by brand
+
+
+(host="de-w*" ) index="access_log" sourcetype="access_log" (date_hour>=5 date_hour<=5) (date_wday=tuesday )|  
+eval brand = case(match(host,"de-w"),"de",match(host,"fcp"),"fcp")|timechart span="1d" dc(ip)
 
 MS SQL
-	SELECT TOP 10 * FROM SMT.ESIIDMaster WHERE ESIIDID = 566455 ; 	
+	SELECT TOP 10 * FROM SMT.ESIIDMaster WHERE ESIIDID = 566455 ;
 
-
-DOS 
+DOS
 	Netsh
-	
+
 	gitlab.yaazhdev.com	198.123.45.678:8080
 
+
 	# route add 198.123.45.678 gitlab.yaazhdev.com
-	# 
+	#
 	# Netsh
 	# add v4tov4 listenport=8080 connectaddress=gitlab.yaazhdev.com  listenaddress=198.123.45.678:8080 protocol=tcp
 	# netsh interface portproxy add v4tov4 listenport=8080 listenaddress 198.123.45.678 connectaddress=gitlab.yaazhdev.com
@@ -503,38 +907,189 @@ DOS
 	198.123.45.678   8080        gitlab.yaazhdev.com 80
 
 
-	C:\WINDOWS\system32>		
+	C:\WINDOWS\system32>
+
+	FORFILES
+	========
+	forfiles /s  /c "cmd /c if @isdir==FALSE echo @path @fsize  /S /D +11/04/2016 "
+	forfiles /P . /S /D +11/04/2016 /c "cmd /c if @isdir==FALSE echo @path @fsize"
+
+	Link RESET
+	==========
+	C:\WINDOWS\system32>assoc.lnk=lnkfile
+	.lnk=lnkfile
+
+	C:\WINDOWS\system32>
+
+	CHANGE Permissions:
+	==================
+	takeown /f "C:\Users\kmuthuvel.old" /r
+	icacls "C:\Users\kmuthuvel.old" /reset /T
+
+	Data Recovery
+	=============
+	find AppData  -iname '*xlsb*' -o -name '*foo*'	#excel
+	find .   -iname '*wr*tmp*'						#word / temp / auto recovery(wrd,wrf,wra)
+	find .   -iname '*wbk*'							#auto recovery file that is complete
+
+
+	Domain Group Memeber lookup
+	============================
+	gpresult /USER KMUTHUVEL /V
+	net user KMUTHUVEL /DOMAIN
+	for user in kmuthuvel cog_Mthapa TKhan2 SBasutkar ; do  NET USER $user /DOMAIN; done
+
+
+	MOUNT
+	wmic logicaldisk get caption,description,drivetype,providername,volumename
+	
+	SHORTCUT FOR INET OPTIONS
+	
+	C:\Windows\System32\control.exe Inetcpl.cpl,Connections,4
 
 MarkDown
 	Name	|Sex|City,State
-	-|       
-	Jorge	|M|Corpus, TX	
-	Valerie	|M|Corpus, TX	
-	Sabrina	|F|Corpus, TX	
-		
+	-|
+	Jorge	|M|Corpus, TX
+	Valerie	|M|Corpus, TX
+	Sabrina	|F|Corpus, TX
+
 Excel
 	To convert the numbers into text?
 	=================================
 	1)	Use a datevalue(text(XX,”mm/dd/yyyy”) formula
 	2)	Use the text to values function to separate anything so “DATE” and “TIMESTAMP” are in two different columns.
 
-	Multi Instance 
+	Multi Instance
 	===============
 	#ExcelLauncher	!!! WARNING !!! Breaks lot of built-in functionality
 		http://dottech.org/26491/how-to-force-microsoft-excel-to-open-files-in-new-window-how-to-guide/
 		http://blog.thomascsherman.com/2010/06/opening-excel-files-in-new-processes-excel-launcher-helper-app/
 
-	Freezing 
+	Indian currency format(millions to lakhs)
+		Update Custom:
+		[>=10000000]"RS "##\,##\,##\,##0;[>=100000]"RS " ##\,##\,##0;"RS "##,##0
+
+	Freezing
 	=========
 		Step 1 - Select
-			First 2 rows:		Click on A3 Cell. 
-			First 2 cols:		Click on C1 Cell. 
+			First 2 rows:		Click on A3 Cell.
+			First 2 cols:		Click on C1 Cell.
 			First x rows & y cols:	Click on (y+1)(x+1) Cell
 		Step end - View  > Window > Freeze Panes > Freeze Panes
 
-
-`ldconfig` is a program that is used to maintain the shared library cache. This cache is typically stored in the file /etc/ld.so.cache and is used by the system to map a shared library name to the location of the corresponding shared library file.	
-Usage :  ldconfig -v  will make new  programs ,ex gpg2 was able to find libksba.so.0
-		
+	Compare
+	=======
+	=VLOOKUP(NEEDLE,L$5:L$9,1,FALSE)					# String search
+	=VLOOKUP($NEEDLE&"*",'sheetx'!$A$1:$Z$26,2,FALSE)	# Partial string search
+	
+	=TEXT(J13 -F13, "d"" days ""h"" hrs ""m"" mins """)
+	
+	Pivot Data Range : Analyze >> Data >> Change Data Source
+	
+	To seconds
+	==========
+	=TEXT(F155-E155,"[s]")
+	
 ShortCuts
 	HeidiSQL REDO SHIFT+ALT+BACKSPACE
+
+GNU/Linux
+
+	`ldconfig` is a program that is used to maintain the shared library cache. This cache is typically stored in the file /etc/ld.so.cache and is used by the system to map a shared library name to the location of the corresponding shared library file.
+	Usage :  ldconfig -v  will make new  programs ,ex gpg2 was able to find libksba.so.0
+
+
+	Performance/Tuning/Cleanup
+	==========================
+	. .profile.open	# ( https://github.com/kesavanm/handy-tools/blob/master/.profile.open)
+	cleanit
+	cleandebs
+	
+	
+	Better Booting 
+	==============
+	systemd-analyze plot > Desktop/boot.svg
+	systemd-analyze blame
+	systemd-analyze critical-chain
+	service --status-all 
+	
+
+thulasi@thulasi-Inspiron-15-3567(49.204.208.161)|~|2019-01-01 20:36:46
+$systemctl disable mysql.service 
+Synchronizing state of mysql.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install disable mysql
+
+	
+	
+	sudo systemctl disable mysql.service
+	$history | tail 
+ 1007  2019-01-01 20:19:45 systemd-analyze --user blame 
+ 1008  2019-01-01 20:20:20 systemd-analyze --system blame 
+ 1009  2019-01-01 20:28:21 sudo systemctl disable mysql.service
+ 1010  2019-01-01 20:28:47 sudo systemctl mask mysql.service
+ 1011  2019-01-01 20:30:35 systemctl status mysql.service rvice
+ 1012  2019-01-01 20:31:43 sudo systemctl unmask mysql.service
+ 1013  2019-01-01 20:31:48 systemctl status mysql.service rvice
+ 1014  2019-01-01 20:32:24 systemctl status mysql.service 
+ 1015  2019-01-01 20:36:33 systemd-analyze --user critical-chain 
+ 1016  2019-01-01 20:36:46 history | tail 
+0 ✓ success ^_^  ________________________________________________________________________________
+thulasi@thulasi-Inspiron-15-3567(49.204.208.161)|~|2019-01-01 20:36:46
+
+	
+	
+	C:\Users\kmuthuvel\AppData\Local\Microsoft\Windows\Temporary Internet Files\Content.Outlook\18C17SJ6
+
+Firefox
+	general.useragent.locale	ta-IN	about:config
+	595c99c907d7bc86620ebe8bc7f23532b8428468	password-1
+
+	
+GNU/Screen:
+
+	export SCREENDIR=$HOME/S-kmuthuvel
+	
+	==Windows==
+    Split  	: ^a-S   ^a-| (Horizontal/Vertical)
+    Un-split: ^a-Q   ^a-X (All / Active)
+	Navigate: ^a-TAB 
+	
+	==Consoles==
+	Switching: ^a-p ^a-n ^a-" (prev/next/list)
+	
+	==Session==
+	start/resume: screen [-r resume , -D -RR - do whatever but get me in]
+	end/detach	: ^a-d  , 
+	sessions	: -ls, -list
+	
+	lock: ^a-x
+
+	Note: After splitting, you need to go into the new region and start a new session via ctrla then c before you can use that area.
+
+	EDIT, basic screen usage:
+
+    New terminal: ctrla then c.
+    Next terminal: ctrla then space.
+    Previous terminal: ctrla then backspace.
+    N'th terminal ctrla then [n]. (works for n∈{0,1…9})
+    Switch between terminals using list: ctrla then " (useful when more than 10 terminals)
+    Send ctrla to the underlying terminal ctrla then a.
+
+	C-a :resize 30		#increases 30 lines
+	C-a :resize 75%		#increases 75%
+	C-a :resize -h +10 	#increases the size 
+	C-a :resize -w -10 	#decreases the size
+	
+PHPStrom
+		Code fold at method level - CTRL+SHIFT+NumPad *, then (regular)1.
+		
+		
+Mozilla
+	security.enterprise_roots.enabled	# false to handle Peer’s Certificate issuer is not recognized.
+
+Windows/TMP/CACHE/Cleanup
+	C:\Windows\SoftwareDistribution\Download (net stop wuauserv & net start wuauserv)
+	%TMP%
+	ipconfig /flushdns
+	Disk Cleanup
