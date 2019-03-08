@@ -1,10 +1,9 @@
 # Bind F11 and F12 (NOT F1 and F2) to previous and next screen window
-bindkey -k F1 prev
-bindkey -k F2 next
+bindkey -k F1 prev		#F11
+bindkey -k F2 next		#F12
 
-bindkey "^[Od" prev  # change window with ctrl-left
-bindkey "^[Oc" next  # change window with ctrl-right
-
+bindkey "^[Od" prev  # change window with ctrl-left		#PuTTY is diff realm
+bindkey "^[Oc" next  # change window with ctrl-right	#PuTTY no need to obey
 
 startup_message off
 
