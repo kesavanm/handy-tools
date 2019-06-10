@@ -57,7 +57,7 @@ if [ -f $HOME/bin/.todo ]; then
         touch $HOME/bin/.todo #In-case new to this .profile
 else
         echo "no todo manager and list; creating new one for you";
-        ping -c 1 github.com > /dev/null
+        ping -c 1 raw.githubusercontent.com > /dev/null
         if [[ $? -eq 0 ]] ; then
                 cmd_wget ".todo"      ".todo"     ; `$CMD_WGET` ; chmod +x $HOME/bin/.todo;
                 cmd_wget ".todo_list" ".todo_list"; `$CMD_WGET` ; chmod +x $HOME/bin/.todo_list;
@@ -962,12 +962,6 @@ shopt -s nocaseglob # to match case insensitive patterns with ls?
 #daily weather report
 zip=$(curl ipinfo.io/$(myip) 2>&1| grep postal |awk '{print $2}'|sed -r 's/"//g')
 
-# default zip if no zip retrieveable
-if [[ -z "$zip" ]]; then
-  zip=77477
-fi
-
-
 # check for US zip
 if [ ${#zip} -eq '5' ] ; then
   curl wttr.in/$zip
@@ -975,6 +969,12 @@ else
   city=$(curl ipinfo.io/$(myip) 2>&1| grep city |awk '{print $2}'|sed -r 's/"//g')
   curl wttr.in/$city
 fi
+
+# default zip if no zip retrieveable
+if [[ -z "$zip" ]]; then
+  zip=77477
+fi
+
 
 msg2 -g "Be lazy" ; msg2 -g "Be always double lazy"
 msg2 -o "You're using OPEN_PROFILE_VERSION : $OPEN_PROFILE_VERSION. run get_updated_profile for latest from internet"
