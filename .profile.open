@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.600
+OPEN_PROFILE_VERSION=1.602
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -565,6 +565,11 @@ function teachme(){
         fi
 }
 
+
+# DB functions
+
+alias dbconn="mysql -A -h 123.567.89.10 -ukmuthuvel -pXXXXXXX"
+
 function mydb(){
        if [ "$#" -eq "1" ]; then
                 DB=$1
@@ -579,7 +584,7 @@ function mydb(){
 }
 function myq(){
         if [ -z $DB ]; then  mydb; fi;
-        repdb $DB -te "$*"
+        dbconn $DB -te "$*"
 
 }
 
@@ -588,7 +593,7 @@ function mytables(){
         if [ "$#" -lt "1" ]; then
                 msg2 -o "Usage: $FUNCNAME TABLE "
         else
-                repdb $DB -te "show tables like  '%$1%'" ;
+                dbconn $DB -te "show tables like  '%$1%'" ;
         fi
 }
 
@@ -597,13 +602,13 @@ function mydesc(){
         if [ "$#" -lt "1" ]; then
                 msg2 -o "Usage: $FUNCNAME TABLE COL1[ COL2 ...] "
         else
-                repdb $DB -te "desc  $1"|egrep "Extra|---|$2"
+                dbconn $DB -te "desc  $1"|egrep "Extra|---|$2"
         fi
 }
 
 function myq(){
         if [ -z $DB ]; then  mydb; fi;
-        repdb $DB -te "$*"
+        dbconn $DB -te "$*"
 }
 
 function parse_git_branch () {
