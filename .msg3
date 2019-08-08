@@ -1,0 +1,81 @@
+#!/bin/bash
+#source 'lib.trap.sh'
+trap 'echo >&2 "Error - exited with status $? at line $LINENO:"; 
+         pr -tn $0 | tail -n+$((LINENO - 3)) | head -n7' ERR
+function msg3()
+{
+
+		usage()
+		{
+		  echo "Usage: msg3 [-w|-g] [-n] message_here"
+          echo "(w)warning,(g)greet,(e)bad|negative|error,(o)good|okay,(b)bold,(u)underline,(l)underline+bold";
+		  echo "(n)no-newline";
+		  return 2; 
+		}
+
+		set_variable()
+		{
+		  local varname=$1
+		  shift
+		  if [ -z "${!varname}" ]; then
+			eval "$varname=\"$@\""
+		  else
+			echo "Error: $varname already set"
+			usage ; return 2;
+		  fi
+		}
+       if (( $#  >= 2 )) ; then                        #No  STDIN
+                echo -n ;
+        else                                            #Has STDIN
+              MSG="$(cat -)";
+              set -- $1 $MSG
+        fi
+
+        B=`tput bold`    #BOLD
+        D=`tput dim`     #DIM
+        U=`tput sgr 0 1` #UNDERLINE
+        U2=`tput smul`   #UNDERLINE2
+        NOU=`tput rmul`  #NO UNDERLINE
+        H=`tput smso`    #HIGHLIGHT
+        X=`tput sgr0`    #RESET
+        C='tput setaf '  #COLOR
+
+
+		unset FORMAT NONL NL;
+        OPTIND=1                                        # This saves my life :) (again in 2019)
+		while getopts 'eowgbuln?h' c
+		do
+		  case $c in
+			e) set_variable FORMAT ERR &&  return 0 ;;
+			o) set_variable FORMAT OKAY && return 0  ;;
+			w) set_variable FORMAT WARN ;;
+			g) set_variable FORMAT GREET ;;
+			b) set_variable FORMAT BOLD  ;;
+			u) set_variable FORMAT ULINE  ;;
+			l) set_variable FORMAT ULBLD  ;;
+			n) set_variable NONL 1 ;;
+			h|?) usage ;; esac
+		done
+
+		[ -z "$FORMAT" ] && usage
+		#[ -z "$NONL" ] && usage
+
+		shift $((OPTIND - 1))
+
+		if [ "1" =  "$NONL" ]; then
+			NL='-n'
+		fi
+
+		  case $FORMAT in
+			 ERR) echo $NL `tput setaf 1`${H}$@`tput sgr0` ;;
+			OKAY) echo $NL `tput setaf 2`${B}$@`tput sgr0` ;;		#good
+			WARN) echo $NL `tput setaf 3`${H}$@`tput sgr0` ;;
+		   GREET) echo $NL `tput setaf 6`${B}$@`tput sgr0` ;;
+			BOLD) echo $NL `tput bold`       $@`tput sgr0` ;;
+		   ULINE) echo $NL               ${U}$@`tput sgr0` ;;
+		   ULBLD) echo $NL `tput bold`   ${U}$@`tput sgr0` ;;
+		  esac
+}
+
+
+
