@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.700
+OPEN_PROFILE_VERSION=1.702
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -743,6 +743,7 @@ function git_stat(){
         awk '{files+=$1; inserted+=$4; deleted+=$6} END  {printf "|%7d|%7d|%7d|\n",  files,  inserted,  deleted   }';
     done ;
     echo "$line"
+}
 
 function colors(){
 #   This file echoes a bunch of color codes to the
