@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.601
+OPEN_PROFILE_VERSION=1.701
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
