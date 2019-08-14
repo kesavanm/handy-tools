@@ -4,12 +4,12 @@
 #
 # PLEASE READ THIS STATEMENT
 #
-# 1 - dos2unix .profile.open
+# 1 - dos2unix .open.profile
 # 2 - to include this this file into your profile , add the following to your existing profile file
 #     .bashrc (recommended)  (or .profile or whatever it is )
 #
-#     if [ -f ~/.profile.open ]; then
-#           . ~/.profile.open
+#     if [ -f ~/.open.profile ]; then
+#           . ~/.open.profile
 #     fi
 #
 # Additional packs you may need :
@@ -17,7 +17,7 @@
 # 2 - .todo  & .todo_list
 #
 # Updated version always avail at
-# 1 - https://github.com/kesavanm/handy-tools/  (.profile.open)     [ recommended ]
+# 1 - https://github.com/kesavanm/handy-tools/  (.open.profile)     [ recommended ]
 # 2 - https://kesavan.info/books.pl ( BASH PROFILE )                [ depreciated ]
 #
 # SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud
@@ -32,10 +32,10 @@
 #trap '' ERR                    # trap off on all exit signals
 
 # INCASE IF YOU'RE IN CYG ENV ON WIN_X , CHANGE THE ENCODINGS
-# sed -i 's/\r$//' .profile.open
+# sed -i 's/\r$//' .open.profile
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.602
+OPEN_PROFILE_VERSION=1.700
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -483,29 +483,74 @@ function cleandebs(){
 
 function msg(){
     # http://askubuntu.com/questions/99703/how-to-get-colored-output-from-bash-script
-    # $1 - msg
-    # $2 - format  {greet ,warning, okay/good/positive , no/bad/negative,ul}
-    # $3 - extra , passed to echo as it is
-    # colors -  0Black,1Red,2Green,3yellow?,4Violet,5Pink,6Magenta,7grey
 
-    B=`tput bold`   #BOLD
-    D=`tput dim`    #DIM
+    usage(){
+        echo "usage: msg [-w|-g] [-n] message_here"
+        echo "options:(w)warning,(g)greet,(e)bad|negative|error,(o)good|okay,(b)bold,(u)underline,(l)underline+bold";
+        echo "(n)no-newline";
+        return 2;
+    }
+
+    set_variable(){
+        local varname=$1
+        shift
+        if [ -z "${!varname}" ]; then
+            eval "$varname=\"$@\""
+        else
+            echo "Error: $varname already set"
+            usage ; return 2;
+        fi
+    }
+
+    if (( $#  >= 2 )) ; then                        #No  STDIN
+        echo -n ;
+    else                                            #Has STDIN
+        MSG="$(cat -)";
+        set -- $1 $MSG
+    fi
+
+    B=`tput bold`    #BOLD
+    D=`tput dim`     #DIM
     U=`tput sgr 0 1` #UNDERLINE
-    U2=`tput smul`  #UNDERLINE2
-    NOU=`tput rmul` #NO UNDERLINE
-    H=`tput smso`   #HIGHLIGHT
-    X=`tput sgr0`   #RESET
-    C='tput setaf ' #COLOR
+    U2=`tput smul`   #UNDERLINE2
+    NOU=`tput rmul`  #NO UNDERLINE
+    H=`tput smso`    #HIGHLIGHT
+    X=`tput sgr0`    #RESET
+    C='tput setaf '  #COLOR
 
-    case "$2" in
-        warning     ) i=3; c=`$C$i` && echo $3 $c${H}$1$X;;
-        greet       ) i=6; c=`$C$i` && echo $3 $c${B}$1$X;;
-        bad|negative    ) i=1; c=`$C$i` && echo $3 $c${H}$1$X;;
-        good|okay   ) i=2; c=`$C$i` && echo $3 $c${B}$1$X;;
-        bold        )   c=`$C`  && echo $3 ${B}$1$X;;
-        ul      )   c=`$C`  && echo $3 ${U}$1$X;;
-        ulbold      ) i=2; c=`$C$i` && echo $3 $c${U2}$1$X;;
-        normal      ) i=2; c=`$C$i` && echo $3 $c$1$X;;
+    unset FORMAT NONL NL;
+    OPTIND=1                                        # This saves my life :) (again in 2019)
+    while getopts 'eowgbuln?h' c
+    do
+    case $c in
+        e) set_variable FORMAT ERR &&  return 0 ;;
+        o) set_variable FORMAT OKAY && return 0  ;;
+        w) set_variable FORMAT WARN ;;
+        g) set_variable FORMAT GREET ;;
+        b) set_variable FORMAT BOLD  ;;
+        u) set_variable FORMAT ULINE  ;;
+        l) set_variable FORMAT ULBLD  ;;
+        n) set_variable NONL 1 ;;
+        h|?) usage ;; esac
+    done
+
+    [ -z "$FORMAT" ] && usage
+    #[ -z "$NONL" ] && usage
+
+    shift $((OPTIND - 1))
+
+    if [ "1" =  "$NONL" ]; then
+        NL='-n'
+    fi
+
+    case $FORMAT in
+        ERR) echo $NL `tput setaf 1`${H}$@`tput sgr0` ;;
+        OKAY) echo $NL `tput setaf 2`${B}$@`tput sgr0` ;;       #good
+        WARN) echo $NL `tput setaf 3`${H}$@`tput sgr0` ;;
+        GREET) echo $NL `tput setaf 6`${B}$@`tput sgr0` ;;
+        BOLD) echo $NL `tput bold`       $@`tput sgr0` ;;
+        ULINE) echo $NL               ${U}$@`tput sgr0` ;;
+        ULBLD) echo $NL `tput bold`   ${U}$@`tput sgr0` ;;
     esac
 }
 
@@ -560,7 +605,7 @@ function teachme(){
                 msg2 -o "Usage: $FUNCNAME [ pattern to learn something today]"
         else
 
-                msg2 -w 'Be sure to have latest .profile.open & quick-commands content on  ~/bin/.teachme.txt'
+                msg2 -w 'Be sure to have latest .open.profile & quick-commands content on  ~/bin/.teachme.txt'
                 grep --color -in $1 ~/bin/.teachme.txt
         fi
 }
@@ -701,17 +746,17 @@ function get_updated_profile()
 {
         cd $HOME/bin;
         today=`date +%Y%m%d`
-        FILE_IN='.profile.open'; FILE_OUT="new.profile.open.$today";
+        FILE_IN='.open.profile'; FILE_OUT="new.open.profile.$today";
         echo "looking for latest updates"
         cmd_wget $FILE_IN $FILE_OUT;
         #echo -n 'running command:';msg2 -b "$CMD_WGET";
         `$CMD_WGET`
 
-        new_version=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today`
+        new_version=`grep 'OPEN_PROFILE_VERSION' new.open.profile.$today`
 
         if [[ $? -ne 0 ]] ; then new_version=0.0 ;              # no version history , so start fresh
         else
-                INX=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today | head -1 | awk  '{printf("%s",$1)}'`
+                INX=`grep 'OPEN_PROFILE_VERSION' new.open.profile.$today | head -1 | awk  '{printf("%s",$1)}'`
                 new_version=`echo $INX | tr = \ | awk '{printf $2}'`
         fi
 
@@ -728,12 +773,12 @@ function get_updated_profile()
                 echo
                 if [ $choice == "y" ] ; then {
                         echo updating the profile
-                        mv .profile.open .profile.open.bkup.`date +%Y%m%d`
-                        mv new.profile.open.$today .profile.open ; chmod a+x .profile.open
+                        mv .open.profile .open.profile.bkup.`date +%Y%m%d`
+                        mv new.open.profile.$today .open.profile ; chmod a+x .open.profile
                         echo "OPEN_PROFILE updated to OPEN_PROFILE_VERSION:$new_version"
-                        echo "your old profile backuped at .profile.open.bkup.`date +%Y%m%d`"
+                        echo "your old profile backuped at .open.profile.bkup.`date +%Y%m%d`"
                         echo "save your work,logout & login for update"
-                        . ~/bin/.profile.open
+                        . ~/bin/.open.profile
                 }
                 else
                         echo "Okay.You've some urgent work.Will update later"

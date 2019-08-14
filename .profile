@@ -5,10 +5,10 @@ HOME_ALT="$HOME"
 HANDY="$HOME/handy-tools"
 
 #1 Get the aliases and functions from OPEN
-if [ -f ~/bin/.profile.open ]; then
-	source ~/bin/.profile.open
-elif [ -f $HOME_ALT/bin/.profile.open ]; then
-    source $HOME_ALT/bin/.profile.open
+if [ -f ~/bin/.open.profile ]; then
+	source ~/bin/.open.profile
+elif [ -f $HOME_ALT/bin/.open.profile ]; then
+    source $HOME_ALT/bin/.open.profile
 fi
 
 #2 Get the aliases and functions for WORK
