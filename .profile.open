@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.602
+OPEN_PROFILE_VERSION=1.701
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -66,8 +66,7 @@ else
         fi
 fi
 
-
-
+#LET FOLLOW WHITE RABBIT - cMATRIX
 function cmatrixbuild()
 {
   cd $HOME
@@ -81,6 +80,12 @@ function cmatrixbuild()
   #  cmatrix
 }
 
+if [ -z $(command -v cmatrix) ];  then
+        cmatrixbuild
+        #else echo cmatrix there
+fi
+
+#(EN)TRAIN THOSE WHO TYPO `ls`
 function sl_build()
 {
   cd $HOME
@@ -91,14 +96,19 @@ function sl_build()
   cd $HOME
 }
 
-if [ -z $(command -v cmatrix) ];  then
-        cmatrixbuild
-        #else echo cmatrix there
-fi
-
 if [ -z $(command -v sl) ]; then
   sl_build
 fi
+
+#CROSS SALE `HANDY-TOOLS`
+function install_handy_tools(){
+  echo "you may also want to install the handy-tools for friendly experience"
+  echo "(y)es , I want it... or sorry (n)ot now : "
+  read $choice
+
+}
+
+
 
 
 alias todo="$HOME/bin/.todo"
@@ -666,6 +676,31 @@ function git_branch_status2(){
                 cat /tmp/$USER_git_warings.log | msg2 $ST; rm -i -f /tmp/$USER_git_warings.log;
         done;
         git checkout $ORIG ;
+}
+
+function border(){
+	for i in `seq 1 $1` 
+		do
+		echo -n "-";
+		done
+}
+
+function git_stat(){
+    line=$(border `echo 25+5+7+7+7+6|bc`)		# name file add del 5x|'s
+
+    echo "$line"
+    printf "|%25s|%5s|%7s|%7s|%7s| \n" name files insert delete commit; 
+    echo "$line"
+
+    for name in "Kesavan Muthuvel" "kmuthuvel" \
+                 "Manjil" "Manjil ThapaMagar"
+    do 
+        printf "|%25s|%5d" "$name" $(git shortlog -sn --author="$name"| awk '{s+=$1} END {print s}')
+        git log --shortstat --since="1 Jan, 2013" --author="$name" | 
+        grep -E "fil(e|es) changed" | 
+        awk '{files+=$1; inserted+=$4; deleted+=$6} END  {printf "|%7d|%7d|%7d|\n",  files,  inserted,  deleted   }'; 
+    done ; 
+    echo "$line"
 }
 
 function colors(){

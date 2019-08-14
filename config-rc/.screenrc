@@ -12,7 +12,9 @@ startup_message off
 #hardstatus string "%-w%{= BW}%50>%n %t%{-}%+w%<"
 #hardstatus string "%{.kG}%-Lw%{.KW}%n%f %t%{-}%+Lw %=%{..G} %H %{..W} %d/%m %C%a "
 #%Y-%m-%d %{Y}%c:%s	=> 2018-02-07 12:23:12 
-hardstatus alwayslastline "%{= kw}%{g}[ %{G}%S %{g}] %{Y}pkgs: %{w}%1` %{g}[%=%{ =kw}%{w}%-w%{Y}[%{W}%n-%t%{Y}]%{w}%+w%=%{g}][ %{w}%Y-%m-%d %{Y}%C%a %{g}]"
+hardstatus alwayslastline "%{= kw}%{g}[ %{G}%S %H%` %{g}] %{Y}pkgs: %{w}%1` %{g}[%=%{ =kw}%{w}%-w%{Y}[%{W}%n-%t%{Y}]%{w}%+w%=%{g}][ %{w}%Y-%m-%d %{Y}%C%a %{g}]"
+#hardstatus string '%H:%`'
+backtick 0 30 30 sh -c 'screen -ls | grep --color=no -o "$PPID[^[:space:]]*"'
 
 termcapinfo xterm* ti@:te@
 # From Stephen Shirley
@@ -45,3 +47,14 @@ mousetrack on
 
 #also update the PuTTY 'xterm-256color' for [Terminal-type string] under Data , Connection
 term screen-256color
+
+
+defscrollback 30000 # Use a 30000-line scrollback buffer
+
+termcapinfo xterm ti@:te@
+# From http://www4.informatik.uni-erlangen.de/~jnweiger/screen-faq.html
+# Q: My xterm scrollbar does not work with screen.
+# A: The problem is that xterm will not allow scrolling if the alternate text buffer is selected. The standard definitions of the termcap initialize capabilities ti and te switch to and from the alternate text buffer. (The scrollbar also does not work when you start e.g. ‘vi’). You can tell screen not to use these initialisations by adding the line “termcapinfo xterm ti@:te@” to your ~/.screenrc file.
+
+
+
