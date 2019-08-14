@@ -2,32 +2,43 @@
 # .profile for development environment where `git` and other tools avail
 
 HOME_ALT="$HOME"
+HOME_ALT="/home/kmuthuvel" #let others enjoy the rain ; .profile wont work on others sessions
 HANDY="$HOME/handy-tools"
 
 #1 Get the aliases and functions from OPEN
 if [ -f ~/bin/.profile.open ]; then
 	source ~/bin/.profile.open
+    msg -ng "[okay]"; echo " .profile.open loaded successfully"
 elif [ -f $HOME_ALT/bin/.profile.open ]; then
     source $HOME_ALT/bin/.profile.open
+    msg -ng "[okay]"; echo " .profile.open (from HOME_ALT) loaded successfully"
+else
+    msg -ne "[fail]"; echo " .profile.open load failed"
 fi
 
 #2 Get the aliases and functions for WORK
 if [ -f ~/bin/.profile.work ]; then
 	source ~/bin/.profile.work
+    msg -ng "[okay]"; echo " .profile.work loaded successfully"
 elif [ -f $HOME_ALT/bin/.profile.work ]; then
     source $HOME_ALT/bin/.profile.work
+    msg -ng "[okay]"; echo " .profile.work loaded (from HOME_ALT) successfully"
+else
+    msg -ne "[fail]";echo " .profile.open load failed"
 fi
+
 
 #3 Git Completion
 if [ -f $HANDY/bin/.git-completion.bash ]; then
     source $HANDY/bin/.git-completion.bash
+    msg -ng "[okay]"; echo " .git-completion.bash loaded success"
 else
-    msg2 -2 "***warning:\`git-completion\` not found***"
+    msg -ne "[fail]"; echo " .git-completion not found"
 fi
 
 #4 fizzy-finder
-[ -f $HOME_ALT/.fzf.bash ] && source $HOME_ALT/.fzf.bash || msg2 -w "***warning:\`fzf\` not found***"
-[ -f $HANDY/git-heart-fzf/functions.sh ] && source $HANDY/git-heart-fzf/functions.sh || msg2 -w "***warning:\`git-heart-fzf\` not found***"
+([ -f $HOME_ALT/.fzf.bash ] && source $HOME_ALT/.fzf.bash)                              && (msg -ng "[okay]"; echo " .fzf.bash loaded successfully" ) || (msg -nw "[fail]"; echo "\`fzf\` not found...")
+([ -f $HANDY/git-heart-fzf/functions.sh ] && source $HANDY/git-heart-fzf/functions.sh)  && (msg -ng "[okay]"; echo " git-heart-fzf loaded "          ) || (msg -nw "[fail]"; echo " \`git-heart-fzf\` not found...")
 
 #5 - misc/rest
 if [ -f $HOME_ALT/bin/vim ]; then       #choose user vim if so
