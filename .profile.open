@@ -530,13 +530,13 @@ function msg(){
     while getopts 'eowgbuln?h' c
     do
     case $c in
-        e) set_variable FORMAT ERR &&  return 0 ;;
-        o) set_variable FORMAT OKAY && return 0  ;;
+        e) set_variable FORMAT ERR  ;;
+        o) set_variable FORMAT OKAY ;;
         w) set_variable FORMAT WARN ;;
-        g) set_variable FORMAT GREET ;;
-        b) set_variable FORMAT BOLD  ;;
-        u) set_variable FORMAT ULINE  ;;
-        l) set_variable FORMAT ULBLD  ;;
+        g) set_variable FORMAT GREET;;
+        b) set_variable FORMAT BOLD ;;
+        u) set_variable FORMAT ULINE;;
+        l) set_variable FORMAT ULBLD;;
         n) set_variable NONL 1 ;;
         h|?) usage ;; esac
     done
@@ -551,13 +551,13 @@ function msg(){
     fi
 
     case $FORMAT in
-        ERR) echo $NL `tput setaf 1`${H}$@`tput sgr0` ;;
-        OKAY) echo $NL `tput setaf 2`${B}$@`tput sgr0` ;;       #good
+        ERR)  echo $NL `tput setaf 1`${H}$@`tput sgr0` ;;
+        OKAY) echo $NL `tput setaf 2`${H}$@`tput sgr0` ;;       #good
         WARN) echo $NL `tput setaf 3`${H}$@`tput sgr0` ;;
-        GREET) echo $NL `tput setaf 6`${B}$@`tput sgr0` ;;
+        GREET)echo $NL `tput setaf 6`${H}$@`tput sgr0` ;;
         BOLD) echo $NL `tput bold`       $@`tput sgr0` ;;
-        ULINE) echo $NL               ${U}$@`tput sgr0` ;;
-        ULBLD) echo $NL `tput bold`   ${U}$@`tput sgr0` ;;
+        ULINE)echo $NL               ${U}$@`tput sgr0` ;;
+        ULBLD)echo $NL `tput bold`   ${U}$@`tput sgr0` ;;
     esac
 }
 
