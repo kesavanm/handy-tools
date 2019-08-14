@@ -4,12 +4,12 @@
 #
 # PLEASE READ THIS STATEMENT
 #
-# 1 - dos2unix .open.profile
+# 1 - dos2unix .profile.open
 # 2 - to include this this file into your profile , add the following to your existing profile file
 #     .bashrc (recommended)  (or .profile or whatever it is )
 #
-#     if [ -f ~/.open.profile ]; then
-#           . ~/.open.profile
+#     if [ -f ~/.profile.open ]; then
+#           . ~/.profile.open
 #     fi
 #
 # Additional packs you may need :
@@ -17,7 +17,7 @@
 # 2 - .todo  & .todo_list
 #
 # Updated version always avail at
-# 1 - https://github.com/kesavanm/handy-tools/  (.open.profile)     [ recommended ]
+# 1 - https://github.com/kesavanm/handy-tools/  (.profile.open)     [ recommended ]
 # 2 - https://kesavan.info/books.pl ( BASH PROFILE )                [ depreciated ]
 #
 # SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud
@@ -32,7 +32,7 @@
 #trap '' ERR                    # trap off on all exit signals
 
 # INCASE IF YOU'RE IN CYG ENV ON WIN_X , CHANGE THE ENCODINGS
-# sed -i 's/\r$//' .open.profile
+# sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
 OPEN_PROFILE_VERSION=1.700
@@ -107,9 +107,6 @@ function install_handy_tools(){
   read $choice
 
 }
-
-
-
 
 alias todo="$HOME/bin/.todo"
 alias findname="find . -name "
@@ -615,7 +612,7 @@ function teachme(){
                 msg2 -o "Usage: $FUNCNAME [ pattern to learn something today]"
         else
 
-                msg2 -w 'Be sure to have latest .open.profile & quick-commands content on  ~/bin/.teachme.txt'
+                msg2 -w 'Be sure to have latest .profile.open & quick-commands content on  ~/bin/.teachme.txt'
                 grep --color -in $1 ~/bin/.teachme.txt
         fi
 }
@@ -724,7 +721,7 @@ function git_branch_status2(){
 }
 
 function border(){
-	for i in `seq 1 $1` 
+	for i in `seq 1 $1`
 		do
 		echo -n "-";
 		done
@@ -734,19 +731,18 @@ function git_stat(){
     line=$(border `echo 25+5+7+7+7+6|bc`)		# name file add del 5x|'s
 
     echo "$line"
-    printf "|%25s|%5s|%7s|%7s|%7s| \n" name files insert delete commit; 
+    printf "|%25s|%5s|%7s|%7s|%7s| \n" name files insert delete commit;
     echo "$line"
 
     for name in "Kesavan Muthuvel" "kmuthuvel" \
                  "Manjil" "Manjil ThapaMagar"
-    do 
+    do
         printf "|%25s|%5d" "$name" $(git shortlog -sn --author="$name"| awk '{s+=$1} END {print s}')
-        git log --shortstat --since="1 Jan, 2013" --author="$name" | 
-        grep -E "fil(e|es) changed" | 
-        awk '{files+=$1; inserted+=$4; deleted+=$6} END  {printf "|%7d|%7d|%7d|\n",  files,  inserted,  deleted   }'; 
-    done ; 
+        git log --shortstat --since="1 Jan, 2013" --author="$name" |
+        grep -E "fil(e|es) changed" |
+        awk '{files+=$1; inserted+=$4; deleted+=$6} END  {printf "|%7d|%7d|%7d|\n",  files,  inserted,  deleted   }';
+    done ;
     echo "$line"
-}
 
 function colors(){
 #   This file echoes a bunch of color codes to the
@@ -781,17 +777,17 @@ function get_updated_profile()
 {
         cd $HOME/bin;
         today=`date +%Y%m%d`
-        FILE_IN='.open.profile'; FILE_OUT="new.open.profile.$today";
+        FILE_IN='.profile.open'; FILE_OUT="new.profile.open.$today";
         echo "looking for latest updates"
         cmd_wget $FILE_IN $FILE_OUT;
         #echo -n 'running command:';msg2 -b "$CMD_WGET";
         `$CMD_WGET`
 
-        new_version=`grep 'OPEN_PROFILE_VERSION' new.open.profile.$today`
+        new_version=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today`
 
         if [[ $? -ne 0 ]] ; then new_version=0.0 ;              # no version history , so start fresh
         else
-                INX=`grep 'OPEN_PROFILE_VERSION' new.open.profile.$today | head -1 | awk  '{printf("%s",$1)}'`
+                INX=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today | head -1 | awk  '{printf("%s",$1)}'`
                 new_version=`echo $INX | tr = \ | awk '{printf $2}'`
         fi
 
@@ -808,12 +804,12 @@ function get_updated_profile()
                 echo
                 if [ $choice == "y" ] ; then {
                         echo updating the profile
-                        mv .open.profile .open.profile.bkup.`date +%Y%m%d`
-                        mv new.open.profile.$today .open.profile ; chmod a+x .open.profile
+                        mv .profile.open .profile.open.bkup.`date +%Y%m%d`
+                        mv new.profile.open.$today .profile.open ; chmod a+x .profile.open
                         echo "OPEN_PROFILE updated to OPEN_PROFILE_VERSION:$new_version"
-                        echo "your old profile backuped at .open.profile.bkup.`date +%Y%m%d`"
+                        echo "your old profile backuped at .profile.open.bkup.`date +%Y%m%d`"
                         echo "save your work,logout & login for update"
-                        . ~/bin/.open.profile
+                        . ~/bin/.profile.open
                 }
                 else
                         echo "Okay.You've some urgent work.Will update later"
