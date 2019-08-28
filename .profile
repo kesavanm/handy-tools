@@ -36,7 +36,8 @@ elif [ -f $HOME_ALT/bin/.profile.open ]; then
 	dots $y " loaded successfully from (~/bin)"
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
-	dots_r $z " failed to load. please check!!!  `tput setaf 1`[FAIL]" ; echo
+	dots $y " failed to load. (default path:or ~/bin or $HOME_ALT/bin)!please check!!!"
+	dots_r $z "`tput setaf 1`[FAIL]"; echo
 fi
 
 #2 Get the aliases and functions for WORK
@@ -44,14 +45,15 @@ tput sgr0;
 dots $x "Checking for .profile.work " ;
 if [ -f ~/bin/.profile.work ]; then
 	source ~/bin/.profile.work
-	dots $y " loaded successfilly from (~/bin)"
+	dots $y " loaded successfully from (~/bin)"
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 elif [ -f $HOME_ALT/bin/.profile.work ]; then
     source $HOME_ALT/bin/.profile.work
-	dots $y " loaded successfilly (from $HOME_ALT)"
+	dots $y " loaded successfully (from $HOME_ALT)"
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
-	dots_r $z " failed to load. please check!!!  `tput setaf 1`[FAIL]" ; echo
+	dots $y " failed to load. (default path:or ~/bin or $HOME_ALT/bin)! please check!!!"
+	dots_r $z "`tput setaf 1`[FAIL]"; echo
 fi
 
 #3 Git Completion
@@ -59,10 +61,11 @@ tput sgr0;
 dots $x "Checking for .git-completion " ;
 if [ -f $HANDY/bin/.git-completion.bash ]; then
     source $HANDY/bin/.git-completion.bash
-	dots $y " loaded successfilly from ($HANDY/bin)"
+	dots $y " loaded successfully from ($HANDY/bin)"
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
-	dots_r $z " failed to load. please check!!!  `tput setaf 1`[FAIL]" ; echo
+	dots $y " failed to load. (default path: $HANDY/bin)! please check!!!"
+	dots_r $z "`tput setaf 1`[FAIL]"; echo
 fi
 
 #4 fizzy-finder
@@ -70,10 +73,11 @@ tput sgr0;
 dots $x "Checking for .fzf.bash " ;
 if [ -f $HOME_ALT/.fzf.bash ]; then
     source $HOME_ALT/.fzf.bash
-	dots $y " loaded successfilly from ($HANDY/bin)"
+	dots $y " loaded successfully from ($HANDY/bin)"
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
-	dots_r $z " failed to load. please check!!!  `tput setaf 1`[FAIL]" ; echo
+	dots $y " failed to load.(default path: $HANDY/bin)! please check!!!"
+	dots_r $z "`tput setaf 1`[FAIL]"; echo
 fi
 
 #4.5 git-heart-fzf 
@@ -85,7 +89,8 @@ if [ -f $HANDY/git-heart-fzf/functions.sh ]; then
 	dots   $y " loaded successfully from ($HANDY/git-heart-fzf) "
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
-	dots_r $z " failed to load. please check!!!  `tput setaf 1`[FAIL]" ; echo
+	dots $y " failed to load.(default path: $HANDY/git-heart-fzf)! please check!!!"
+	dots_r $z "`tput setaf 1`[FAIL]"; echo
 fi
 
 tput sgr0;
