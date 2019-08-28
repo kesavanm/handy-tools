@@ -19,9 +19,10 @@ HANDY="$HOME/handy-tools"
 #https://unix.stackexchange.com/questions/470972/printf-to-n-column
 dots(){ printf "%s" "$2"; printf "%.0s." $( seq $(($1-${#2})) ); }
 dots_r(){ printf "%.0s." $( seq $(($1-${#2})) );printf "%s" "$2";  }
-x=$(echo `tput cols`-130|bc)
-y=$(echo `tput cols`-157|bc)
-z=$(echo `tput cols`-187|bc)
+
+x=$(printf '%.0f\n'  $(echo "`tput cols`*.24"|bc))
+y=$(printf '%.0f\n'  $(echo "`tput cols`*.56"|bc))
+z=$(printf '%.0f\n'  $(echo "`tput cols`*.20"|bc))
 
 #1 Get the aliases and functions from OPEN
 tput sgr0;
@@ -35,8 +36,7 @@ elif [ -f $HOME_ALT/bin/.profile.open ]; then
 	dots $y " loaded successfully from (~/bin)"
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
-	printf "%40s\n" " "
-	dots_r 50 " failed to load. please check!!!  `tput setaf 1`[FAIL]" ; echo
+	dots_r $z " failed to load. please check!!!  `tput setaf 1`[FAIL]" ; echo
 fi
 
 #2 Get the aliases and functions for WORK
