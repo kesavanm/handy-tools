@@ -2,7 +2,7 @@
 # .profile for development environment where `git` and other tools avail
 
 HOME_ALT="$HOME"
-HOME_ALT="/home/kmuthuvel" #let others enjoy the rain ; .profile wont work on others sessions
+#HOME_ALT="/home/kmuthuvel" #let others enjoy the rain ; .profile wont work on others sessions
 HANDY="$HOME/handy-tools"
 
 #1 Get the aliases and functions from OPEN
@@ -109,7 +109,7 @@ export LS_COLORS="no=00:fi=00:di=00;34:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd
 #$(command -v cmatrix)
 #loaded_open_profile ;
 #show_weather ;
-
+good_morning ;
 #echo -ne $(cat .eye | sed  's/$/\\n/' | sed 's/ /\\a /g')
 
 
