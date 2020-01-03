@@ -56,6 +56,11 @@ else
 	dots_r $z "`tput setaf 1`[FAIL]"; echo
 fi
 
+#3.0 Ensure submodules loaded
+cd $HANDY
+git submodule update --init --recursive
+cd -
+
 #3 Git Completion
 tput sgr0;
 dots $x "Checking for .git-completion " ;
@@ -71,12 +76,12 @@ fi
 #4 fizzy-finder
 tput sgr0;
 dots $x "Checking for .fzf.bash " ;
-if [ -f $HOME_ALT/.fzf.bash ]; then
-    source $HOME_ALT/.fzf.bash
-	dots $y " loaded successfully from ($HANDY/bin)"
+if [ -f $HANDY/fzf/.fzf.bash ]; then
+    source $HANDY/fzf/.fzf.bash
+	dots $y " loaded successfully from ($HANDY/fzf)"
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
-	dots $y " failed to load.(default path: $HANDY/bin)! please check!!!"
+	dots $y " failed to load.(default path: $HANDY/fzf)! please check!!!"
 	dots_r $z "`tput setaf 1`[FAIL]"; echo
 fi
 
