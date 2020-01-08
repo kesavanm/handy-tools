@@ -668,12 +668,16 @@ function parse_git_branch () {
         if [ -z "$BRANCH" ]; then
                 echo "" ;
         else
-                $(git status | grep "nothing to commit" > /dev/null 2>&1;)
+            if [ "$GIT_REFRESH" -eq "0"  ]; then
+                    msg2 -e "[$BRANCH]"
+            else
+                $( git status | grep "nothing to commit" > /dev/null 2>&1;)
                 if [ "$?" -eq "0" ]; then
                         msg2 -g "($BRANCH)"
                 else
                         msg2 -e "{$BRANCH}"
                 fi
+            fi
         fi
 }
 
@@ -1058,6 +1062,7 @@ function good_morning(){
     zip=77477
   fi
 
+  GIT_REFRESH=1     # change to 0 if you git is too big & facing slow due to Refresh index: 100% (17649/17649), done.
 
   msg2 -g "Be lazy" ; msg2 -g "Be always double lazy"
   msg2 -o "You're using OPEN_PROFILE_VERSION : $OPEN_PROFILE_VERSION. run get_updated_profile for latest from internet"
