@@ -619,8 +619,10 @@ function teachme(){
 
 
 # DB functions
-
+alias dbconn="mysql -A -h  -u -p
 alias dbconn="mysql -A -h 123.567.89.10 -ukmuthuvel -pXXXXXXX"
+#mysql_config_editor set --login-path=$HOME/local.db --host=somewhere --user=root --password #setup in shell 1st
+alias dbconn="mysql --login-path=$HOME/local.db"
 
 function mydb(){
        if [ "$#" -eq "1" ]; then
