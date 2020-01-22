@@ -73,10 +73,10 @@ tput sgr0;
 dots $x "Checking for .fzf.bash " ;
 if [ -f $HOME_ALT/.fzf.bash ]; then
     source $HOME_ALT/.fzf.bash
-	dots $y " loaded successfully from ($HANDY/bin)"
+	dots $y " loaded successfully from ($HOME_ALT/bin)"
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
-	dots $y " failed to load.(default path: $HANDY/bin)! please check!!!"
+	dots $y " failed to load.(default path: $HOME_ALT/bin)! please check!!!"
 	dots_r $z "`tput setaf 1`[FAIL]"; echo
 fi
 
