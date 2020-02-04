@@ -619,7 +619,7 @@ function teachme(){
 
 
 # DB functions
-alias dbconn="mysql -A -h  -u -p
+alias dbconn="mysql -A -h  -u -p"
 alias dbconn="mysql -A -h 123.567.89.10 -ukmuthuvel -pXXXXXXX"
 #mysql_config_editor set --login-path=$HOME/local.db --host=somewhere --user=root --password #setup in shell 1st
 alias dbconn="mysql --login-path=$HOME/local.db"
@@ -642,10 +642,20 @@ function myq(){
 
 }
 
+function cols(){
+        if [ -z $DB ]; then  mydb; fi;
+        if [ "$#" -lt "1" ]; then
+                msg2 -o "Usage: $FUNCNAME <column_keyword> "
+        else
+            dbconn $DB -te "SELECT DISTINCT TABLE_SCHEMA,TABLE_NAME,COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+                    WHERE COLUMN_NAME LIKE '%$1%' AND TABLE_SCHEMA IN ('$DB') ";
+        fi
+}
+
 function mytables(){
         if [ -z $DB ]; then  mydb; fi;
         if [ "$#" -lt "1" ]; then
-                msg2 -o "Usage: $FUNCNAME TABLE "
+                msg2 -o "Usage: $FUNCNAME <table_keyword> "
         else
                 dbconn $DB -te "show tables like  '%$1%'" ;
         fi
