@@ -619,8 +619,9 @@ function teachme(){
 
 
 # DB functions
-
-#mysql_config_editor set --login-path=$HOME/local.db --host=123.45.67.890 --user=sonar --password=nothing
+alias dbconn="mysql -A -h  -u -p"
+alias dbconn="mysql -A -h 123.567.89.10 -ukmuthuvel -pXXXXXXX"
+#mysql_config_editor set --login-path=$HOME/local.db --host=somewhere --user=root --password #setup in shell 1st
 alias dbconn="mysql --login-path=$HOME/local.db"
 
 function mydb(){
@@ -641,10 +642,20 @@ function myq(){
 
 }
 
+function cols(){
+        if [ -z $DB ]; then  mydb; fi;
+        if [ "$#" -lt "1" ]; then
+                msg2 -o "Usage: $FUNCNAME <column_keyword> "
+        else
+            dbconn $DB -te "SELECT DISTINCT TABLE_SCHEMA,TABLE_NAME,COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+                    WHERE COLUMN_NAME LIKE '%$1%' AND TABLE_SCHEMA IN ('$DB') ";
+        fi
+}
+
 function mytables(){
         if [ -z $DB ]; then  mydb; fi;
         if [ "$#" -lt "1" ]; then
-                msg2 -o "Usage: $FUNCNAME TABLE "
+                msg2 -o "Usage: $FUNCNAME <table_keyword> "
         else
                 dbconn $DB -te "show tables like  '%$1%'" ;
         fi
@@ -669,12 +680,16 @@ function parse_git_branch () {
         if [ -z "$BRANCH" ]; then
                 echo "" ;
         else
-                $(git status | grep "nothing to commit" > /dev/null 2>&1;)
+            if [ "$GIT_REFRESH" -eq "0"  ]; then
+                    msg2 -e "[$BRANCH]"
+            else
+                $( git status | grep "nothing to commit" > /dev/null 2>&1;)
                 if [ "$?" -eq "0" ]; then
                         msg2 -g "($BRANCH)"
                 else
                         msg2 -e "{$BRANCH}"
                 fi
+            fi
         fi
 }
 
@@ -1059,6 +1074,7 @@ function good_morning(){
     zip=77477
   fi
 
+  GIT_REFRESH=1     # change to 0 if you git is too big & facing slow due to Refresh index: 100% (17649/17649), done.
 
   msg2 -g "Be lazy" ; msg2 -g "Be always double lazy"
   msg2 -o "You're using OPEN_PROFILE_VERSION : $OPEN_PROFILE_VERSION. run get_updated_profile for latest from internet"
