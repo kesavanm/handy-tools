@@ -1,2 +1,6 @@
 # Environment-specific config files
 .profile.open.sh
+
+# PhpStorm Config
+/.idea
+

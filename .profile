@@ -56,6 +56,11 @@ else
 	dots_r $z "`tput setaf 1`[FAIL]"; echo
 fi
 
+#3.0 Ensure submodules loaded
+cd $HANDY
+git submodule update --init --recursive
+cd -
+
 #3 Git Completion
 tput sgr0;
 dots $x "Checking for .git-completion " ;
@@ -73,10 +78,10 @@ tput sgr0;
 dots $x "Checking for .fzf.bash " ;
 if [ -f $HOME_ALT/.fzf.bash ]; then
     source $HOME_ALT/.fzf.bash
-	dots $y " loaded successfully from ($HOME_ALT/bin)"
+	dots $y " loaded successfully from ($HOME_ALT)"
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
-	dots $y " failed to load.(default path: $HOME_ALT/bin)! please check!!!"
+	dots $y " failed to load.(default path: $HOME_ALT)! please check install from $HANDY/fzf !!!"
 	dots_r $z "`tput setaf 1`[FAIL]"; echo
 fi
 
@@ -99,6 +104,10 @@ if [ -f $HOME_ALT/bin/vim ]; then       #choose user vim if so
     alias   vi="$HOME_ALT/bin/vim"
     alias  vim="$HOME_ALT/bin/vim"
 fi
+
+#Ubuntu 17.10 or newer, support for Wayland
+xhost +SI:localuser:root
+
 
 alias gvim="gvim -u ~/.gvimrc"
 export HOUSE="__̴ı̴̴ ̡͌l̡̡ ̡͌l̡*̡̡ ̴̡ı̴̴ ̡̡|̲͡ ̲▫̲͡ ̲͡π̲͡ ̲͡▫̲͡ ̲|̡̡ ̡ ̴̡ı̴̡ ̡͌l̡̡.___"
