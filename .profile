@@ -59,7 +59,7 @@ fi
 #3.0 Ensure submodules loaded
 cd $HANDY
 git submodule update --init --recursive
-cd -
+cd - >/dev/null
 
 #3 Git Completion
 tput sgr0;
