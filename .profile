@@ -2,7 +2,6 @@
 # .profile for development environment where `git` and other tools avail
 
 HOME_ALT="$HOME"
-#HOME_ALT="/home/kmuthuvel" #let others enjoy the rain ; .profile wont work on others sessions
 HANDY="$HOME/handy-tools"
 
 #1 Get the aliases and functions from OPEN
@@ -49,7 +48,7 @@ load_script() {
     echo
   elif [ -f $PATH_ALT/$script ]; then
     source $PATH_ALT/$script
-    dots $y " loaded successfully from ($HOME_ALT/bin) .... in $SECONDS seconds"
+    dots $y " loaded successfully from ($PATH_ALT/$script) .... in $SECONDS seconds"
     dots_r $z "$(tput setaf 2)[ OK ]"
     echo
   else
