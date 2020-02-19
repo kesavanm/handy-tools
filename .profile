@@ -17,116 +17,70 @@ HANDY="$HOME/handy-tools"
 #i
 
 #https://unix.stackexchange.com/questions/470972/printf-to-n-column
-dots(){ printf "%s" "$2"; printf "%.0s." $( seq $(($1-${#2})) ); }
-dots_r(){ printf "%.0s." $( seq $(($1-${#2})) );printf "%s" "$2";  }
+dots() {
+  printf "%s" "$2"
+  printf "%.0s." $(seq $(($1 - ${#2})))
+}
+dots_r() {
+  printf "%.0s." $(seq $(($1 - ${#2})))
+  printf "%s" "$2"
+}
 
-x=$(printf '%.0f\n'  $(echo "`tput cols`*.24"|bc))
-y=$(printf '%.0f\n'  $(echo "`tput cols`*.56"|bc))
-z=$(printf '%.0f\n'  $(echo "`tput cols`*.20"|bc))
+x=$(printf '%.0f\n' $(echo "$(tput cols)*.24" | bc))
+y=$(printf '%.0f\n' $(echo "$(tput cols)*.56" | bc))
+z=$(printf '%.0f\n' $(echo "$(tput cols)*.20" | bc))
 
-#1 Get the aliases and functions from OPEN
-tput sgr0;
-dots $x "Checking for .profile.open " ;
-SECONDS=0
-if [ -f ~/bin/.profile.open ]; then
-	source ~/bin/.profile.open
-	dots $y " loaded successfully from (~/bin) .... in $SECONDS seconds "
-	dots_r $z "`tput setaf 2`[ OK ]" ; echo
-elif [ -f $HOME_ALT/bin/.profile.open ]; then
-    source $HOME_ALT/bin/.profile.open
-	dots $y " loaded successfully from ($HOME_ALT/bin) .... in $SECONDS seconds"
-	dots_r $z "`tput setaf 2`[ OK ]" ; echo
-else
-	dots $y " failed to load. (default path:or ~/bin or $HOME_ALT/bin)!please check!!!"
-	dots_r $z "`tput setaf 1`[FAIL]"; echo
-fi
+load_script() {
+  PATH_MAIN=$2;  PATH_ALT=$3
+  IFS='##' read -r -a XYZ <<<$1
+  if [ "${#XYZ[@]}" -ge "2" ]; then
+    script="${XYZ[0]}" ; title="${XYZ[2]}"
+  else
+    script="${XYZ[0]}" ; title=$script
+  fi
 
-#2 Get the aliases and functions for WORK
-tput sgr0;
-dots $x "Checking for .profile.work " ;
-SECONDS=0
-if [ -f ~/bin/.profile.work ]; then
-	source ~/bin/.profile.work
-	dots $y " loaded successfully from (~/bin) .... in $SECONDS seconds "
-	dots_r $z "`tput setaf 2`[ OK ]" ; echo
-elif [ -f $HOME_ALT/bin/.profile.work ]; then
-    source $HOME_ALT/bin/.profile.work
-	dots $y " loaded successfully (from $HOME_ALT) .... in $SECONDS seconds "
-	dots_r $z "`tput setaf 2`[ OK ]" ; echo
-else
-	dots $y " failed to load. (default path:or ~/bin or $HOME_ALT/bin)! please check!!!"
-	dots_r $z "`tput setaf 1`[FAIL]"; echo
-fi
+  tput sgr0
+  dots $x "Checking for $title "
+  SECONDS=0
+  if [ -f $PATH_MAIN/$script ]; then
+    source $PATH_MAIN/$script
+    dots $y " loaded successfully from ($PATH_MAIN/$script) .... in $SECONDS seconds "
+    dots_r $z "$(tput setaf 2)[ OK ]"
+    echo
+  elif [ -f $PATH_ALT/$script ]; then
+    source $PATH_ALT/$script
+    dots $y " loaded successfully from ($HOME_ALT/bin) .... in $SECONDS seconds"
+    dots_r $z "$(tput setaf 2)[ OK ]"
+    echo
+  else
+    dots $y " failed to load. (default path: $PATH_MAIN/$script or $PATH_ALT/$script)!please check!!!"
+    dots_r $z "$(tput setaf 1)[FAIL]"
+    echo
+  fi
+}
 
 #3.0 Ensure submodules loaded
 cd $HANDY
 git submodule update --init --recursive
 cd - >/dev/null
 
-#3 Git Completion
-tput sgr0;
-dots $x "Checking for .git-completion " ;
-SECONDS=0
-if [ -f $HANDY/bin/.git-completion.bash ]; then
-    source $HANDY/bin/.git-completion.bash
-	dots $y " loaded successfully from ($HANDY/bin) .... in $SECONDS seconds "
-	dots_r $z "`tput setaf 2`[ OK ]" ; echo
-else
-	dots $y " failed to load. (default path: $HANDY/bin)! please check!!!"
-	dots_r $z "`tput setaf 1`[FAIL]"; echo
-fi
+#load_script "script" "PATH_MAIN" "PATH_ALT"
+load_script ".profile.open" "$HOME/bin" "$HOME_ALT/bin"                                #1 Aliases & functions from OPEN
+load_script ".profile.work" "$HOME/bin" "$HOME_ALT/bin"                                #2 Aliases & functions from WORK
+load_script ".git-completion.bash" "$HANDY/bin"                                        #3 Git Completion
+load_script "bash_completion" "/usr/share/bash-completion"                             #4 bash_completion from the OS
+load_script "git##git completion from the OS" "/usr/share/bash-completion/completions" #5 git completion from the OS
+load_script ".fzf.bash##fizzy-finder" "$HOME_ALT"                                      #6 fizzy-finder
+load_script "functions.sh##.git-heart-fzf" "$HANDY/git-heart-fzf"                      #7 .git-heart-fzf
 
-#3.5 bash & git completion from the OS
-tput sgr0;
-dots $x "Checking for bash completion as well" ;
-SECONDS=0
-test -f /usr/share/bash-completion/bash_completion && . $_
-test -f /usr/share/bash-completion/completions/git && . $_
-
-if [ $? -eq '0' ]; then
-	dots $y " loaded successfully from (/usr/share/bash-completion) .... in $SECONDS seconds "
-	dots_r $z "`tput setaf 2`[ OK ]" ; echo
-else
-	dots $y " failed to load. (default path: /usr/share/bash-completion)! please check!!!"
-	dots_r $z "`tput setaf 1`[FAIL]"; echo
-fi
-
-#4 fizzy-finder
-tput sgr0;
-dots $x "Checking for .fzf.bash " ;
-SECONDS=0
-if [ -f $HOME_ALT/.fzf.bash ]; then
-    source $HOME_ALT/.fzf.bash
-	dots $y " loaded successfully from ($HOME_ALT) .... in $SECONDS seconds "
-	dots_r $z "`tput setaf 2`[ OK ]" ; echo
-else
-	dots $y " failed to load.(default path: $HOME_ALT)! please check install from $HANDY/fzf !!!"
-	dots_r $z "`tput setaf 1`[FAIL]"; echo
-fi
-
-#4.5 git-heart-fzf 
-tput sgr0;
-dots $x "Checking for .git-heart-fzf " ;
-SECONDS=0
-if [ -f $HANDY/git-heart-fzf/functions.sh ]; then
-    source  $HANDY/git-heart-fzf/functions.sh
-	dots   $y " loaded successfully from ($HANDY/git-heart-fzf) .... in $SECONDS seconds "
-	dots_r $z "`tput setaf 2`[ OK ]" ; echo
-else
-	dots $y " failed to load.(default path: $HANDY/git-heart-fzf)! please check!!!"
-	dots_r $z "`tput setaf 1`[FAIL]"; echo
-fi
-
-tput sgr0;
 #5 - misc/rest
-if [ -f $HOME_ALT/bin/vim ]; then       #choose user vim if so
-    alias   vi="$HOME_ALT/bin/vim"
-    alias  vim="$HOME_ALT/bin/vim"
+if [ -f $HOME_ALT/bin/vim ]; then #choose user vim if so
+  alias vi="$HOME_ALT/bin/vim"
+  alias vim="$HOME_ALT/bin/vim"
 fi
 
 #Ubuntu 17.10 or newer, support for Wayland
 xhost +SI:localuser:root
-
 
 alias gvim="gvim -u ~/.gvimrc"
 export HOUSE="__̴ı̴̴ ̡͌l̡̡ ̡͌l̡*̡̡ ̴̡ı̴̴ ̡̡|̲͡ ̲▫̲͡ ̲͡π̲͡ ̲͡▫̲͡ ̲|̡̡ ̡ ̴̡ı̴̡ ̡͌l̡̡.___"
@@ -137,10 +91,8 @@ export LS_COLORS="no=00:fi=00:di=00;34:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd
 #$(command -v cmatrix)
 #loaded_open_profile ;
 #show_weather ;
-good_morning ;
+good_morning
 #echo -ne $(cat .eye | sed  's/$/\\n/' | sed 's/ /\\a /g')
-
 
 #([ -f $HOME_ALT/.fzf.bash ] && source $HOME_ALT/.fzf.bash)                              && (msg -ng "[okay]"; echo " .fzf.bash loaded successfully" ) || (msg -nw "[fail]"; echo "\`fzf\` not found...")
 #([ -f $HANDY/git-heart-fzf/functions.sh ] && source $HANDY/git-heart-fzf/functions.sh)  && (msg -ng "[okay]"; echo " git-heart-fzf loaded "          ) || (msg -nw "[fail]"; echo " \`git-heart-fzf\` not found...")
-
