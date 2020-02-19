@@ -27,13 +27,14 @@ z=$(printf '%.0f\n'  $(echo "`tput cols`*.20"|bc))
 #1 Get the aliases and functions from OPEN
 tput sgr0;
 dots $x "Checking for .profile.open " ;
+SECONDS=0
 if [ -f ~/bin/.profile.open ]; then
 	source ~/bin/.profile.open
-	dots $y " loaded successfully from (~/bin)"
+	dots $y " loaded successfully from (~/bin) .... in $SECONDS seconds "
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 elif [ -f $HOME_ALT/bin/.profile.open ]; then
     source $HOME_ALT/bin/.profile.open
-	dots $y " loaded successfully from (~/bin)"
+	dots $y " loaded successfully from ($HOME_ALT/bin) .... in $SECONDS seconds"
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
 	dots $y " failed to load. (default path:or ~/bin or $HOME_ALT/bin)!please check!!!"
@@ -43,13 +44,14 @@ fi
 #2 Get the aliases and functions for WORK
 tput sgr0;
 dots $x "Checking for .profile.work " ;
+SECONDS=0
 if [ -f ~/bin/.profile.work ]; then
 	source ~/bin/.profile.work
-	dots $y " loaded successfully from (~/bin)"
+	dots $y " loaded successfully from (~/bin) .... in $SECONDS seconds "
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 elif [ -f $HOME_ALT/bin/.profile.work ]; then
     source $HOME_ALT/bin/.profile.work
-	dots $y " loaded successfully (from $HOME_ALT)"
+	dots $y " loaded successfully (from $HOME_ALT) .... in $SECONDS seconds "
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
 	dots $y " failed to load. (default path:or ~/bin or $HOME_ALT/bin)! please check!!!"
@@ -64,21 +66,38 @@ cd - >/dev/null
 #3 Git Completion
 tput sgr0;
 dots $x "Checking for .git-completion " ;
+SECONDS=0
 if [ -f $HANDY/bin/.git-completion.bash ]; then
     source $HANDY/bin/.git-completion.bash
-	dots $y " loaded successfully from ($HANDY/bin)"
+	dots $y " loaded successfully from ($HANDY/bin) .... in $SECONDS seconds "
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
 	dots $y " failed to load. (default path: $HANDY/bin)! please check!!!"
 	dots_r $z "`tput setaf 1`[FAIL]"; echo
 fi
 
+#3.5 bash & git completion from the OS
+tput sgr0;
+dots $x "Checking for bash completion as well" ;
+SECONDS=0
+test -f /usr/share/bash-completion/bash_completion && . $_
+test -f /usr/share/bash-completion/completions/git && . $_
+
+if [ $? -eq '0' ]; then
+	dots $y " loaded successfully from (/usr/share/bash-completion) .... in $SECONDS seconds "
+	dots_r $z "`tput setaf 2`[ OK ]" ; echo
+else
+	dots $y " failed to load. (default path: /usr/share/bash-completion)! please check!!!"
+	dots_r $z "`tput setaf 1`[FAIL]"; echo
+fi
+
 #4 fizzy-finder
 tput sgr0;
 dots $x "Checking for .fzf.bash " ;
+SECONDS=0
 if [ -f $HOME_ALT/.fzf.bash ]; then
     source $HOME_ALT/.fzf.bash
-	dots $y " loaded successfully from ($HOME_ALT)"
+	dots $y " loaded successfully from ($HOME_ALT) .... in $SECONDS seconds "
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
 	dots $y " failed to load.(default path: $HOME_ALT)! please check install from $HANDY/fzf !!!"
@@ -87,11 +106,11 @@ fi
 
 #4.5 git-heart-fzf 
 tput sgr0;
-
 dots $x "Checking for .git-heart-fzf " ;
+SECONDS=0
 if [ -f $HANDY/git-heart-fzf/functions.sh ]; then
     source  $HANDY/git-heart-fzf/functions.sh
-	dots   $y " loaded successfully from ($HANDY/git-heart-fzf) "
+	dots   $y " loaded successfully from ($HANDY/git-heart-fzf) .... in $SECONDS seconds "
 	dots_r $z "`tput setaf 2`[ OK ]" ; echo
 else
 	dots $y " failed to load.(default path: $HANDY/git-heart-fzf)! please check!!!"
