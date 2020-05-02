@@ -253,6 +253,14 @@ function grepnln(){             # Grep it but Don't follow Symb Links
     fi
 }
 
+function grepfn(){             # Grep with class and function
+    if [ "$#" -ne "2" ]; then
+        msg2 -e "Usage: grepfn <pattern> <file_path_no.wild\card>"
+    else
+        grep -H -n -e "class .*" -e "function.*[(]" -e $1 $2 | grep -B1 -e  'class .*' -B1 -e $1
+    fi
+}
+
 function extract() {    # Handy Extract Program
     if [ -f $1 ] ; then
         case $1 in
@@ -1047,7 +1055,7 @@ f_ps1 ;
 HISTTIMEFORMAT="%F %T "
 
 #fzf
-alias fzf="$HOME/.fzf/bin/fzf"
+alias fzf="$HANDY/fzf/bin/fzf"
 alias  fz="fzf --preview 'cat {} 2> /dev/null | head -50'"          # Expose binary
 alias  fz='fzf --preview
             "[[ $(file --mime {}\) =~ binary ]] &&  echo {} is a binary file ||
