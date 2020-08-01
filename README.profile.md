@@ -2,12 +2,19 @@
 
 #### Additional deps:
 
+	#basic tools
 	sudo apt install sl
 	sudo apt install autoconf
 	sudo apt install git
 	sudo apt install curl
-	sudo apt-get install gedit-plugins
+	sudo apt install gedit-plugins
 	sudo apt install python3-markdown
+
+	# media tools
+	sudo apt install ffmpeg
+
+	# productivity
+	sudo apt install gvim
 
 #### gedit extra plugins:
 
