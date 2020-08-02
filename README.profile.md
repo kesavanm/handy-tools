@@ -2,37 +2,24 @@
 
 #### Additional deps:
 
-	# basic life
+	# basic
 	sudo apt update
-	sudo apt install autoconf
-	sudo apt install build-essential
-	sudo apt install curl
-	sudo apt install dos2unix
-	sudo apt install gcc
-	sudo apt install git
-	sudo apt install libncurses-dev
-	sudo apt install make
-	sudo apt install make-guile
-	sudo apt install wget
-	sudo apt install curl
-	sudo apt install x11-xserver-utils
 
-	# media tools
+	# tools
+	sudo apt install autoconf build-essential curl dos2unix gcc git
+	sudo apt install libncurses-dev make make-guile wget x11-xserver-utils
+
+	# media
 	sudo apt install ffmpeg
 
 	# productivity
 	sudo apt install gvim
 
 	# parallel universe
-	sudo apt install sl
-	sudo apt install bat
-	sudo apt install fortune cowsay
-	sudo apt install lolcat
+	sudo apt install bat cowsay fortune lolcat sl
 
 	# misc
-	sudo apt install gedit-plugins
-	sudo apt install python3-markdown
-
+	sudo apt install gedit-plugins python3-markdown
 
 #### `gedit` extra plugins:
 
