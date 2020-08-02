@@ -7,6 +7,7 @@
 	sudo apt install autoconf
 	sudo apt install build-essential
 	sudo apt install curl
+	sudo apt install dos2unix
 	sudo apt install gcc
 	sudo apt install git
 	sudo apt install libncurses-dev
