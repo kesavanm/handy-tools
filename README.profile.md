@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-###Requirements
-
-#### Additional deps:
-
-	#basic tools
-	sudo apt install sl
-	sudo apt install autoconf
-	sudo apt install git
-	sudo apt install curl
-	sudo apt install gedit-plugins
-	sudo apt install python3-markdown
-=======
 ### Requirements
 
 #### Additional deps:
@@ -28,7 +15,6 @@
 	sudo apt install wget
 	sudo apt install curl
 	sudo apt install x11-xserver-utils
->>>>>>> origin/master
 
 	# media tools
 	sudo apt install ffmpeg
@@ -36,9 +22,6 @@
 	# productivity
 	sudo apt install gvim
 
-<<<<<<< HEAD
-#### gedit extra plugins:
-=======
 	# parallel universe
 	sudo apt install sl
 	sudo apt install bat
@@ -51,7 +34,6 @@
 
 
 #### `gedit` extra plugins:
->>>>>>> origin/master
 
 few of my favorite plugins to increase gedit
 
