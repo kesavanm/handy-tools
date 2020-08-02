@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.702
+OPEN_PROFILE_VERSION=1.800
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -98,6 +98,25 @@ function sl_build()
 
 if [ -z $(command -v sl) ]; then
   sl_build
+fi
+
+#fzf....
+function fzf_build()
+{
+  if [ -f $HANDY/fzf/install ]; then
+      echo "found $HANDY/fzf/install ... setting up fzf"
+      . $HANDY/fzf/install
+  else
+      echo "HANDY not found ... cloning up fzf"
+      git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+      . ~/.fzf/install
+  fi
+
+  cd $HOME
+}
+
+if [ ! -f $HOME/.fzf.bash ]; then
+  fzf_build
 fi
 
 #CROSS SALE `HANDY-TOOLS`
@@ -1092,4 +1111,6 @@ function good_morning(){
   #Get into MATRIX
   #/home/kmuthuvel/bin/cmatrix -s
   $(command -v cmatrix)
+
+  fortune|cowsay |lolcat
 }
