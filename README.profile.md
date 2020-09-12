@@ -1,22 +1,27 @@
-###Requirements
+### Requirements
 
 #### Additional deps:
 
-	#basic tools
-	sudo apt install sl
-	sudo apt install autoconf
-	sudo apt install git
-	sudo apt install curl
-	sudo apt install gedit-plugins
-	sudo apt install python3-markdown
+	# basic
+	sudo apt update
 
-	# media tools
+	# tools
+	sudo apt install autoconf build-essential curl dos2unix gcc git
+	sudo apt install libncurses-dev make make-guile wget x11-xserver-utils
+
+	# media
 	sudo apt install ffmpeg
 
 	# productivity
 	sudo apt install gvim
 
-#### gedit extra plugins:
+	# parallel universe
+	sudo apt install bat cowsay fortune lolcat sl
+
+	# misc
+	sudo apt install gedit-plugins python3-markdown
+
+#### `gedit` extra plugins:
 
 few of my favorite plugins to increase gedit
 
