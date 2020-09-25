@@ -1088,6 +1088,8 @@ function f_ps1(){
         fi
 
         #FG & BG
+        # Recommended font : DejaVu Sans Mono for Powerline.ttf
+        # FIXME No need of Branching symbol on non-git dir
         if [ "$ps1_status" == 'wow' ] ; then
           SEGMENT_SEPARATOR=''
           RIGHT_SEPARATOR=''
@@ -1095,12 +1097,13 @@ function f_ps1(){
           RIGHT_SUBSEG=''
           BRANCH_SIGN='' #' hf1 ●
 
-          PS_USER_HOST="$WHITE$BG_GREEN\u@\h$GREEN$BG_BLUE"
-                PS_PWD="$BOLD_WHITE\w$BLUE$BG_CYAN"
-               PS_DATE="$BOLD_WHITE\D{%F %T}$CYAN$BG_YELLOW"
-               PS_BRNH="$BOLD_WHITE$BRANCH_SIGN\$(parse_git_branch_raw)$BG_YELLOW"      # "●" # *DD*  "
-                PS_END="$YELLOW" # "●" # *DD*  "
-          PS1="$PS_USER_HOST$PS_PWD$PS_DATE$PS_BRNH$PS_END$NO_COLOUR"
+          PS_USER="$BG_GREEN\u@\h$GREEN"
+          PS_PATH="$BG_BLUE$BOLD_WHITE\w$BLUE"
+          PS_DATE="$BG_CYAN$BOLD_WHITE\D{%F %T}$CYAN"
+          PS_BRNH="$BG_YELLOW$BOLD_WHITE$BRANCH_SIGN\$(parse_git_branch_raw)$YELLOW"      # "●" # *DD*  "
+          PS_LAST="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n"
+
+          PS1="$PS_LAST$PS_USER$PS_PATH$PS_DATE$PS_BRNH$NO_COLOUR"
         fi
 }
 
