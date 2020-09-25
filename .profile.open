@@ -1057,7 +1057,7 @@ function ps1-stat(){
 function f_ps1(){
 
         if [ -z "$ps1_status" ] ; then
-                export ps1_status='normal';
+                export ps1_status='wow';
         fi
 
        # [short|sweet|normal|full|auto|wow]
@@ -1112,11 +1112,8 @@ HISTTIMEFORMAT="%F %T "
 
 #fzf
 alias fzf="$HANDY/fzf/bin/fzf"
-alias  fz="fzf --preview 'cat {} 2> /dev/null | head -50'"          # Expose binary
-alias  fz='fzf --preview
-            "[[ $(file --mime {}\) =~ binary ]] &&  echo {} is a binary file ||
-            (highlight -O ansi -l {} || coderay {} || rougify {} ||  cat {}) 2> /dev/null |
-            head -500"'
+alias  fz="fzf --preview 'cat {} 2> /dev/null | head -50'" #FIXME Expose binary
+alias  fz="fzf --preview 'bat --color=always {} 2> /dev/null | head -50'"
 alias fz2="fzf --height 40% --reverse --preview 'file {}' --preview-window down:1"
 
 shopt -s nocaseglob # to match case insensitive patterns with ls?
