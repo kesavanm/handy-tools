@@ -1,7 +1,7 @@
 ### Requirements
 
 #### Additional deps:
-
+```sh
 	# basic
 	sudo apt update
 
@@ -17,10 +17,11 @@
 
 	# parallel universe
 	sudo apt install bat cowsay fortune lolcat sl
+	sudo apt install sysvbanner
 
 	# misc
 	sudo apt install gedit-plugins python3-markdown
-
+````
 #### `gedit` extra plugins:
 
 few of my favorite plugins to increase gedit
