@@ -2,7 +2,6 @@
 
 #### Additional deps:
 ```sh
-
 	# basic
 	sudo apt update
 
@@ -26,6 +25,7 @@
 	# misc
 	sudo apt install gedit-plugins python3-markdown
 ```
+
 #### `gedit` extra plugins:
 
 few of my favorite plugins to increase gedit

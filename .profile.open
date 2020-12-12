@@ -1103,7 +1103,7 @@ function f_ps1(){
           PS_BRNH="$BG_YELLOW$BOLD_WHITE$BRANCH_SIGN\$(parse_git_branch_raw)$YELLOW"      # "●" # *DD*  "
           PS_LAST="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n"
 
-          PS1="$PS_LAST$PS_USER$PS_PATH$PS_DATE$PS_BRNH$NO_COLOUR"
+          PS1="$PS_LAST$PS_USER$PS_PATH$PS_DATE$PS_BRNH$NO_COLOUR\n\$"
         fi
 }
 
