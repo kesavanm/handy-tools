@@ -16,7 +16,7 @@
 	sudo apt install gvim
 
 	# parallel universe
-	sudo apt install bat cowsay fortune lolcat sl
+	sudo apt install bat cowsay fortune lolcat sl toilet
 
 	# misc
 	sudo apt install gedit-plugins python3-markdown
