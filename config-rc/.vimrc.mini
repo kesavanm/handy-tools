@@ -1,0 +1,125 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"   eVim/gVim - mini .vimrc setup
+"   *****************************
+"    ✔  1 basic .vimrc
+"    ✔  2 DejaVuSansMono font & ui
+"    ✔  3 restore previous session & layout [tab,windows]
+"    ✔  4 tmp dir to ~
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"impressing ui
+colorscheme desert
+set guifont=DejaVu\ Sans\ Mono:h9
+
+set mouse=a
+set ttymouse=sgr
+
+
+"preserve & restore session
+autocmd! VimLeave * mksession!			"Automatically save the session when leaving Vim
+autocmd! VimEnter * source ~/Session.vim	"Automatically load the session when entering vim
+autocmd VimLeavePre * mksession!
+set directory=~/.vim/tmp
+
+" stop insert asap
+autocmd VimEnter * stopinsert
+set noinsertmode
+
+"key stuff
+set number
+set nocompatible				" use vim defaults (much better!)
+syntax on 					" turning on syntax
+
+"search
+set ignorecase
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+"file encoding & type def
+set enc=utf-8
+set fileencoding=utf-8
+set fileencodings=ucs-bom,utf8,prc
+set paste
+
+filetype plugin on
+filetype indent on
+
+set switchbuf=useopen,usetab
+set laststatus=2            			" always a status line
+
+tab ball 
+
+" GUI options that need to be set here first
+" Remove extra, useless button bar.
+if has("gui_running")
+	set guioptions+=m  	"menubar
+	set guioptions+=T	"Toolbar
+	set guitablabel=%N\ %t\ %M
+	set lines=999 columns=999	"full screen 
+endif
+
+call plug#begin('~/.vim/plugged')
+	"Plug 'junegunn/vim-easy-align'
+	Plug 'johngrib/vim-game-snake'
+"	Plug 'tybenz/vimdeck'
+	Plug 'sotte/presenting.vim'
+call plug#end()
+
+"http://inside.github.io/vim-presentation - VIM learning 
+"au FileType rst let b:presenting_slide_separator = '\v(^|\n)\~{4,}'
+"vDebug
+"set pythonthreedll=C:\Users\kmuthuvel\AppData\Local\Programs\Python\Python38\python38.dll
+"set pythonthreehome=C:\Users\kmuthuvel\AppData\Local\Programs\Python\Python38
+
+"let g:vdebug_options = {
+"\   'path_maps': {
+"\       "/mnt/c/Users/kmuthuvel/workspace/sonar2":"C:\\Users\\kmuthuvel\\workspace\\sonar2",
+"\   },
+"\}
+
+set bs=2                    " allow backspacing over everything in insert mode
+set history=500
+"set statusline=%<%f%n%m%r%y%=%b\ 0x%B\ \ %l,%c%V\ %P
+
+" Status Line {
+       set laststatus=2                             " always show statusbar
+       set statusline=
+       set statusline+=%-10.3n\                     " buffer number
+       set statusline+=%f\                          " filename
+       set statusline+=%h%m%r%w                     " status flags
+       set statusline+=\[%{strlen(&ft)?&ft:'none'}] " file type
+       set statusline+=%=                           " right align remainder
+       set statusline+=0x%-8B                       " character value
+       set statusline+=%-14(%l,%c%V%)               " line, character
+       set statusline+=%<%P                         " file position
+"}
+
+"let g:netrw_banner = 0
+"let g:netrw_liststyle = 3
+"let g:netrw_browse_split = 4
+"let g:netrw_altv = 1
+"let g:netrw_winsize = 25
+"augroup ProjectDrawer
+  "autocmd!
+  "autocmd VimEnter * :Vexplore
+"augroup END
+"
+"autocmd BufWinEnter * silent :Vexplore
+" 
+"autocmd VimEnter * :tabnew
+
+"Plugin stuff
+"let g:NERDTreeDirArrowExpandable = '▸'
+"let g:NERDTreeDirArrowCollapsible = '▾'
+
+" 8/25/2014
+"execute pathogen#infect()
+"filetype plugin indent on
+"
+"
+"set statusline=\ %f%m%r%h%w\ %=%({%{&ff}\|%{(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\")}%k\|%Y}%)\ %([%l,%v][%p%%]\ %)
+"
+"nnoremap n nzz
