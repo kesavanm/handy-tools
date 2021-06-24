@@ -55,15 +55,24 @@ call plug#begin('~/.vim/plugged')
 	Plug 'vim-airline/vim-airline'
 	Plug 'vim-airline/vim-airline-themes'
 		
-	" glow in night
+	" glow in the night
 	Plug 'RRethy/vim-illuminate' " illuminate the variables under cursor
 	
 	" bring more themes
 	Plug 'altercation/vim-colors-solarized'
 	Plug 'fneu/breezy'
 	Plug 'dracula/vim'
+	
+	"travel time
+	Plug 'mbbill/undotree'
 
+	Plug 'mhinz/vim-grepper'	" lets grep the needle 
+	Plug 'jeetsukumaran/vim-buffersaurus'
+
+
+	"run the show
 	Plug 'sotte/presenting.vim'
+
 
 call plug#end()
 
@@ -85,7 +94,7 @@ set t_Co=256			" IMP: more colors, savei my life
 set mouse=a			" set mouse automatically
 set ttymouse=sgr		" use for scrolling too
 
-tab ball			" tabs over buffer view
+"tab ball			" tabs over buffer view
 
 "TABLINE:
 
@@ -112,6 +121,24 @@ let g:airline#extensions#tabline#show_tab_nr = 1
 let g:airline#extensions#tabline#show_tab_type = 1
 let g:airline#extensions#tagbar#enabled =1
 
+
+" TIME-TRAVEL
+" https://stackoverflow.com/questions/5700389/using-vims-persistent-undo#22676189
+" Put plugins and dictionaries in this dir (also on Windows)
+let vimDir = '$HOME/.vim'
+let &runtimepath.=','.vimDir
+
+" Keep undo history across sessions by storing it in a file
+if has('persistent_undo')
+    let myUndoDir = expand(vimDir . '/undodir')
+    " Create dirs
+    call system('mkdir ' . vimDir)
+    call system('mkdir ' . myUndoDir)
+    let &undodir = myUndoDir
+    set undofile
+endif
+
+
 " `GNU/screen` options
 if &term =~ '256color'
 " disable Background Color Erase (BCE) so that color schemes
@@ -119,7 +146,15 @@ if &term =~ '256color'
     set t_ut=
 endif
 
-
-
-
 set shortmess+=F
+
+
+
+"------  Buffer Navigation  ------
+" Ctrl Left/h & Right/l cycle between buffers
+noremap <silent> <C-left> :bprev<CR>
+noremap <silent> <C-h> :bprev<CR>
+noremap <silent> <C-right> :bnext<CR>
+noremap <silent> <C-l> :bnext<CR>
+
+
