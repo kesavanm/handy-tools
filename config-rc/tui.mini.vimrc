@@ -65,23 +65,23 @@ call plug#end()
 
 " ___________session #4 
 
+set mouse=a				" set mouse automatic; vim♡mouse
+set ttymouse=sgr			" use for scrolling too; xterm[2]
+
 "impressing ui
+set t_Co=256				" IMP: more colors, saved my life
+syntax enable
+colorscheme desert			" others: desert solarized breezy 
+"set cursorline 			" Don't make your Vim SLOW
+set colorcolumn=80			" never cross border
 set guifont=DejaVu\ Sans\ Mono:h9	" for native terminal
 					" for PuTTY DejaVuSansMonoForPowerline
-syntax enable
-
-colorscheme desert		" others: desert solarized breezy 
-"set cursorline 		" Don't make your Vim SLOW
-set colorcolumn=80		" never cross border
 
 "set background=dark
-"set termguicolors		" DANGER, this kills my term
-set t_Co=256			" IMP: more colors, savei my life
+"set termguicolors			" DANGER, this kills my term
 
-set mouse=a			" set mouse automatically
-set ttymouse=sgr		" use for scrolling too
 
-"tab ball			" tabs over buffer view
+"tab ball				" tabs over buffer view
 
 "TABLINE:
 
@@ -89,8 +89,6 @@ if exists(":AirlineRefresh")
 :AirlineRefresh
 endif
 
-"let g:airline#extensions#tabline#tabs_label = 'tabs'
-"let g:airline_theme='breezy'			" also: gruvbox simple seagull
 let g:airline_powerline_fonts = 1                                                                                                         
 let g:airline_section_b = '%{getcwd()}' 	" display CWD in statusline                                                
 
@@ -102,6 +100,8 @@ let g:airline#extensions#tabline#fnamecollapse = 1
 
 
 "let g:airline#extensions#tabline#buffers_label = 'buffers'
+"let g:airline#extensions#tabline#tabs_label = 'tabs'
+"let g:airline_theme='breezy'			" also: gruvbox simple seagull
 "let g:airline#extensions#tabline#fnamemod = ':t'
 "let g:airline#extensions#tabline#show_tab_count = 1
 "let g:airline#extensions#tabline#show_buffers = 1
