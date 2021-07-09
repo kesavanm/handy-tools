@@ -1,13 +1,10 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"   eVim/gVim - mini .vimrc setup
-"   *****************************
 "    ✔  1 basic .vimrc
 "    ✔  2 DejaVuSansMono font & ui
 "    ✔  3 restore previous session & layout [tab,windows]
 "    ✔  4 tmp dir to ~
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 "key stuff
 
 " ___________session #1 
@@ -37,13 +34,15 @@ filetype indent on
 
 set directory=~/.vim/tmp
 set laststatus=2            	" always a status line
+set undofile 
+set undodir=~/.vim/undo-dir	" TIME-TRAVEL :
 
 " stop insert asap
 autocmd VimEnter * stopinsert
 set noinsertmode
+set ambw=double
 
 " ___________session #3 
-
 call plug#begin('~/.vim/plugged')
 	Plug 'johngrib/vim-game-snake' 		" 90kids game
 	Plug 'johngrib/vim-game-code-break'
@@ -54,6 +53,11 @@ call plug#begin('~/.vim/plugged')
 	Plug 'RRethy/vim-illuminate' 		" illuminate the variables
 	Plug 'mbbill/undotree'			" travel time	
 	Plug 'jeetsukumaran/vim-buffersaurus'	" lets grep the needle 	
+	Plug 'preservim/nerdtree'		" NerdTree
+	Plug 'ryanoasis/vim-devicons'		" NerdTree icons
+	Plug 'ctrlpvim/ctrlp.vim'		" CtrlP the files
+	Plug 'junegunn/fzf.vim'			" FzF <3 vim
+	Plug 'junegunn/fzf',{ 'do': { -> fzf#install() } } " FzF <3 vim
 
 	" optional stuff to explore	
 	Plug 'sotte/presenting.vim'		" run the show	
@@ -64,7 +68,6 @@ call plug#begin('~/.vim/plugged')
 call plug#end()
 
 " ___________session #4 
-
 set mouse=a				" set mouse automatic; vim♡mouse
 set ttymouse=sgr			" use for scrolling too; xterm[2]
 
@@ -74,12 +77,11 @@ syntax enable
 colorscheme desert			" others: desert solarized breezy 
 "set cursorline 			" Don't make your Vim SLOW
 set colorcolumn=80			" never cross border
-set guifont=DejaVu\ Sans\ Mono:h9	" for native terminal
+"set guifont=DejaVu\ Sans\ Mono:h9	" for native terminal
 					" for PuTTY DejaVuSansMonoForPowerline
-
+					" DejaVuSansMonoNerdFontCompleteMono
 "set background=dark
 "set termguicolors			" DANGER, this kills my term
-
 
 "tab ball				" tabs over buffer view
 
@@ -90,7 +92,7 @@ if exists(":AirlineRefresh")
 endif
 
 let g:airline_powerline_fonts = 1                                                                                                         
-let g:airline_section_b = '%{getcwd()}' 	" display CWD in statusline                                                
+let g:airline_section_b = '%{getcwd()}' 	" display CWD in statusline
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show =1          "numbers in list
@@ -98,7 +100,26 @@ let g:airline#extensions#tabline#buffer_nr_format = '%s:'   "buffer format
 let g:airline#extensions#tabline#fnamecollapse = 1
 "let g:airline#extensions#tabline#fnamemod = ':p:.'
 
+set shortmess+=F		" dont ask me can I open multi files 
 
+" Shortcuts
+
+" buffer navigation
+" Ctrl Left/h & Right/l cycle between buffers
+noremap <silent> <C-left> :bprev<CR>
+noremap <silent> <C-h> :bprev!<CR>
+noremap <silent> <C-right> :bnext<CR>
+noremap <silent> <C-l> :bnext!<CR>
+noremap <silent> <S-S> :Files<CR>
+
+" Normal No Re Map
+nnoremap <F3> :Bsgrep
+
+autocmd BufWinEnter * silent NERDTreeMirror	" keep the layout
+	
+"set grepprg=rg\ --vimgrep\ --smart-case\ --follow
+
+" Install font from https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/DejaVuSansMono
 "let g:airline#extensions#tabline#buffers_label = 'buffers'
 "let g:airline#extensions#tabline#tabs_label = 'tabs'
 "let g:airline_theme='breezy'			" also: gruvbox simple seagull
@@ -111,8 +132,6 @@ let g:airline#extensions#tabline#fnamecollapse = 1
 "let g:airline#extensions#tabline#show_tab_type = 1
 "let g:airline#extensions#tagbar#enabled =1
 
-
-" TIME-TRAVEL
 " https://stackoverflow.com/questions/5700389/using-vims-persistent-undo#22676189
 " Put plugins and dictionaries in this dir (also on Windows)
 let vimDir = '$HOME/.vim'
@@ -136,15 +155,10 @@ if &term =~ '256color'
     set t_ut=
 endif
 
-set shortmess+=F
+highlight DiffAdd    cterm=BOLD ctermfg=NONE ctermbg=22
+highlight DiffDelete cterm=BOLD ctermfg=NONE ctermbg=52
+highlight DiffChange cterm=BOLD ctermfg=NONE ctermbg=23
+highlight DiffText   cterm=BOLD ctermfg=NONE ctermbg=23
 
-
-
-"------  Buffer Navigation  ------
-" Ctrl Left/h & Right/l cycle between buffers
-noremap <silent> <C-left> :bprev<CR>
-noremap <silent> <C-h> :bprev<CR>
-noremap <silent> <C-right> :bnext<CR>
-noremap <silent> <C-l> :bnext<CR>
-
+" edit $MYVIMRC 	" (re)load the file ; ex: current .vimrc
 
