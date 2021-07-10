@@ -1,12 +1,16 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"   auth: kesavan muthuvel
+"   bugs: hi@kesavan.info
+"   date: 2021-07-01 
+"   *****************************
 "    ✔  1 basic .vimrc
 "    ✔  2 DejaVuSansMono font & ui
 "    ✔  3 restore previous session & layout [tab,windows]
 "    ✔  4 tmp dir to ~
-"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "key stuff
 
+" smile 
 " ___________session #1 
 set number
 
@@ -35,12 +39,12 @@ filetype indent on
 set directory=~/.vim/tmp
 set laststatus=2            	" always a status line
 set undofile 
-set undodir=~/.vim/undo-dir	" TIME-TRAVEL :
+set undodir=~/.vim/undo-dir	" TIME-TRAVEL 
 
 " stop insert asap
 autocmd VimEnter * stopinsert
 set noinsertmode
-set ambw=double
+"set ambw=double		"This has conflict with Powerline(Breaks the line)
 
 " ___________session #3 
 call plug#begin('~/.vim/plugged')
@@ -62,7 +66,7 @@ call plug#begin('~/.vim/plugged')
 	" optional stuff to explore	
 	Plug 'sotte/presenting.vim'		" run the show	
 	Plug 'altercation/vim-colors-solarized'	" bring more themes	
-	Plug 'fneu/breezy'
+"	Plug 'fneu/breezy'
 	Plug 'dracula/vim'
 	Plug 'mhinz/vim-grepper'		
 call plug#end()
@@ -85,20 +89,31 @@ set colorcolumn=80			" never cross border
 
 "tab ball				" tabs over buffer view
 
-"TABLINE:
-
 if exists(":AirlineRefresh")
 :AirlineRefresh
 endif
 
-let g:airline_powerline_fonts = 1                                                                                                         
-let g:airline_section_b = '%{getcwd()}' 	" display CWD in statusline
+"let g:airline_theme='breezy'    " gruvbox simple seagull
+let g:airline_powerline_fonts = 1
+let g:airline_section_b = '%{getcwd()}'
+"TABLINE:
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#tabs_label = 'tabs'       
+let g:airline#extensions#tabline#buffers_label = 'buffers'
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#show_tab_count = 1
+let g:airline#extensions#tabline#show_buffers = 1
+let g:airline#extensions#tabline#tab_min_count = 1
+let g:airline#extensions#tabline#show_splits = 1
+let g:airline#extensions#tabline#show_tab_nr = 1	" show tabpage#
+let g:airline#extensions#tabline#show_tab_type = 1
+let g:airline#extensions#tagbar#enabled =1
 
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show =1          "numbers in list
+let g:airline#extensions#tabline#buffer_nr_show = 1	" show buffer_id (indx)	
 let g:airline#extensions#tabline#buffer_nr_format = '%s:'   "buffer format
 let g:airline#extensions#tabline#fnamecollapse = 1
-"let g:airline#extensions#tabline#fnamemod = ':p:.'
+let g:airline#extensions#tabline#fnamemod = ':p:.'
 
 set shortmess+=F		" dont ask me can I open multi files 
 
@@ -132,6 +147,14 @@ autocmd BufWinEnter * silent NERDTreeMirror	" keep the layout
 "let g:airline#extensions#tabline#show_tab_type = 1
 "let g:airline#extensions#tagbar#enabled =1
 
+"let g:airline#extensions#tabline#buffer_idx_mode = 1
+"let g:airline#extensions#tabline#buffer_nr_show = 1	" show buffer_id (indx)	
+"let g:airline#extensions#tabline#buffer_nr_format = '%s:'   "buffer format
+"let g:airline#extensions#tabline#fnamecollapse = 1
+"let g:airline#extensions#tabline#fnamemod = ':p:.'
+
+
+
 " https://stackoverflow.com/questions/5700389/using-vims-persistent-undo#22676189
 " Put plugins and dictionaries in this dir (also on Windows)
 let vimDir = '$HOME/.vim'
@@ -160,5 +183,4 @@ highlight DiffDelete cterm=BOLD ctermfg=NONE ctermbg=52
 highlight DiffChange cterm=BOLD ctermfg=NONE ctermbg=23
 highlight DiffText   cterm=BOLD ctermfg=NONE ctermbg=23
 
-" edit $MYVIMRC 	" (re)load the file ; ex: current .vimrc
 
