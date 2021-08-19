@@ -29,6 +29,8 @@ set smartcase
 "file encoding & type def
 set enc=utf-8
 set fileencoding=utf-8
+filetype on
+
 set fileencodings=ucs-bom,utf8,prc
 set paste
 
@@ -44,13 +46,16 @@ set undodir=~/.vim/undo-dir	" TIME-TRAVEL
 " stop insert asap
 autocmd VimEnter * stopinsert
 set noinsertmode
-"set ambw=double		"This has conflict with Powerline(Breaks the line)
-
+" set ambw=double	" TODO Has conflict with Powerline(Breaks the line)
+			" STATUS BAR - some weird chars
 " ___________session #3 
 call plug#begin('~/.vim/plugged')
 	Plug 'johngrib/vim-game-snake' 		" 90kids game
 	Plug 'johngrib/vim-game-code-break'
+
 	Plug 'kshenoy/vim-signature'		" marks +signs
+	Plug 'mattesgroeger/vim-bookmarks'	" bookmarks wow!
+
 	Plug 'junegunn/vim-peekaboo' 		" registers
 	Plug 'vim-airline/vim-airline'		" strawberry over vanilla	
 	Plug 'vim-airline/vim-airline-themes'
@@ -63,12 +68,18 @@ call plug#begin('~/.vim/plugged')
 	Plug 'junegunn/fzf.vim'			" FzF <3 vim
 	Plug 'junegunn/fzf',{ 'do': { -> fzf#install() } } " FzF <3 vim
 
+	" phpcd - intelligent/smart PHP complete daemon
+	Plug 'lvht/phpcd.vim', { 'for': 'php', 'do': 'composer install' }
+
 	" optional stuff to explore	
 	Plug 'sotte/presenting.vim'		" run the show	
 	Plug 'altercation/vim-colors-solarized'	" bring more themes	
 "	Plug 'fneu/breezy'
 	Plug 'dracula/vim'
 	Plug 'mhinz/vim-grepper'		
+"	Plug 'vim-vdebug/vdebug'
+"	Plug 'kvngvikram/rightclick-macros'	" Friendly mouse
+						" irritates INS w/ left click
 call plug#end()
 
 " ___________session #4 
@@ -130,7 +141,7 @@ noremap <silent> <S-S> :Files<CR>
 " Normal No Re Map
 nnoremap <F3> :Bsgrep
 
-autocmd BufWinEnter * silent NERDTreeMirror	" keep the layout
+"autocmd BufWinEnter * silent NERDTreeMirror	" keep the layout
 	
 "set grepprg=rg\ --vimgrep\ --smart-case\ --follow
 
@@ -184,3 +195,12 @@ highlight DiffChange cterm=BOLD ctermfg=NONE ctermbg=23
 highlight DiffText   cterm=BOLD ctermfg=NONE ctermbg=23
 
 
+let mapleader = "\<Space>"
+
+noremap <silent> <Leader>n :NERDTreeToggle<CR>
+set omnifunc=syntaxcomplete#Complete
+autocmd  FileType  php setlocal omnifunc=phpcomplete#CompletePHP
+
+
+let g:bookmark_sign = '♥'
+"let g:bookmark_highlight_lines = 1
