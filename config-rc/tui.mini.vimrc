@@ -193,14 +193,14 @@ autocmd BufWritePost * if &diff | diffupdate | endif "source .vimrc after save
 
 " 	set ambw=double	" TODO Has conflict with Powerline(Breaks the line)
 			" STATUS BAR - some weird chars
-"	set t_u7=
+	set t_u7=	" works good;
 " 	FIX: ssh from wsl starting with REPLACE mode
 " 	https://stackoverflow.com/a/11940894
 	if $TERM =~ 'xterm-256color'
-	    set noek
+"	    set noek
 	endif
 " ---------------------------------------------------------------------
-	set noek
+"	set noek
 "--------------------------------------------------------------------
 autocmd  FileType  php setlocal omnifunc=phpcomplete#CompletePHP
 
