@@ -72,7 +72,9 @@ call plug#begin('~/.vim/plugged')
 	" phpcd - intelligent/smart PHP complete daemon
 	Plug 'lvht/phpcd.vim', { 'for': 'php', 'do': 'composer install' }
 
-	" optional stuff to explore	
+	" optional stuff to explore
+	Plug 'aonemd/kuroi.vim'			" theme
+	
 	Plug 'sotte/presenting.vim'		" run the show	
 	Plug 'altercation/vim-colors-solarized'	" bring more themes	
 "	Plug 'fneu/breezy'
@@ -224,3 +226,34 @@ autocmd  FileType  php setlocal omnifunc=phpcomplete#CompletePHP
 "let g:airline#extensions#tabline#buffer_nr_format = '%s:'   "buffer format
 "let g:airline#extensions#tabline#fnamecollapse = 1
 "let g:airline#extensions#tabline#fnamemod = ':p:.'
+
+
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+" Ignore some folders and files for CtrlP indexing
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\.git$\|\.yardoc\|public$|log\|tmp$',
+  \ 'file': '\.so$\|\.dat$|\.DS_Store$'
+  \ }
+
+" search in .git/.hg if it exists, else the current working directory.
+" (default is 'ra' which also searches in parent of current file, rarely
+" what you want, especially if you're editing ~/.vimrc or browsing help)
+let g:ctrlp_working_path_mode = 'r'
+let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+      \ --ignore .git
+      \ --ignore .svn
+      \ --ignore .cache
+      \ --ignore .composer
+      \ --ignore .hg
+      \ --ignore .DS_Store
+      \ --ignore "**/*.pyc"
+      \ -g ""'
+let g:ctrlp_clear_cache_on_exit = 0 " keep cache so it's rocket fast !!!
+				    " dont forget to F5 from CtrlP to keep up
+
+
+
+
+nnoremap <leader>b :ls<CR>:b<Space>
+
+
