@@ -54,6 +54,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'johngrib/vim-game-snake'          " 90kids game
     Plug 'johngrib/vim-game-code-break'
     Plug 'kshenoy/vim-signature'            " marks +signs
+    Plug 'mattesgroeger/vim-bookmarks'      " bookmarks ♥ wow!
     Plug 'junegunn/vim-peekaboo'            " registers
     Plug 'vim-airline/vim-airline'          " strawberry over vanilla
     Plug 'vim-airline/vim-airline-themes'
@@ -94,6 +95,56 @@ set colorcolumn=80			" never cross border
 set background=dark
 set switchbuf=useopen,usetab
 
+
+"let g:minimap_width = 10
+"let g:minimap_auto_start = 1
+"let g:minimap_auto_start_win_enter = 1
+
+
+
+" Activate all the handy Windows key-bindings we're used to.
+" source $VIMRUNTIME/mswin.vim
+
+
+
+" ---- better vimdiff ; make your eyes happy :) ---------
+highlight DiffAdd    cterm=BOLD ctermfg=NONE ctermbg=22
+highlight DiffDelete cterm=BOLD ctermfg=NONE ctermbg=52
+highlight DiffChange cterm=BOLD ctermfg=NONE ctermbg=23
+highlight DiffText   cterm=BOLD ctermfg=NONE ctermbg=23
+ 
+" ----------------- custom shortcuts ---------------------------
+" buffer navigation
+" Ctrl Left/h & Right/l cycle between buffers
+noremap <silent> <C-left> :bprev<CR>
+noremap <silent> <C-h> :bprev!<CR>
+noremap <silent> <C-right> :bnext<CR>
+noremap <silent> <C-l> :bnext!<CR>
+noremap <silent> <S-S> :Files<CR>
+
+" Normal No Re Map
+nnoremap <F3> :Bsgrep
+let mapleader = "\<Space>"
+noremap <silent> <Leader>n :NERDTreeToggle<CR>
+
+set omnifunc=syntaxcomplete#Complete
+
+let g:bookmark_sign = '♥'
+"hi ColorColumn ctermbg=lightcyan guibg=blue
+hi ColorColumn ctermbg=lightcyan guibg=blue
+
+set tabpagemax=99
+set hidden      "disable E37: No write since last change when buffer move (:e )
+autocmd BufWritePost * if &diff | diffupdate | endif "source .vimrc after save
+
+
+" Activate all the handy Windows key-bindings we're used to.
+" source $VIMRUNTIME/mswin.vim
+"behave mswin
+set tabpagemax=99
+set hidden      "disable E37: No write since last change when buffer move (:e )
+autocmd BufWritePost * if &diff | diffupdate | endif "source .vimrc after save
+
 "preserve & restore session
 autocmd! VimLeave * mksession!			"Automatically save the session when leaving Vim
 autocmd! VimEnter * source ~/Session.vim	"Automatically load the session when entering vim
@@ -109,8 +160,6 @@ if has("gui_running")
 	set guitablabel=%N\ %t\ %M
 	set lines=999 columns=999	"full screen 
 endif
-
-
 
 
 "http://inside.github.io/vim-presentation - VIM learning 
@@ -168,6 +217,7 @@ endif
 "
 "nnoremap n nzz
 
+nnoremap <leader>b :ls<CR>:b<Space>
 if exists(":AirlineRefresh")
 :AirlineRefresh
 endif
@@ -183,18 +233,25 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#show_tab_count = 1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#tabline#tab_min_count = 1
-let g:airline#extensions#tabline#show_splits = 1	
+let g:airline#extensions#tabline#show_splits = 1
 let g:airline#extensions#tabline#show_tab_nr = 1	" show tabpage#
-let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1	" show buffer_id (indx)	
 let g:airline#extensions#tabline#show_tab_type = 1
 let g:airline#extensions#tagbar#enabled =1
 
-"let g:minimap_width = 10
-"let g:minimap_auto_start = 1
-"let g:minimap_auto_start_win_enter = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1	" show buffer_id (indx)	
+
+let g:airline#extensions#tabline#buffer_nr_format = '%s:'   "buffer format
+let g:airline#extensions#tabline#fnamecollapse = 1
+let g:airline#extensions#tabline#fnamemod = ':p:.'
 
 
+function XMLPrint()		" pretty-print xml 
+	:se syntax=xml ft=xml	" set syntax & filetype 
+	:%s/></>\r</g		" breakdown the newlines
+				" next indent(=) the file(%) in normal way
+	:execute "%norm! =$"
+endfunction
 
 " Activate all the handy Windows key-bindings we're used to.
 " source $VIMRUNTIME/mswin.vim
@@ -202,3 +259,4 @@ let g:airline#extensions#tagbar#enabled =1
 set tabpagemax=99
 set hidden	"disable E37: No write since last change when buffer move (:e )	
 " behave mswin
+
