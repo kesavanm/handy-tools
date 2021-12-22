@@ -256,4 +256,4 @@ let g:ctrlp_clear_cache_on_exit = 0 " keep cache so it's rocket fast !!!
 
 nnoremap <leader>b :ls<CR>:b<Space>
 
-
+command! Qbuffers copen|call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}'))

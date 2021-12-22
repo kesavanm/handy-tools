@@ -35,7 +35,7 @@
 # sed -i 's/\r$//' .profile.open
 
 #I really gonna <3 this
-OPEN_PROFILE_VERSION=1.850
+OPEN_PROFILE_VERSION=1.860
 
 # User specific environment and startup programs
 PATH=$PATH:$HOME/bin
@@ -399,6 +399,7 @@ mydiff(){
 alias    gl="git log"
 alias    gs="git status --untracked-files=no"
 alias   gls="git log --date=local --pretty=format:\"%h%x09%C(cyan)%an%x09%ad:%Creset %s\""
+alias   glx="git log --stat --oneline  --summary --date=iso  --pretty=format:'%C(cyan)%ad%x08%x08%x08%x08%x08%x08%x08%x08%x08%x08%x08%x08%x08%x08%x08 %C(red)%h  %C(bold blue)%aN%C(reset)%C(bold yellow)%d %C(reset)%s'"
 alias gwalk="git log --stat --oneline --pretty=format:\"%h - %an, %ar : %s\"  --walk-reflogs"
 alias   gfp="git fetch origin && git pull"
 alias   gld="git log  --date=short --pretty=format:\"%h%x09%C(cyan)%an%x09%ad:%Creset %s\" --all --"
@@ -1097,7 +1098,7 @@ function f_ps1(){
           RIGHT_SUBSEG=''
           BRANCH_SIGN='' #' hf1 ●
 
-          PS_USER="$BG_GREEN\u@\h$GREEN"
+          PS_USER="$BG_GREEN$BOLD_WHITE\u@\h$GREEN"
           PS_PATH="$BG_BLUE$BOLD_WHITE\w$BLUE"
           PS_DATE="$BG_CYAN$BOLD_WHITE\D{%F %T}$CYAN"
           PS_BRNH="$BG_YELLOW$BOLD_WHITE$BRANCH_SIGN\$(parse_git_branch_raw)$YELLOW"      # "●" # *DD*  "
