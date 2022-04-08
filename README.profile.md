@@ -1,5 +1,7 @@
 ### Requirements
 
+This section is to cover the apps & tools to be installed on a new GNU device to run day-to-day life.
+
 #### Additional deps:
 ```sh
 	# basic
