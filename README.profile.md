@@ -9,7 +9,8 @@ This section is to cover the apps & tools to be installed on a new GNU device to
 
 	# tools
 	sudo apt install autoconf build-essential curl wget dos2unix gcc git
-	sudo apt install libncurses-dev make make-guile x11-xserver-utils
+	sudo apt install libncurses-dev make
+	sudo apt make-guile x11-xserver-utils
 
 	# media
 	sudo apt install ffmpeg
