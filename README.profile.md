@@ -10,7 +10,7 @@ This section is to cover the apps & tools to be installed on a new GNU device to
 	# tools
 	sudo apt install autoconf build-essential curl wget dos2unix gcc git
 	sudo apt install libncurses-dev make
-	sudo apt make-guile x11-xserver-utils
+	sudo apt install make-guile x11-xserver-utils
 
 	# media
 	sudo apt install ffmpeg
@@ -22,6 +22,9 @@ This section is to cover the apps & tools to be installed on a new GNU device to
 	# extra
 	sudo apt install ncdu
 ```
+
+To consider
+* `icdiff` - Show (colorized) differences between files in a two column view.
 
 #### GUI deps
 ```sh

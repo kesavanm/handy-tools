@@ -401,7 +401,7 @@ alias    gs="git status --untracked-files=no"
 alias   gls="git log --date=local --pretty=format:\"%h%x09%C(cyan)%an%x09%ad:%Creset %s\""
 alias   glx="git log --stat --oneline  --summary --date=iso  --pretty=format:'%C(cyan)%ad%x08%x08%x08%x08%x08%x08%x08%x08%x08%x08%x08%x08%x08%x08%x08 %C(red)%h  %C(bold blue)%aN%C(reset)%C(bold yellow)%d %C(reset)%s'"
 alias gwalk="git log --stat --oneline --pretty=format:\"%h - %an, %ar : %s\"  --walk-reflogs"
-alias   gfp="git fetch origin && git pull"
+alias   gfp="git fetch origin && git pull origin"
 alias   gld="git log  --date=short --pretty=format:\"%h%x09%C(cyan)%an%x09%ad:%Creset %s\" --all --"
 function gll(){
   if [ $# -ne 1 ] ; then {
