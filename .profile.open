@@ -388,9 +388,12 @@ mydiff(){
         return 0;
     }
     fi
+    if [ -z $(command -v icdiff) ];  then
         diff    --old-line-format="%dn %L"      --new-line-format="%dn %L"\
         --old-group-format=$'\e[0;31m%<\e[0m'   --new-group-format=$'\e[0;32m%>\e[0m'\
         --unchanged-group-format="" $1 $2
+    else icdiff  -N -U0 $1 $2 | grep -v -E '\-\-\-' #FIXME regex for \n
+    fi
 }
 
 #GIT Version Control
@@ -403,6 +406,7 @@ alias   glx="git log --stat --oneline  --summary --date=iso  --pretty=format:'%C
 alias gwalk="git log --stat --oneline --pretty=format:\"%h - %an, %ar : %s\"  --walk-reflogs"
 alias   gfp="git fetch origin && git pull origin"
 alias   gld="git log  --date=short --pretty=format:\"%h%x09%C(cyan)%an%x09%ad:%Creset %s\" --all --"
+alias   gdf="git difftool  -yx  'icdiff -N'  -- "
 function gll(){
   if [ $# -ne 1 ] ; then {
       echo "Usage: $FUNCNAME deleted-file";
