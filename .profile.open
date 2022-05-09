@@ -223,6 +223,10 @@ alias tree='tree -Csuh' # Nice alternative to 'recursive ls' ...
 alias phpk="php -d display_errors=1 -d error_reporting=E_ALL -l"
 alias phpx="php -d xdebug.profiler_output_dir=$HOME/profile -d xdebug.profiler_enable=On"
 
+if [ -z $(command -v lsd ) ];  then
+	alias ls='lsd'
+fi
+
 #-------------------------------------------------------------
 # File & strings related functions:
 #-------------------------------------------------------------
