@@ -16,7 +16,7 @@ This section is to cover the apps & tools to be installed on a new GNU device to
 	sudo apt install ffmpeg
 
 	# funtime
-	sudo apt install bat cowsay fortune lolcat sl lsd
+	sudo apt install bat cowsay fortune lolcat sl
 	sudo apt install toilet sysvbanner figlet boxes
 
 	# extra
@@ -25,6 +25,7 @@ This section is to cover the apps & tools to be installed on a new GNU device to
 
 To consider
 * `icdiff` - Show (colorized) differences between files in a two column view.
+* `lsd` Grab from [Peltoche/lsd](https://github.com/Peltoche/lsd/releases/download)
 
 #### GUI deps
 ```sh
