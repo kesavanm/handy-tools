@@ -26,6 +26,7 @@
 # Enable ERR Reporting
 #err_report() { echo "Error on line $1"; }
 #trap 'err_report $LINENO' ERR
+#set -u
 
 # Disable ERR Reporting
 #trap -  SIGINT SIGQUIT SIGTSTP # only on these exit signals
@@ -225,6 +226,8 @@ alias tree='tree -Csuh' # Nice alternative to 'recursive ls' ...
 alias phpk="php -d display_errors=1 -d error_reporting=E_ALL -l"
 alias phpx="php -d xdebug.profiler_output_dir=$HOME/profile -d xdebug.profiler_enable=On"
 
+
+#TODO check in brand new container
 if [ -z $(hash lsd) ]; then
 	alias ls='lsd'
 fi
@@ -352,26 +355,11 @@ function mydf() {   # Pretty-print of 'df' output.
         echo -e $out
     done
 }
+
+
+
 function myip() {   # Get IP adress on ethernet.
-	if [ /sbin/ifconfig eth0 2> /dev/null ] ; then
-		MY_IP=$(/sbin/ifconfig eth0 | awk '/inet/ { print $2 } ' |    sed -e s/addr://)
-	fi
-
-        [[ -f /etc/sysconfig/network-scripts/ifcfg-bond1 ]] && MYIP2=$(/sbin/ifconfig bond1| awk '/inet/ { print $2 } ' |  sed -e s/addr://)  || MYIP2="No Network bond1"
-
-	#CYGWIN
-	if [[ `uname` == *"CYGWIN"* ]]; then
-		MY_IP=`ipconfig.exe | grep IPv4 | awk 'NF>1{print $NF}' | head -1`
-	fi
-
-    [[ -z $MYIP2 ]]
-	MYIP2=$(dig +short myip.opendns.com @resolver1.opendns.com)
-
-    [[ -z $MYIP3 ]]
-    MYIP3=$(wget http://ipecho.net/plain -qO-)
-
-    [[ -z $MY_IP ]] &&  IP="$MYIP2" || IP="$MY_IP"
-    [[ -z $MY_IP ]] &&  IP="$MYIP3" || IP="$MY_IP"
+    IP=$(hostname -I)
     echo ${IP:-"Not connected"}
 }
 function ii() { # Get current host related info.
@@ -1118,6 +1106,10 @@ function f_ps1(){
         fi
 }
 
+
+export ps1_status='wow'
+export zip=77057
+
 f_ps1 ;
 HISTTIMEFORMAT="%F %T "
 
@@ -1133,6 +1125,13 @@ function good_morning(){
   #daily weather report
   zip=$(curl ipinfo.io/$(myip) 2>&1| grep postal |awk '{print $2}'|sed -r 's/"//g')
 
+
+  # default zip if no zip retrieveable
+  if [[ -z "$zip" ]]; then
+    zip=77057
+  fi
+
+
   # check for US zip
   if [ ${#zip} -eq '5' ] ; then
     curl wttr.in/$zip
@@ -1141,10 +1140,6 @@ function good_morning(){
     curl wttr.in/$city
   fi
 
-  # default zip if no zip retrieveable
-  if [[ -z "$zip" ]]; then
-    zip=77477
-  fi
 
   GIT_REFRESH=1     # change to 0 if you git is too big & facing slow due to Refresh index: 100% (17649/17649), done.
 
@@ -1157,4 +1152,8 @@ function good_morning(){
   $(command -v cmatrix)
 
   fortune|cowsay |lolcat
+
+  #TODO
+  # lsd appears not handled
+
 }
