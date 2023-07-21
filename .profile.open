@@ -23,6 +23,12 @@
 # SELFNOTE - Keep this sync with Work & Home(Z460) & GitHub & Hosting & ownCloud
 ############################################################################################################
 
+HOME_ALT="$HOME"
+HANDY="$HOME/handy-tools"
+GIT_REFRESH=1     # change to 0 if you git is too big & facing slow due to Refresh index: 100% (17649/17649), done.
+MYIP3=''
+MY_IP=''
+
 # Enable ERR Reporting
 #err_report() { echo "Error on line $1"; }
 #trap 'err_report $LINENO' ERR
