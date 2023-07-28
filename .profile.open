@@ -1107,7 +1107,8 @@ function f_ps1(){
         #FG & BG
         # Recommended font : DejaVu Sans Mono for Powerline.ttf
         #                    MesloLGM Nerd Font Mono (WSL2 - 2023)
-        # FIXME No need of Branching symbol on non-git dir
+        # More awesome PS1 - https://github.com/arialdomartini/oh-my-git 
+        #                    https://github.com/andresgongora/synth-shell
         if [ "$ps1_status" == 'wow' ] ; then
           SEGMENT_SEPARATOR=''
           RIGHT_SEPARATOR=''
