@@ -1043,22 +1043,23 @@ function parse_git_branch_wow () {
        
         #__pre_git_branch
         if [[ -z $BRANCH ]];then echo -ne ""; else echo -ne $BG_YELLOW; fi
-        echo -en "";
-        if [[ -z $BRANCH ]];then echo ""; else echo -ne $BOLD_WHITE$BRANCH_SIGN; fi
+        echo -en $SEGMENT_SEPARATOR;
 
         # aweseome branch info
         if [ -z "$BRANCH" ]; then                 echo "" ; 
         else
+            echo -ne $BOLD_WHITE$BRANCH_SIGN;
             if [ "$GIT_REFRESH" -eq "0"  ]; then
-                    echo -n "[$BRANCH]$YELLOW"
+                OPEN_TAG="["; CLOSE_TAG="]";
             else
-                $( git status | grep "nothing to commit" > /dev/null 2>&1;)
+                $(git status | grep "nothing to commit" > /dev/null 2>&1;)
                 if [ "$?" -eq "0" ]; then
-                        echo -en "($BRANCH)$YELLOW"
+                        OPEN_TAG="("; CLOSE_TAG=")";
                 else
-                        echo -en "{$BRANCH}$YELLOW"
+                        OPEN_TAG="{"; CLOSE_TAG="}";
                 fi
             fi
+            echo -en "$OPEN_TAG$BRANCH$CLOSE_TAG$YELLOW$SEGMENT_SEPARATOR"
         fi
 
 }
