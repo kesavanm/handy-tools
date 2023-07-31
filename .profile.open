@@ -719,23 +719,7 @@ function parse_git_branch () {
         fi
 }
 
-function parse_git_branch_raw () {
-        BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
-        if [ -z "$BRANCH" ]; then
-                echo "" ;
-        else
-            if [ "$GIT_REFRESH" -eq "0"  ]; then
-                    echo -n "[$BRANCH]"
-            else
-                $( git status | grep "nothing to commit" > /dev/null 2>&1;)
-                if [ "$?" -eq "0" ]; then
-                        echo -n "($BRANCH)"
-                else
-                        echo -n "{$BRANCH}"
-                fi
-            fi
-        fi
-}
+
 
 function parse_git_last_pull(){
         stat -c %y .git/FETCH_HEAD | awk -F'.' '{print $1}'
@@ -1045,7 +1029,7 @@ function ps1-stat(){
    BLACK="\[\e[0;30m\]";  BOLD_BLACK="\e[1;30m";   UL_BLACK="\[\e[4;30m\]";  BG_BLACK="\e[40m";
      RED="\[\e[0;31m\]";    BOLD_RED="\e[1;31m";     UL_RED="\[\e[4;31m\]";    BG_RED="\e[41m";
    GREEN="\[\e[0;32m\]";  BOLD_GREEN="\e[1;32m";   UL_GREEN="\[\e[4;32m\]";  BG_GREEN="\e[42m";
-  YELLOW="\[\e[0;33m\]"; BOLD_YELLOW="\e[1;33m";  UL_YELLOW="\[\e[4;33m\]"; BG_YELLOW="\e[43m";
+  YELLOW="\e[0;33m"; BOLD_YELLOW="\e[1;33m";  UL_YELLOW="\[\e[4;33m\]"; BG_YELLOW="\e[43m";
     BLUE="\[\e[0;34m\]";   BOLD_BLUE="\e[1;34m";    UL_BLUE="\[\e[4;34m\]";   BG_BLUE="\e[44m";
   PURPLE="\[\e[0;35m\]"; BOLD_PURPLE="\e[1;35m";  UL_PURPLE="\[\e[4;35m\]"; BG_PURPLE="\e[45m";
     CYAN="\[\e[0;36m\]";   BOLD_CYAN="\e[1;36m";    UL_CYAN="\[\e[4;36m\]";   BG_CYAN="\e[46m";
@@ -1054,22 +1038,30 @@ function ps1-stat(){
 ####################################################################################################
 
 
-function __pre_git_branch(){
-        PS_BRANCH=$(parse_git_branch_raw);
-        if [[ -z $PS_BRANCH ]];then echo -ne ""; else echo -ne $BG_YELLOW; fi
+function parse_git_branch_wow () {
+        BRANCH=`git rev-parse --abbrev-ref HEAD 2> /dev/null`
+       
+        #__pre_git_branch
+        if [[ -z $BRANCH ]];then echo -ne ""; else echo -ne $BG_YELLOW; fi
         echo -en "";
-        if [[ -z $PS_BRANCH ]];then echo ""; else echo -ne $BOLD_WHITE$BRANCH_SIGN; fi
-}
+        if [[ -z $BRANCH ]];then echo ""; else echo -ne $BOLD_WHITE$BRANCH_SIGN; fi
 
-function __post_git_branch(){
-        export PS_BRANCH=$(parse_git_branch_raw);
-        if [[ -z $PS_BRANCH ]];then
-                echo "";
+        # aweseome branch info
+        if [ -z "$BRANCH" ]; then                 echo "" ; 
         else
-                echo "";
+            if [ "$GIT_REFRESH" -eq "0"  ]; then
+                    echo -n "[$BRANCH]$YELLOW"
+            else
+                $( git status | grep "nothing to commit" > /dev/null 2>&1;)
+                if [ "$?" -eq "0" ]; then
+                        echo -en "($BRANCH)$YELLOW"
+                else
+                        echo -en "{$BRANCH}$YELLOW"
+                fi
+            fi
         fi
-}
 
+}
 
 function f_ps1(){
 
@@ -1119,7 +1111,7 @@ function f_ps1(){
           PS_USER="$BG_GREEN$BOLD_WHITE\u@\h$GREEN"
           PS_PATH="$BG_BLUE$BOLD_WHITE\w$BLUE"
           PS_DATE="$BG_CYAN$BOLD_WHITE\D{%F %T}$CYAN"
-          PS_BRNH="\$(__pre_git_branch)\$(parse_git_branch_raw)$YELLOW\$(__post_git_branch)$NO_COLOUR"      # "●" # *DD*  "
+          PS_BRNH="\$(parse_git_branch_wow)$NO_COLOUR"      # "●" # *DD*  "
           PS_LAST="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n"
 
           PS1="$PS_LAST$PS_USER$PS_PATH$PS_DATE$PS_BRNH$NO_COLOUR\n\$"
