@@ -1,6 +1,10 @@
 #!/bin/bash
 # .profile for development environment where `git` and other tools avail
 
+# err_report() { echo "Error on line $1"; }
+# trap 'err_report $LINENO' ERR
+# set -u
+
 HOME_ALT="$HOME"
 HANDY="$HOME/handy-tools"
 
@@ -55,11 +59,11 @@ cd - >/dev/null
 #load_script "script" "PATH_MAIN" "PATH_ALT"
 load_script ".profile.open" "$HOME/bin" "$HOME_ALT/bin"                                #1 Aliases & functions from OPEN
 load_script ".profile.work" "$HOME/bin" "$HOME_ALT/bin"                                #2 Aliases & functions from WORK
-load_script ".git-completion.bash" "$HANDY/bin"                                        #3 Git Completion
-load_script "bash_completion" "/usr/share/bash-completion"                             #4 bash_completion from the OS
-load_script "git##git completion from the OS" "/usr/share/bash-completion/completions" #5 git completion from the OS
-load_script ".fzf.bash##fizzy-finder" "$HOME_ALT"                                      #6 fizzy-finder
-load_script "functions.sh##.git-heart-fzf" "$HANDY/git-heart-fzf"                      #7 .git-heart-fzf
+load_script ".git-completion.bash" "$HANDY/bin" .                                      #3 Git Completion
+load_script "bash_completion" "/usr/share/bash-completion"   .                         #4 bash_completion from the OS
+load_script "git##git completion from the OS" "/usr/share/bash-completion/completions" . #5 git completion from the OS
+load_script ".fzf.bash##fizzy-finder" "$HOME_ALT" .                                    #6 fizzy-finder
+load_script "functions.sh##.git-heart-fzf" "$HANDY/git-heart-fzf"  .                   #7 .git-heart-fzf
 
 # misc/rest
 if [ -f $HOME_ALT/bin/vim ]; then #choose user vim if so
@@ -68,7 +72,7 @@ if [ -f $HOME_ALT/bin/vim ]; then #choose user vim if so
 fi
 
 #Ubuntu 17.10 or newer, support for Wayland
-xhost +SI:localuser:root
+#xhost +SI:localuser:root
 
 alias gvim="gvim -u ~/.gvimrc"
 export HOUSE="__̴ı̴̴ ̡͌l̡̡ ̡͌l̡*̡̡ ̴̡ı̴̴ ̡̡|̲͡ ̲▫̲͡ ̲͡π̲͡ ̲͡▫̲͡ ̲|̡̡ ̡ ̴̡ı̴̡ ̡͌l̡̡.___"

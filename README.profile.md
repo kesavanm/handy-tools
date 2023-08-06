@@ -1,5 +1,7 @@
 ### Requirements
 
+This section is to cover the apps & tools to be installed on a new GNU device to run day-to-day life.
+
 #### Additional deps:
 ```sh
 	# basic
@@ -7,7 +9,8 @@
 
 	# tools
 	sudo apt install autoconf build-essential curl wget dos2unix gcc git
-	sudo apt install libncurses-dev make make-guile x11-xserver-utils
+	sudo apt install libncurses-dev make
+	sudo apt install make-guile x11-xserver-utils net-tools
 
 	# media
 	sudo apt install ffmpeg
@@ -19,6 +22,10 @@
 	# extra
 	sudo apt install ncdu
 ```
+
+To consider
+* `icdiff` - Show (colorized) differences between files in a two column view.
+* `lsd` Grab from [Peltoche/lsd](https://github.com/Peltoche/lsd/releases/download)
 
 #### GUI deps
 ```sh
