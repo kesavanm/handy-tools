@@ -232,10 +232,10 @@ alias tree='tree -Csuh' # Nice alternative to 'recursive ls' ...
 alias phpk="php -d display_errors=1 -d error_reporting=E_ALL -l"
 alias phpx="php -d xdebug.profiler_output_dir=$HOME/profile -d xdebug.profiler_enable=On"
 
-
-#TODO check in brand new container
-if [ -z $(hash lsd) ]; then
-	alias ls='lsd'
+if [ -z $(command -v lsd) ]; then
+        echo -n         #do nothing
+else
+        alias ls='lsd'  #awesome ls
 fi
 
 #-------------------------------------------------------------
@@ -1116,7 +1116,7 @@ function f_ps1(){
           BRANCH_SIGN='' #' hf1 ●
 
           #CONSTANTS - USER SUPPLIED
-          COLOR_USER="GREEN"
+          COLOR_USER="PURPLE"
           COLOR_PATH="BLUE"
           COLOR_DATE="CYAN"
           COLOR_BRNH="YELLOW"
@@ -1156,7 +1156,6 @@ function good_morning(){
   #daily weather report
   zip=$(curl ipinfo.io/$(myip) 2>&1| grep postal |awk '{print $2}'|sed -r 's/"//g')
 
-
   # default zip if no zip retrieveable
   if [[ -z "$zip" ]]; then
     zip=77057
@@ -1181,9 +1180,7 @@ function good_morning(){
 
   fortune|cowsay |lolcat
 
-  #TODO
-  # lsd appears not handled
-
 }
 
-  GIT_REFRESH=1     # change to 0 if you git is too big & facing slow due to Refresh index: 100% (17649/17649), done.
+#User Settings
+GIT_REFRESH=1     # change to 0 if you git is too big & facing slow due to Refresh index: 100% (17649/17649), done.
