@@ -1132,7 +1132,7 @@ function f_ps1(){
 
           PS_USER="${!BG_COLOR_USER}$BOLD_WHITE\u@\h${!COLOR_USER}"
           PS_PATH="${!BG_COLOR_PATH}$SEGMENT_SEPARATOR$BOLD_WHITE\w${!COLOR_PATH}"
-          PS_IPv4="${!BG_COLOR_IPv4}$SEGMENT_SEPARATOR$BOLD_WHITE$(myip)${!COLOR_IPv4}"
+          PS_IPv4="${!BG_COLOR_IPv4}$SEGMENT_SEPARATOR$BOLD_WHITE\$(myip)${!COLOR_IPv4}"
           PS_DATE="${!BG_COLOR_DATE}$SEGMENT_SEPARATOR$BOLD_WHITE\D{%F %T}${!COLOR_DATE}"
           PS_BRNH="\$(parse_git_branch_wow)$NO_COLOUR"      # "●" # *DD*  "
           PS_LAST="$BOLD_WHITE\$?\$(if [[ \$? == 0 ]];then echo \"$BOLD_GREEN $success \";else echo \"$BOLD_RED $fail \";fi)$NO_COLOUR ________________________________________________________________________________\n"
