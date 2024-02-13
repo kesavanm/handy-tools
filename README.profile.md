@@ -25,7 +25,7 @@ This section is to cover the apps & tools to be installed on a new GNU device to
 
 To consider
 * `icdiff` - Show (colorized) differences between files in a two column view.
-* `lsd` Grab from [Peltoche/lsd](https://github.com/Peltoche/lsd/releases/download)
+* `lsd` Grab from [Peltoche/lsd](https://github.com/Peltoche/lsd). This works good with [patched DejaVuSansMono](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/DejaVuSansMono.tar.xz). Checkout more [icon patched fonts](https://github.com/ryanoasis/nerd-fonts).
 
 #### GUI deps
 ```sh
