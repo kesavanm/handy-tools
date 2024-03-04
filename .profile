@@ -19,9 +19,18 @@ dots_r() {
   printf "%s" "$2"
 }
 
-x=$(printf '%.0f\n' $(echo "$(tput cols)*.24" | bc))
-y=$(printf '%.0f\n' $(echo "$(tput cols)*.56" | bc))
-z=$(printf '%.0f\n' $(echo "$(tput cols)*.20" | bc))
+#TODO array for tput cols config
+# if tput cols < 133 go for [0] else [1] ...
+
+if [ $(tput cols) -le "144"  ]; then
+  ratio=(.35 .55 .10)
+else
+ ratio=(.40 .50 .10)
+fi
+
+x=$(printf '%.0f\n' "$(bc <<< "${ratio[0]} * $(tput cols)")")
+y=$(printf '%.0f\n' "$(bc <<< "${ratio[1]} * $(tput cols)")")
+z=$(printf '%.0f\n' "$(bc <<< "${ratio[2]} * $(tput cols)")")
 
 load_script() {
   PATH_MAIN=$2;  PATH_ALT=$3
@@ -32,21 +41,22 @@ load_script() {
     script="${XYZ[0]}" ; title=$script
   fi
 
+  source=""
   tput sgr0
-  dots $x "Checking for $title "
-  SECONDS=0
+  dots $x "loading $(tput setaf 3) $title $(tput sgr0)"
+  SECONDS=0 #FIXME #TODO
   if [ -f $PATH_MAIN/$script ]; then
-    source $PATH_MAIN/$script
-    dots $y " loaded successfully from ($PATH_MAIN/$script) .... in $SECONDS seconds "
-    dots_r $z "$(tput setaf 2)[ OK ]"
-    echo
+    source=$PATH_MAIN/$script
   elif [ -f $PATH_ALT/$script ]; then
-    source $PATH_ALT/$script
-    dots $y " loaded successfully from ($PATH_ALT/$script) .... in $SECONDS seconds"
+    source=$PATH_ALT/$script
+  fi
+
+  if [ $source ]; then
+    dots $y " from $source in $SECONDS seconds"
     dots_r $z "$(tput setaf 2)[ OK ]"
     echo
   else
-    dots $y " failed to load. (default path: $PATH_MAIN/$script or $PATH_ALT/$script)!please check!!!"
+    dots $y " missing ($PATH_MAIN or $PATH_ALT)!please check!!!"
     dots_r $z "$(tput setaf 1)[FAIL]"
     echo
   fi
@@ -62,7 +72,7 @@ load_script ".profile.open" "$HOME/bin" "$HOME_ALT/bin"                         
 load_script ".profile.work" "$HOME/bin" "$HOME_ALT/bin"                                #2 Aliases & functions from WORK
 load_script ".git-completion.bash" "$HANDY/bin" .                                      #3 Git Completion
 load_script "bash_completion" "/usr/share/bash-completion"   .                         #4 bash_completion from the OS
-load_script "git##git completion from the OS" "/usr/share/bash-completion/completions" . #5 git completion from the OS
+load_script "git##git completion (OS)" "/usr/share/bash-completion/completions" . #5 git completion from the OS
 load_script ".fzf.bash##fizzy-finder" "$HOME_ALT" .                                    #6 fizzy-finder
 load_script "functions.sh##.git-heart-fzf" "$HANDY/git-heart-fzf"  .                   #7 .git-heart-fzf
 
