@@ -22,15 +22,17 @@ dots_r() {
 #TODO array for tput cols config
 # if tput cols < 133 go for [0] else [1] ...
 
+#original 24 56 20
+
 if [ $(tput cols) -le "144"  ]; then
-  ratio=(.35 .55 .10)
+  ratio=(35 55 10)
 else
- ratio=(.40 .50 .10)
+  ratio=(40 50 10)
 fi
 
-x=$(printf '%.0f\n' "$(bc <<< "${ratio[0]} * $(tput cols)")")
-y=$(printf '%.0f\n' "$(bc <<< "${ratio[1]} * $(tput cols)")")
-z=$(printf '%.0f\n' "$(bc <<< "${ratio[2]} * $(tput cols)")")
+x=$((${ratio[0]}*$(tput cols)/100))
+y=$((${ratio[1]}*$(tput cols)/100))
+z=$((${ratio[2]}*$(tput cols)/100))
 
 load_script() {
   PATH_MAIN=$2;  PATH_ALT=$3
@@ -44,7 +46,6 @@ load_script() {
   source=""
   tput sgr0
   dots $x "loading $(tput setaf 3) $title $(tput sgr0)"
-  SECONDS=0 #FIXME #TODO
   if [ -f $PATH_MAIN/$script ]; then
     source=$PATH_MAIN/$script
   elif [ -f $PATH_ALT/$script ]; then
@@ -52,7 +53,12 @@ load_script() {
   fi
 
   if [ $source ]; then
-    dots $y " from $source in $SECONDS seconds"
+    start_time=$(date +%s.%N) #$(date +%s.%N)
+    source $source ;
+    end_load_time=$(date +%s.%N)
+    load_time=$(echo "$end_load_time - $start_time" | bc)
+    load_time=$(printf "%.2f\n" $load_time)
+    dots $y " from $source in $(tput setaf 3)$load_time $(tput sgr0)seconds"
     dots_r $z "$(tput setaf 2)[ OK ]"
     echo
   else
