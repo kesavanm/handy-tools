@@ -58,11 +58,11 @@ load_script() {
     end_load_time=$(date +%s.%N)
     load_time=$(echo "$end_load_time - $start_time" | bc)
     load_time=$(printf "%.2f\n" $load_time)
-    dots $y " from $source in $(tput setaf 3)$load_time $(tput sgr0)seconds"
+    dots $y " from $source in .... $(tput setaf 3)$load_time $(tput sgr0)seconds"
     dots_r $z "$(tput setaf 2)[ OK ]"
     echo
   else
-    dots $y " missing ($PATH_MAIN or $PATH_ALT)!please check!!!"
+    dots $y " missing ($PATH_MAIN or $PATH_ALT)!  $(tput setaf 9)please check!!!$(tput sgr0)"
     dots_r $z "$(tput setaf 1)[FAIL]"
     echo
   fi
