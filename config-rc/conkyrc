@@ -39,7 +39,7 @@ conky.config = {
 };
 conky.text = [[
 ${time %H:%M:%S}${alignr}${time %d-%m-%y}
-${voffset -16}${font sans-serif:bold:size=18}${alignc}${time %H:%M}${font}
+${voffset -16}${font sans-serif:bold:size=18}${alignc}${time  %I:%M:%S %p}${font}
 ${voffset 4}${alignc}${time %A %B %d, %Y}
 ${font}${voffset -4}
 ${font sans-serif:bold:size=10}SYSTEM ${hr 2}
@@ -64,6 +64,10 @@ ${font sans-serif:bold:size=10}DISK USAGE ${hr 2}
 ${font sans-serif:normal:size=8}/ $alignc ${fs_used /} / ${fs_size /} $alignr ${fs_used_perc /}%
 ${fs_bar /}
 
+#kmuthuvel
+${font sans-serif:bold:size=10}MOUNTED DISKS USAGE ${hr 2}
+${execpi 1.5 ~/find-removable-devices.sh}
+
 ${font Ubuntu:bold:size=10}NETWORK ${hr 2}
 ${font sans-serif:normal:size=8}Local IPs:${alignr}External IP:
 ${execi 1000 ip a | grep inet | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g'}  ${alignr}${execi 1000  wget -q -O- http://ipecho.net/plain; echo}
@@ -71,6 +75,7 @@ ${font sans-serif:normal:size=8}Down: ${downspeed enp0s3}  ${alignr}Up: ${upspee
 ${color lightgray}${downspeedgraph enp0s3 80,130 } ${alignr}${upspeedgraph enp0s3 80,130 }$color
 ${font sans-serif:bold:size=10}TOP PROCESSES ${hr 2}
 ${font sans-serif:normal:size=8}Name $alignr PID   CPU%   MEM%${font sans-serif:normal:size=8}
+${hr 1}
 ${top name 1} $alignr ${top pid 1} ${top cpu 1}% ${top mem 1}%
 ${top name 2} $alignr ${top pid 2} ${top cpu 2}% ${top mem 2}%
 ${top name 3} $alignr ${top pid 3} ${top cpu 3}% ${top mem 3}%
