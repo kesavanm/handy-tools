@@ -12,6 +12,7 @@ This doc is on what things to take care post-era of a fresh Gnu/Linux installati
     - [Themes \& Icons](#themes--icons)
     - [Fonts](#fonts)
     - [Cairo clock](#cairo-clock)
+    - [Albert](#albert)
 
 
 | KDE | Gnome |
@@ -101,3 +102,5 @@ My terminals lover them and my eyes thank them forever
 ### Cairo clock
 Is your desk missing the fancy clock? Get that \`radium\` `Cairo clock` and ensure it stick to the right position every time you login. `~/.cairo-clockrc` is your friend. Feel free to ignore the Do not edit warning , but sure about what you're doing.
 
+### Albert
+One of the keyboard launcher, `Albert` is good choice for both Gnome/KDE. With Albert's fizzy-finding for anything, you need from the device, just matter of seconds.
