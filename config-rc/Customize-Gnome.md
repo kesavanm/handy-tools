@@ -79,6 +79,11 @@ The pain points from my experience is, I enabled `Lock Icons` under `Behaviour` 
 	* Easy customization: Compiz can be customized with various plugins and effects to meet the user's preferences.
 	* Resource-efficient: Compiz is lightweight and resource-efficient, making it a great choice for older hardware.
 	* Seamless integration: Compiz provides a seamless integration with Gnome Shell and other Gnome applications.
+   
+```bash
+sudo apt install compiz-plugins-default compiz-plugins-main compiz-plugins-extra compiz-plugins compiz-plugins-main-default compiz-mate compizconfig-settings-manager
+sudo ccsm         # config as sudo
+```
 
 - `Place Windows` >> Placement Mode - Centered
 - `Effects` 
@@ -104,5 +109,15 @@ My terminals lover them and my eyes thank them forever
 ### Cairo clock
 Is your desk missing the fancy clock? Get that \`radium\` `Cairo clock` and ensure it stick to the right position every time you login. `~/.cairo-clockrc` is your friend. Feel free to ignore the Do not edit warning , but sure about what you're doing.
 
+```bash
+sudo dpkg -i cairo-clock_0.3.4-2ubuntu2_amd64.deb  #grab the binary
+sudo apt install -f         # install deps if required during above
+```
+
 ### Albert
 One of the keyboard launcher, `Albert` is good choice for both Gnome/KDE. With Albert's fizzy-finding for anything, you need from the device, just matter of seconds.
+
+```bash
+sudo dpkg -i albert_0.17.6-0_amd64.deb  #grab the binary
+sudo apt install -f         # install deps if required
+```
