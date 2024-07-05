@@ -87,6 +87,8 @@ The pain points from my experience is, I enabled `Lock Icons` under `Behaviour` 
 
 \* In-case if you still missing borders for windows , probabbly a distro upgrade may help.
 
+**Pro-Tip:** Try `sudo ccsm` and config it, so changes may forced into system and reflect.
+
 ### Themes & Icons
 If you notice few apps not honoring the selected theme in **Appearance** (`mate-appearance-properties`) particularly (McMojave-circle*-X or so), time to use the power. Install the theme under `/usr/share/themes/` with help of `sudo` and you should be good to go.
 
