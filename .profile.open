@@ -498,27 +498,26 @@ yt2(){
 #       TOOL (5) cleandebs Remove unwanted debs & free more space
 #################################################################
 function cleandebs(){
-        echo " Going to run the following:
-                sudo aptitude clean
-                sudo aptitude install localepurge       # removes unneeded locale files and localized man page
-                sudo apt-get install deborphan          # removes orphaned packages
-                sudo deborphan | xargs sudo apt-get -y remove –purge
-                ";
+    local choice;
 
-        echo -n "Clean the debian orphan files? You may need to run as root/sudo ? [y|n]:" ;
-        read -n 1 choice
-        echo
-        if [ $choice == "y" ] ; then {
-                #sudo aptitude clean;
-                sudo apt-get clean
-                #sudo aptitude install localepurge
-                sudo apt-get install deborphan
-                #sudo deborphan | xargs sudo apt-get -y remove –purge
-                sudo deborphan | xargs sudo apt-get -y purge
-                sudo apt autoremove
-        }
-        else echo "Debian orphan files not cleaned";
-        fi
+    echo "Going to run the following:"
+    echo "sudo apt-get clean"
+    echo "sudo apt-get install deborphan"
+    echo "sudo deborphan | xargs sudo apt-get -y purge"
+    echo "sudo apt autoremove"
+
+    echo -n "Clean the debian orphan files? You may need to run as root/sudo ? [y|n]: "
+    read -n 1 choice
+    echo
+
+    if [ "$choice" == "y" ]; then
+        sudo apt-get clean
+        sudo apt-get install deborphan
+        sudo deborphan | xargs sudo apt-get -y purge
+        sudo apt autoremove
+    else
+        echo "Debian orphan files not cleaned"
+    fi
 }
 
 function msg(){
