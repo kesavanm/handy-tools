@@ -826,7 +826,7 @@ alias colors256='perl $HOME/bin/colors256.pl'
 alias shred='shred -uvzn 3'
 function get_updated_profile()
 {
-        cd $HOME/bin
+        cd $HANDY
         echo "Checking for latest updates..."
         
         # Backup current version
@@ -852,19 +852,18 @@ function get_updated_profile()
                 if [ "$choice" = "y" ]; then
                         echo "Updating profile..."
                         # Backup current profile
-                        cp .profile.open ".profile.open.bkup.20250101"
+                        cp .profile.open ".profile.open.bkup.$(date +%Y%m%d)"
                         
                         # Get latest profile from repo
                         git checkout origin/master -- .profile.open
                         chmod a+x .profile.open
-                        
                         echo "Profile updated to version $new_version"
-                        echo "Your old profile is backed up at .profile.open.bkup.20250101"
+                        echo "Your old profile is backed up at .profile.open.bkup.$(date +%Y%m%d)"
                         echo "Save your work, logout & login for update to take effect"
                         . ~/bin/.profile.open
                 else
                         # Restore original version file if update declined
-                        mv version.txt.bkup.20250101 version.txt
+                        mv version.txt.bkup.$(date +%Y%m%d) version.txt
                         echo "Update postponed. Will try again later."
                 fi
         else
