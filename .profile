@@ -1,13 +1,20 @@
 #!/bin/bash
 # .profile for development environment where `git` and other tools avail
 
-# err_report() { echo "Error on line $1"; }
-# trap 'err_report $LINENO' ERR
-# set -u
+err_report() { echo "Error on line $1"; }
+trap 'err_report $LINENO' ERR
+set -u
 
 HOME_ALT="$HOME"
 HANDY="$HOME/handy-tools"
 
+# Check for required commands
+for cmd in tput cowsay lolcat bat git; do
+    command -v $cmd >/dev/null 2>&1 || echo "Warning: $cmd is required but not installed" >&2
+done
+
+# Check if HANDY directory exists
+[ ! -d "$HANDY" ] && { echo "Error: $HANDY directory not found"; exit 1; }
 
 #https://unix.stackexchange.com/questions/470972/printf-to-n-column
 dots() {
@@ -24,10 +31,12 @@ dots_r() {
 
 #original 24 56 20
 
-if [ $(tput cols) -le "144"  ]; then
-  ratio=(35 55 10)
+# Terminal width based configuration
+TERM_WIDTH=$(tput cols)
+if [ $TERM_WIDTH -le 144 ]; then
+    ratio=(30 60 10)  # Compact layout for smaller terminals
 else
-  ratio=(40 50 10)
+    ratio=(40 50 10)  # Spacious layout for wider terminals
 fi
 
 x=$((${ratio[0]}*$(tput cols)/100))
@@ -42,6 +51,12 @@ load_script() {
   else
     script="${XYZ[0]}" ; title=$script
   fi
+
+  # Check if paths exist
+  [ ! -d "$PATH_MAIN" ] && [ ! -d "$PATH_ALT" ] && {
+    echo "Warning: Neither $PATH_MAIN nor $PATH_ALT exist"
+    return 1
+  }
 
   source=""
   tput sgr0
@@ -73,14 +88,18 @@ cd $HANDY
 git submodule update --init --recursive
 cd - >/dev/null
 
-#load_script "script" "PATH_MAIN" "PATH_ALT"
-load_script ".profile.open" "$HOME/bin" "$HOME_ALT/bin"                                #1 Aliases & functions from OPEN
-load_script ".profile.work" "$HOME/bin" "$HOME_ALT/bin"                                #2 Aliases & functions from WORK
-load_script ".git-completion.bash" "$HANDY/bin" .                                      #3 Git Completion
-load_script "bash_completion" "/usr/share/bash-completion"   .                         #4 bash_completion from the OS
-load_script "git##git completion (OS)" "/usr/share/bash-completion/completions" . #5 git completion from the OS
-load_script ".fzf.bash##fizzy-finder" "$HOME_ALT" .                                    #6 fizzy-finder
-load_script "functions.sh##.git-heart-fzf" "$HANDY/git-heart-fzf"  .                   #7 .git-heart-fzf
+# Before loading scripts, verify directories exist
+[ ! -d "$HOME/bin" ] && mkdir -p "$HOME/bin"
+[ ! -d "$HOME_ALT/bin" ] && mkdir -p "$HOME_ALT/bin"
+
+# Only load scripts if they exist
+[ -f "$HOME/bin/.profile.open" ] && load_script ".profile.open" "$HOME/bin" "$HOME_ALT/bin"
+[ -f "$HOME/bin/.profile.work" ] && load_script ".profile.work" "$HOME/bin" "$HOME_ALT/bin"
+[ -f "$HANDY/bin/.git-completion.bash" ] && load_script ".git-completion.bash" "$HANDY/bin" .
+[ -f "$HANDY/bin/bash_completion" ] && load_script "bash_completion" "/usr/share/bash-completion"   .
+[ -f "$HANDY/bin/git##git completion (OS)" ] && load_script "git##git completion (OS)" "/usr/share/bash-completion/completions" .
+[ -f "$HOME_ALT/.fzf.bash" ] && load_script ".fzf.bash##fizzy-finder" "$HOME_ALT" .
+[ -f "$HANDY/git-heart-fzf/functions.sh" ] && load_script "functions.sh##.git-heart-fzf" "$HANDY/git-heart-fzf"  .
 
 # misc/rest
 if [ -f $HOME_ALT/bin/vim ]; then #choose user vim if so
