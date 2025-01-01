@@ -545,8 +545,8 @@ function msg(){
     if (( $#  >= 2 )) ; then                        #No  STDIN
         echo -n ;
     else                                            #Has STDIN
-        MSG="$(cat -)";
-        set -- $1 $MSG
+      MSG="$(cat -)";
+      set -- $1 $MSG
     fi
 
     B=`tput bold`    #BOLD
@@ -659,7 +659,7 @@ alias dbconn="mysql --login-path=$HOME/local.db"
 
 function mydb(){
        if [ "$#" -eq "1" ]; then
-                DB=$1
+                DB=$1;
                 msg2 -g "DB set to $1";return 0
        fi
        if [ "$DB" ]; then
@@ -827,48 +827,51 @@ alias colors256='perl $HOME/bin/colors256.pl'
 alias shred='shred -uvzn 3'
 function get_updated_profile()
 {
-        cd $HOME/bin;
-        today=`date +%Y%m%d`
-        FILE_IN='.profile.open'; FILE_OUT="new.profile.open.$today";
-        echo "looking for latest updates"
-        cmd_wget $FILE_IN $FILE_OUT;
-        #echo -n 'running command:';msg2 -b "$CMD_WGET";
-        `$CMD_WGET`
-
-        new_version=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today`
-
-        if [[ $? -ne 0 ]] ; then new_version=0.0 ;              # no version history , so start fresh
-        else
-                INX=`grep 'OPEN_PROFILE_VERSION' new.profile.open.$today | head -1 | awk  '{printf("%s",$1)}'`
-                new_version=`echo $INX | tr = \ | awk '{printf $2}'`
-        fi
-
-        latest_avail=`bc <<< "$new_version>$OPEN_PROFILE_VERSION"`
-
-        echo new_version : $new_version
-        echo curr_version: $OPEN_PROFILE_VERSION
-        echo latest_avail: $latest_avail
-
-        if [[ $latest_avail -eq 1  ]] ; then {
-                echo "you're using the old version OPEN_PROFILE_VERSION:$OPEN_PROFILE_VERSION while $new_version is avail"
-                echo -n "wish to update ? [y|n]: "
+        cd $HOME/bin
+        echo "Checking for latest updates..."
+        
+        # Backup current version
+        cp version.txt "${version_txt}.bkup.$(date +%Y%m%d)"
+        
+        # Get latest version from repo
+        git fetch origin master
+        git checkout origin/master -- version.txt
+        
+        # Compare versions
+        current_version=$(cat "${version_txt}.bkup.$(date +%Y%m%d)")
+        new_version=$(cat version.txt)
+        
+        echo "Current version: $current_version"
+        echo "Available version: $new_version"
+        
+        if [ "$new_version" != "$current_version" ]; then
+                echo "A new version $new_version is available (current: $current_version)"
+                echo -n "Do you want to update? [y|n]: "
                 read -n 1 choice
                 echo
-                if [ $choice == "y" ] ; then {
-                        echo updating the profile
-                        mv .profile.open .profile.open.bkup.`date +%Y%m%d`
-                        mv new.profile.open.$today .profile.open ; chmod a+x .profile.open
-                        echo "OPEN_PROFILE updated to OPEN_PROFILE_VERSION:$new_version"
-                        echo "your old profile backuped at .profile.open.bkup.`date +%Y%m%d`"
-                        echo "save your work,logout & login for update"
+                
+                if [ "$choice" = "y" ]; then
+                        echo "Updating profile..."
+                        # Backup current profile
+                        cp .profile.open ".profile.open.bkup.20250101"
+                        
+                        # Get latest profile from repo
+                        git checkout origin/master -- .profile.open
+                        chmod a+x .profile.open
+                        
+                        echo "Profile updated to version $new_version"
+                        echo "Your old profile is backed up at .profile.open.bkup.20250101"
+                        echo "Save your work, logout & login for update to take effect"
                         . ~/bin/.profile.open
-                }
                 else
-                        echo "Okay.You've some urgent work.Will update later"
+                        # Restore original version file if update declined
+                        mv version.txt.bkup.20250101 version.txt
+                        echo "Update postponed. Will try again later."
                 fi
-        }
         else
-                echo "you're using the latest version OPEN_PROFILE_VERSION:$OPEN_PROFILE_VERSION"
+                # Cleanup backup if no update needed
+                rm version.txt.bkup.20250101
+                echo "You're using the latest version: $current_version"
         fi
 }
 
