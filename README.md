@@ -16,11 +16,11 @@ Every script has it's own bug and I don't much bother on the same as long this w
 ## Version Control
 This repository uses automatic version incrementing. The version number is stored in `version.txt` and follows semantic versioning (MAJOR.MINOR.PATCH).
 
-- MAJOR version for incompatible API changes
-- MINOR version for added functionality in a backward compatible manner
-- PATCH version for backward compatible bug fixes
+- MAJOR version for incompatible API changes (x.0.0)
+- MINOR version for added functionality in a backward compatible manner (0.x.0)
+- PATCH version for backward compatible bug fixes (0.0.x)
 
-When merging into the master branch, the patch version is automatically incremented.
+When merging into the master branch, the patch version is automatically incremented using Git hooks.
 
 ## Author
 Please send your bug(s)/comments to hi@kesavan.info. Visit https://kesavan.info to find more.
