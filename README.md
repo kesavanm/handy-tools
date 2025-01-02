@@ -13,6 +13,10 @@ Your eyes will thank you if you install [DejaVu Sans Mono for Powerline](https:/
 ## Known Bugs
 Every script has it's own bug and I don't much bother on the same as long this works fine for me.
 
+## Version Management
+- Automatic version bumping on master branch updates
+- Uses semantic versioning (MAJOR.MINOR.PATCH)
+
 ## Version Control
 This repository uses automatic version incrementing. The version number is stored in `version.txt` and follows semantic versioning (MAJOR.MINOR.PATCH).
 
