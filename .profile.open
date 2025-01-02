@@ -525,7 +525,7 @@ function msg(){
 
     usage(){
         echo "usage: msg [-w|-g] [-n] message_here"
-        echo "options:(w)warning,(g)greet,(e)bad|negative|error,(o)good|okay,(b)bold,(u)underline,(l)underline+bold";
+        echo "options:(w)arning,(g)greet,(e)bad|negative|error,(o)good|okay,(b)bold,(u)underline,(l)underline+bold";
         echo "(n)no-newline";
         return 2;
     }
@@ -615,7 +615,7 @@ function msg2(){
 
         function msghelp(){
                 echo "Valid options:"
-                echo "(w)warning,(g)greet,(e)bad|negative|error,(o)good|okay,(b)bold,(u)underline,(l)underline+bold,(n)normal";
+                echo "(w)arning,(g)greet,(e)bad|negative|error,(o)good|okay,(b)bold,(u)underline,(l)underline+bold,(n)normal";
                 #scenario 1  - echo abcd | msg2 -g
                 #scenario 1b - printf xyz| msg2 -l
                 #scenario 2  - cat  x.sh | msg2 -w
@@ -662,7 +662,7 @@ function mydb(){
                 msg2 -g "DB set to $1";return 0
        fi
        if [ "$DB" ]; then
-               msg2 -g "Current DB : $DB"; return 0
+               msg2 -g "Current DB : $1"; return 0
        else
                msg2 -e "No db as of now"; echo -n "type the db name:"
                read db;DB=$db; return 0
@@ -1198,3 +1198,5 @@ function good_morning(){
 
 #User Settings
 GIT_REFRESH=1     # change to 0 if you git is too big & facing slow due to Refresh index: 100% (17649/17649), done.
+
+# Test comment to trigger version bump
