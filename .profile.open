@@ -312,26 +312,102 @@ function grepfn(){             # Grep with class and function
     fi
 }
 
-function extract() {    # Handy Extract Program
-    if [ -f $1 ] ; then
-        case $1 in
-            *.tar.bz2) tar xvjf $1 ;;
-            *.tar.gz) tar xvzf $1 ;;
-            *.bz2) bunzip2 $1 ;;
-            *.rar) unrar x $1 ;;
-            *.gz) gunzip $1 ;;
-            *.tar) tar xvf $1 ;;
-            *.tbz2) tar xvjf $1 ;;
-            *.tgz) tar xvzf $1 ;;
-            *.zip) unzip $1 ;;
-            *.Z) uncompress $1 ;;
-            *.7z) 7z x $1 ;;
-            *) echo "'$1' cannot be extracted via >extract<" ;;
-        esac
-    else
-        echo "'$1' is not a valid file!"
+function extract() {    # Universal archive extractor
+    if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+        echo "Usage: extract [option] <archive-file>"
+        echo "Options:"
+        echo "  -h, --help    Show this help message"
+        echo "Supported formats: .tar.bz2, .tar.gz, .bz2, .rar, .gz, .tar,"
+        echo "                  .tbz2, .tgz, .zip, .Z, .7z, .tar.xz, .xz"
+        return 0
     fi
+
+    if [ -z "$1" ]; then
+        echo "Error: No archive file specified."
+        echo "Try 'extract --help' for usage information."
+        return 1
+    fi
+
+    if [ ! -f "$1" ]; then
+        echo "Error: '$1' is not a valid file!"
+        return 1
+    fi
+
+    case "$1" in
+        *.tar.bz2|*.tbz2) 
+            if ! command -v tar >/dev/null 2>&1; then
+                echo "Error: 'tar' is not installed"
+                return 1
+            fi
+            tar xvjf "$1" ;;
+        *.tar.gz|*.tgz) 
+            if ! command -v tar >/dev/null 2>&1; then
+                echo "Error: 'tar' is not installed"
+                return 1
+            fi
+            tar xvzf "$1" ;;
+        *.tar.xz)
+            if ! command -v tar >/dev/null 2>&1; then
+                echo "Error: 'tar' is not installed"
+                return 1
+            fi
+            tar xvJf "$1" ;;
+        *.bz2) 
+            if ! command -v bunzip2 >/dev/null 2>&1; then
+                echo "Error: 'bunzip2' is not installed"
+                return 1
+            fi
+            bunzip2 "$1" ;;
+        *.rar) 
+            if ! command -v unrar >/dev/null 2>&1; then
+                echo "Error: 'unrar' is not installed"
+                return 1
+            fi
+            unrar x "$1" ;;
+        *.gz) 
+            if ! command -v gunzip >/dev/null 2>&1; then
+                echo "Error: 'gunzip' is not installed"
+                return 1
+            fi
+            gunzip "$1" ;;
+        *.tar) 
+            if ! command -v tar >/dev/null 2>&1; then
+                echo "Error: 'tar' is not installed"
+                return 1
+            fi
+            tar xvf "$1" ;;
+        *.zip) 
+            if ! command -v unzip >/dev/null 2>&1; then
+                echo "Error: 'unzip' is not installed"
+                return 1
+            fi
+            unzip "$1" ;;
+        *.Z) 
+            if ! command -v uncompress >/dev/null 2>&1; then
+                echo "Error: 'uncompress' is not installed"
+                return 1
+            fi
+            uncompress "$1" ;;
+        *.7z) 
+            if ! command -v 7z >/dev/null 2>&1; then
+                echo "Error: '7z' is not installed"
+                return 1
+            fi
+            7z x "$1" ;;
+        *.xz)
+            if ! command -v unxz >/dev/null 2>&1; then
+                echo "Error: 'unxz' is not installed"
+                return 1
+            fi
+            unxz "$1" ;;
+        *) 
+            echo "Error: '$1' cannot be extracted via extract"
+            echo "Unsupported archive format"
+            return 1 ;;
+    esac
+    return 0
 }
+
 # Creates an archive (*.tar.gz) from given directory.
 function maketar() { tar cvzf "${1%%/}.tar.gz" "${1%%/}/"; }
 # Create a ZIP archive of a file or folder.
