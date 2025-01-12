@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Get the current branch name
+current_branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+# Only proceed if we're on master/main
+if [[ "$current_branch" == "master" || "$current_branch" == "main" ]]; then
+    echo "Merged into master/main branch - incrementing version"
+    
+    # Read current version
+    version_file="version.txt"
+    if [ ! -f "$version_file" ]; then
+        echo "Error: version.txt not found"
+        exit 1
+    fi
+    
+    current_version=$(cat "$version_file")
+    
+    # Split version into major.minor.patch
+    IFS='.' read -r major minor patch <<< "$current_version"
+    
+    # Increment patch version
+    new_patch=$((patch + 1))
+    new_version="$major.$minor.$new_patch"
+    
+    # Update version file
+    echo "$new_version" > "$version_file"
+    
+    # Add and commit the version change in a new commit
+    git add "$version_file"
+    git commit -m "chore: Bump version to $new_version"
+    
+    echo "Version updated from $current_version to $new_version"
+fi
