@@ -248,6 +248,12 @@ BASH/core-utils
     ls -a | grep \~ | xargs mv -t tmp+bak+tilde                     # list files with ~ & move them
 
 
+    diff
+    ====
+    diff --width=$COLUMNS --suppress-common-lines --side-by-side --color=always /tmp/test1.txt /tmp/test2.txt
+
+
+
     Search for a file for all users with matching pattern:
     ======================================================
     for user in bsatishraj btata gkasim kmuthuvel kthokala ktoufique pdurgaprakash rkema_old smareddy smareddy-old smatte snagotu vgunnam; do for envdb in `find /data/$user -maxdepth 5 -type f -name 'env_db.php'` ; do grep -E 'BE_DB_DATABASE|BE_DB_SLAVE_DATABASE|BE_DB_WEATHER_DATABASE' $envdb|grep 'define(' |awk {'print $2 '}|sort|uniq |xargs echo -e "$user - $envdb \t\t -" ; done; done
@@ -374,6 +380,24 @@ BASH/core-utils
     #diff/compare before sync
     rsync  -avzi /home/kesavan/bin/  kesavan@123.456.789.000:/home/kesavan/bin/
 
+
+    thulasi@thulasi-Inspiron-15-356773.166.41.67~2024-04-07 10:40:18
+    $rsync -avhW --no-compress --progress .cache/thunderbird /media/thulasi/thunderbird/
+    sending incremental file list
+
+    sent 223.26K bytes  received 68 bytes  148.88K bytes/sec
+    total size is 289.66M  speedup is 1,297.03
+    0 ✓ success ^_^  ________________________________________________________________________________
+    thulasi@thulasi-Inspiron-15-356773.166.41.67~2024-04-07 10:40:52
+    $rsync -avhW --no-compress --progress /mnt/16b5a806-1ad0-41fc-8bd6-a16fe6bc0d50/users/kesavan/mozilla/.thunderbird /media/thulasi/thunderbird/
+    sending incremental file list
+
+    sent 197.85K bytes  received 430 bytes  396.55K bytes/sec
+    total size is 56.23G  speedup is 283,618.41
+    0 ✓ success ^_^  ________________________________________________________________________________
+    thulasi@thulasi-Inspiron-15-356773.166.41.67~2024-04-07 10:40:55
+
+
     #better color
     LS_COLORS=$LS_COLORS:'ow=1;34:' ; export LS_COLORS
 
@@ -382,7 +406,10 @@ BASH/core-utils
     cat /etc/*-release /etc/*version
 
 IRC
+            /nickserv register yourPassword yourEmailAccountName@yourMailProvider
             /msg nickserv identify kesavan <your-passcode>
+
+            https://wiki.mozilla.org/IRC
 
 MySQL
     -- PROCESSLIST
@@ -415,6 +442,17 @@ MySQL
     --STRING
     mysql> select customer_id,substring_index(substring_index(xml_log,'<line_of_business>',-1),'</line_of_business>',1) lob
     -> from kmuthuvel.orders_xml where order_id = 12345;
+
+    -- EXTRACTVALUE(xml,'xpath') 
+
+    select oms.order_id,oms.created, oms.market_source_id,
+    ExtractValue(xml,'direct_api/order/market_source_id') actual_msid
+    from orders_market_sources oms
+    join orders_xml oxml  on oxml.order_id = oms.order_id
+    where oms.order_id >'6483182' and oms.market_source_id='6'
+    and oms.market_source_id!=ExtractValue(xml,'direct_api/order/market_source_id')
+
+
 
     -- Copy Table
     CREATE TABLE km_dup.table1 SELECT * FROM km_orig.table1
@@ -595,6 +633,10 @@ GIT
 
 
         git -c color.ui=always  <git_command>   #force color output
+
+        git ls-remote origin
+
+        
     Branching
     =========
         Always create new branch from `development` only. Else you may conflicts raising from the branch from where you create the new.
@@ -638,7 +680,7 @@ GIT
     $git stash pop                          #get the changes from stash         #03:03 PM
 
 
-
+    git stash list --format="%gd: %cd - %gs" --date=short
     git stash show --stat
 
     git stash show -p stash@{1}                 #preview what's inside the stahs 
@@ -725,6 +767,11 @@ GIT
         #pick/drop/squash
         git push -f origin feature_branch
 
+       ### Squash 20 commits from PR
+       git rebase -i HEAD~20
+       git rebase --continue
+       git push origin branch-name --force
+
         
     Undo rebase
     ===========
@@ -803,6 +850,27 @@ GIT
         git branch -d <branchName>      #local only
         git push origin --delete <branchName>   #remove remote(if you know what you are doing!)
         git push origin :<branchName>       #alias of above
+
+    ### upstream and more
+    =====================
+    git remote add upstream git@git.xxx.com:lead/pmsmanager.git
+    git fetch upstream; git pull upstream <branch>
+
+    git remote add peer1 git@git.xxx.com:peer1/pmsmanager.git
+    git fetch peer1 ; git pull peer1 <branch>
+    git checkout -b key_con_fix peer1/key_con_fix
+
+    git fetch git@git.xxx.com:peer2/pmsmanager.git blahblah
+    git checkout FETCH_HEAD
+
+    git remote remove peer1  #undo
+
+    git clone -b cet --single-branch git@git.xxx.com:lead/pmsmanager.git
+
+    ### Cleanup remote branches
+    ===========================
+    git fetch --prune
+    git push origin --delete <branch>
 
     Unable to commit ?
     ==================
@@ -908,7 +976,8 @@ GIT
         # original 
         alias glx="git log --date=short --color=always --pretty=format:'%C(magenta)%h%C(cyan)%C(bold)%ad %C(green)%<(20,trunc)%an%x09%Creset%C(yellow)%s%Creset'| head -20| cat -n"
 
-
+        # Undo git rm -r --cached
+        git reset HEAD~1
 
         GIT TIME maching
         ================
@@ -941,7 +1010,9 @@ GIT
         git diff --name-only development
         git log --oneline --pretty="format:" --name-only development.. | awk 'NF' | sort -u
  
- 
+        #list all commits carry change to file
+        git log --all --first-parent --remotes --reflog --author-date-order -- filename
+        git log  --all --first-parent --remotes --reflog --author-date-order --date=local --pretty=format:"%h%x09%C(cyan)%an%x09%ad:%Creset %s"
     ## colorize git
     git config --global color.ui true
 
@@ -961,6 +1032,8 @@ GIT
     git checkout development                    # back to development
     git branch -d hot-fix                       # delete the hot-fix that no more need
 
+    git branch -D --remote origin/orch-fine-tune origin/checksum-api origin/dm-orch 
+    
     MISC
     =====
         git fetch origin
@@ -1029,6 +1102,13 @@ GIT
         git add deploy.yaml                         # add 
         git commit -m 'on top of latest'            # and commit
         git push -uf origin replica-map             # go go gooo
+
+	someone's branch into local
+	===========================
+	git fetch git@github.com:einstein/relativity.git fix-gravity
+	git checkout FETCH_HEAD
+
+
 
     Skip mode changes in diff
     =========================
@@ -1152,6 +1232,11 @@ AWS/Cloudwatch/Console/InSight
     | parse @message "Exception: subject='* ' * :" as  @subject, @Exception
     | display @timestamp, @subject , @Exception 
 
+
+### OCI 
+    sudo mount  -t ext4 /dev/sdb /mnt/kesavan/
+
+
 Splunk
 
     index="access_log" "/account/login" POST mobile host="de-*" | timechart span="1d" count
@@ -1263,6 +1348,11 @@ DOS
     ==================
     takeown /f "C:\Users\kmuthuvel.old" /r
     icacls "C:\Users\kmuthuvel.old" /reset /T
+
+
+    Wi-Fi creds:
+    ===========
+    netsh wlan show profile SpectrumSetup-7F key=clear|findstr Key
 
     Data Recovery
     =============
@@ -1406,6 +1496,43 @@ GNU/Linux
     1016  2019-01-01 20:36:46 history | tail
     0 ✓ success ^_^  ________________________________________________________________________________
     thulasi@thulasi-Inspiron-15-3567(49.204.208.161)|~|2019-01-01 20:36:46
+
+
+    ### unistall script for compiled source
+    ./configure --prefix=/tmp/abc
+    make install
+    cd $PREFIX
+    find . -type f | cut -b 1 --complement | sed 's/^/rm -f \/usr\/local/g' > uninstall.sh
+    find . -type d | cut -b 1 --complement | sed 's/^/rmdir --ignore-fail-on-non-empty \/usr\/local/g' >> uninstall.sh
+
+    whereis abc
+    sudo rm -rf <>
+
+
+    # APT source key Fix
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B7B3B788A8D3785C
+    sudo apt-get install mate-core mate-desktop-environment
+
+
+### Increase disk size
+```bash
+    du –shT /home    (sudo du -h -x -d 1 /home/)
+    du -shT .[^.]*  | sort -hr| head
+
+
+    df -h /var
+    lvextend -L +3G /dev/mapper/vg01XXX-var
+    resize2fs  /dev/mapper/vg01XXXX-var
+    xfs_growfs /dev/mapper/vg00-home
+
+```
+
+
+#service-failures
+sudo service apache2 restart
+See "sudo systemctl status apache2.service" and "sudo journalctl -xeu apache2.service" for details.
+
+
 
 PrivateTmp in #WSL https://stackoverflow.com/a/63358357
     Ubuntu uses "private temp" directories, so your xdebug.log log file is likely available in one of the directories like /tmp/systemd-private*/tmp/.
@@ -1661,6 +1788,41 @@ File Permissions
         * Disconnect VPN. (And refer the tip #1 to reset the internet inside WSL)
     1. Permit FireWall from Windows. On `PowerShell`, run: `New-NetFirewallRule -DisplayName "WSL" -Direction Inbound  -InterfaceAlias "vEthernet (WSL)"  -Action Allow`
     2. Getting  "Permission denied" error in Browser. Also `AH00037: Symbolic link not allowed or link target not accessible` in `/var/apache2/error.log`. Double check the permission on `$HOME` directory. Refer [Pre-requisite](#application) section. Thanks to this [serverfault](https://serverfault.com/a/1127555) answer
+
+
+
+### Git api
+
+    - list PRs 
+        curl --request GET --url "https://git.yaazh.info/api/v3/repos/kmuth/website/pulls" --header "Authorization: Bearer ghp_mpXXXXX3i51bg"
+        gh pr list --limit 1000 --state all
+
+###  Number of commits - git shortlog -s -n 
+
+### AI tools
+ - tabnine
+ - codeium
+ - bito
+
+### PostgreSQL
+    /var/lib/pgsql/data/pg_hba.conf
+    sudo systemctl restart postgresql
+    sudo -u postgres psql pmsmgr
+
+
+### Manage SUDO
+    [root@sna60vmdev079 ~]# visudo
+    [root@sna60vmdev079 ~]# grep -ir kmuth /etc/sudoer*
+    /etc/sudoers: kmuth446  ALL=(ALL)       ALL
+
+
+### DBeaver
+    #### Recover creds
+    openssl aes-128-cbc -d -K babb4a9f774ab853c96c2d653dfe544a -iv 00000000000000000000000000000000 -in credentials-config.json
+
+
+
+
 
 All good ✅
 Something wrong ❌
