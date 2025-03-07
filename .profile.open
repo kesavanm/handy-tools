@@ -923,14 +923,15 @@ function get_updated_profile()
         echo "Checking for latest updates..."
         
         # Backup current version
-        cp version.txt "${version_txt}.bkup.$(date +%Y%m%d)"
+        VER_BKUP=version.txt.bkup.$(date +%Y%m%d)
+        cp version.txt $VER_BKUP
         
         # Get latest version from repo
         git fetch origin master
         git checkout origin/master -- version.txt
         
         # Compare versions
-        current_version=$(cat "${version_txt}.bkup.$(date +%Y%m%d)")
+        current_version=$(cat $VER_BKUP)
         new_version=$(cat version.txt)
         
         echo "Current version: $current_version"
@@ -956,12 +957,12 @@ function get_updated_profile()
                         . ~/bin/.profile.open
                 else
                         # Restore original version file if update declined
-                        mv version.txt.bkup.$(date +%Y%m%d) version.txt
+                        mv $VER_BKUP version.txt
                         echo "Update postponed. Will try again later."
                 fi
         else
                 # Cleanup backup if no update needed
-                rm version.txt.bkup.20250101
+                rm -f $VER_BKUP
                 echo "You're using the latest version: $current_version"
         fi
 }
