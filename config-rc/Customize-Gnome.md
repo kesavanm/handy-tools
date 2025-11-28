@@ -53,6 +53,9 @@ Over periods, I moved to **Trisquel Gnu/Linux** distro , and I stick with Gnome 
 
 ## Tools/Apps to make your Gnome as eye candy
 
+![screenshot](./config-2.png)
+![screenshot](./config-ss.png)
+
 ### Panels
 This `mate-panel` is one of the best thing in Gnome and you can customize adding the window list, workspace switcher to pinning your fav apps along with indicators & Classic menu. If your screen permits with big display, go for two panels, one on top and other at bottom. 
 
