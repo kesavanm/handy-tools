@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=2026-universal
+Type=X-GNOME-Metatheme
+Comment=
+
+[X-GNOME-Metatheme]
+GtkTheme=Mojave-Light
+MetacityTheme=Mojave-Light-solid
+IconTheme=Papirus
+GtkColorScheme=menu_fg: #363636
+CursorTheme=Yaru
+CursorSize=24
+NotificationTheme=nodoka
+BackgroundImage=/usr/share/backgrounds/linuxmint-vanessa/echerkasski_orketal.jpg
