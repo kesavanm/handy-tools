@@ -1,6 +1,6 @@
 # Customize your Gnome
 
-This doc is on what things to take care post-era of a fresh Gnu/Linux installation. Gnome being a popular choice for Desktop Environment, it's not my favorite decades back. Earlier days KDE was my choice when I used to work with **OpenSuSE** 
+This doc is on what things to take care post-era of a fresh Gnu/Linux installation. Gnome being a popular choice for Desktop Environment, it's not my favorite decades back. Earlier days KDE was my choice when I used to work with **OpenSuSE**
 
 - [Customize your Gnome](#customize-your-gnome)
   - [Linux Desktop Environment](#linux-desktop-environment)
@@ -57,7 +57,7 @@ Over periods, I moved to **Trisquel Gnu/Linux** distro , and I stick with Gnome 
 ![screenshot](./config-ss.png)
 
 ### Panels
-This `mate-panel` is one of the best thing in Gnome and you can customize adding the window list, workspace switcher to pinning your fav apps along with indicators & Classic menu. If your screen permits with big display, go for two panels, one on top and other at bottom. 
+This `mate-panel` is one of the best thing in Gnome and you can customize adding the window list, workspace switcher to pinning your fav apps along with indicators & Classic menu. If your screen permits with big display, go for two panels, one on top and other at bottom.
 
 ### Conky
 Conky is a system monitor that can be customized to display information in a text window, allowing for real-time monitoring of system statistics such as CPU usage, memory usage, disk usage, temperature, and more. Conky is highly customizable and can be customized to display the information in a variety of formats such as text, graphs, and charts. Conky is very lightweight and resource-efficient, making it a great choice for older hardware.
@@ -69,7 +69,7 @@ Conky is a system monitor that can be customized to display information in a tex
 - Plank is lightweight and resource-efficient, making it a great choice for older hardware.
 - Plank provides a seamless integration with Gnome Shell and other Gnome applications.
 
-Plank makes life easy with docklets. You can pin you favorite docklets and 
+Plank makes life easy with docklets. You can pin you favorite docklets and
 
 The pain points from my experience is, I enabled `Lock Icons` under `Behaviour` and struggle to add more icons where things failed. So make sure the Lock Icons turned-off
 
@@ -82,14 +82,14 @@ The pain points from my experience is, I enabled `Lock Icons` under `Behaviour` 
 	* Easy customization: Compiz can be customized with various plugins and effects to meet the user's preferences.
 	* Resource-efficient: Compiz is lightweight and resource-efficient, making it a great choice for older hardware.
 	* Seamless integration: Compiz provides a seamless integration with Gnome Shell and other Gnome applications.
-   
+
 ```bash
 sudo apt install compiz-plugins-default compiz-plugins-main compiz-plugins-extra compiz-plugins compiz-plugins-main-default compiz-mate compizconfig-settings-manager
 sudo ccsm         # config as sudo
 ```
 
 - `Place Windows` >> Placement Mode - Centered
-- `Effects` 
+- `Effects`
   - `Window Decoration*` - This is possible culprit for most cases
   - `Animations` >> `Magic Lamp Wavy` for both Minimize & Unminimize - Open sesame!
 
@@ -102,8 +102,30 @@ If you notice few apps not honoring the selected theme in **Appearance** (`mate-
 
 The same goes with Icons as well. In case of trouble, install the icon package at `/usr/share/icons`
 
+**Download & Install** : McMojave-Light-Solid , McMojave-Light & Papirus
+
+**Validate at locations**
+  - `~/.themes` : McMojave-Light-Solid , McMojave-Light
+  - `~/.icons`: Papirus-Dark , Papirus-Light , Papirus-Dark
+
+**Customize and save**
+Check your theme  `~/.themes/<your-theme>/index.theme` so it looks similar to:
+
+    [Desktop Entry]
+    Name=2026-universal
+    Type=X-GNOME-Metatheme
+    Comment=
+
+    [X-GNOME-Metatheme]
+    GtkTheme=Mojave-Light
+    MetacityTheme=Mojave-Light-solid
+    IconTheme=Papirus
+    GtkColorScheme=menu_fg: #363636
+    CursorTheme=Yaru
+    CursorSize=24
+
 ### Fonts
-If you're fan of `Powerline` & `Mono` fonts, cheers! Hope you can get it under `.icons` 
+If you're fan of `Powerline` & `Mono` fonts, cheers! Hope you can get it under `.icons`
       - DejaVu Sans Mono for Powerline.ttf
       - DejaVu Sans Mono Nerd Font Complete Mono.ttf
 
