@@ -1,148 +1,130 @@
-# Customize your Gnome
+# Customize Your GNOME Desktop
 
-This doc is on what things to take care post-era of a fresh Gnu/Linux installation. Gnome being a popular choice for Desktop Environment, it's not my favorite decades back. Earlier days KDE was my choice when I used to work with **OpenSuSE**
+This guide outlines essential steps and tools to customize your GNOME environment after a fresh GNU/Linux installation. While desktop preferences are subjective, this document highlights popular tools to enhance both productivity and aesthetics.
 
-- [Customize your Gnome](#customize-your-gnome)
-  - [Linux Desktop Environment](#linux-desktop-environment)
-  - [Tools/Apps to make your Gnome as eye candy](#toolsapps-to-make-your-gnome-as-eye-candy)
+- [Customize Your GNOME Desktop](#customize-your-gnome-desktop)
+  - [Desktop Environment Overview](#desktop-environment-overview)
+  - [Visual Enhancements & Tools](#visual-enhancements--tools)
     - [Panels](#panels)
-    - [Conky](#conky)
-    - [Plank](#plank)
-    - [Compiz](#compiz)
-    - [Themes \& Icons](#themes--icons)
+    - [Conky System Monitor](#conky-system-monitor)
+    - [Plank Dock](#plank-dock)
+    - [Compiz Effects](#compiz-effects)
+    - [Themes & Icons](#themes--icons)
     - [Fonts](#fonts)
-    - [Cairo clock](#cairo-clock)
-    - [Albert](#albert)
+    - [Cairo Clock](#cairo-clock)
+    - [Albert Launcher](#albert-launcher)
 
+## Desktop Environment Overview
 
-| KDE | Gnome |
-| --- | --- |
-| Better integration of applications | Better multi-monitor support |
-| Better notification system | Better performance and resource usage |
-| Better customization options | Better integration with other linux tools and applications |
+GNOME and KDE are two of the most popular desktop environments in the Linux ecosystem.
 
+| Feature | GNOME | KDE Plasma |
+| :--- | :--- | :--- |
+| **Philosophy** | Simplicity, productivity, and modern workflow. | Customization, familiarity, and feature-richness. |
+| **Strengths** | Consistent UI, distraction-free interface, high usage in enterprise. | Extensive configuration options, lightweight resource usage. |
+| **Toolkit** | GTK | Qt |
 
-## Linux Desktop Environment
+While I (the author) have moved through various distributions (like **OpenSuSE** and **Trisquel**), GNOME remains my preferred daily driver for its workflow and integration.
 
-Linux desktop environments are user interface software for Linux operating systems. These are the most popular desktop environments for Linux:
+## Visual Enhancements & Tools
 
-1. GNOME - Created by Red Hat, it is a fork of the earlier GIMP Development Environment. It is written in C and is released under the GNU General Public License. GNOME is available for various Linux distributions and is used by default in several Linux distributions.
-2. KDE - Created by The K Desktop Project (KDE), it is another fork of the earlier K Desktop Environment. It is written in C++ and is released under the GNU Library General Public License (LGPL) and the Qt License. KDE is available for various Linux distributions and is used by default in some Linux distributions.
-
-Gnome and KDE have been around since the early days of Linux. Gnome was created by Red Hat in 1997 and was initially called GIMP Development Environment (GDE). In 2000, the name was changed to GNOME (the name is an acronym for the GNU's Not-Only Mail). KDE was created by The K Desktop Project (KDE) in 1996 and was initially called K Desktop Environment (KDE).
-
-Some stats around their usage:
-
-* According to the [distrowatch.com](https://distrowatch.com/weekly.php?issue=20171016) website in October 2017, Gnome is used by 13.2% of Linux users and KDE is used by 8.3% of Linux users.
-* According to the [w3techs.com](https://w3techs.com/technologies/overview/desktop_os/all) website as of October 2017, Gnome is used by 12.8% of the world's desktop and KDE is used by 7.5% of the world's desktop.
-
-Here is a comparison of Gnome and KDE:
-
-| Gnome | KDE |
-| --- | --- |
-| Focus on productivity and usability | Focus on user experience and customization |
-| Easy to use | Steep learning curve |
-| Good for beginners | More advanced features |
-| Multi-platform | Multi-platform |
-| Good for web developers | Good for designers |
-| Better in terms of resource usage | Better in terms of resource usage |
-| Easier to extend | More difficult to extend |
-
-Over periods, I moved to **Trisquel Gnu/Linux** distro , and I stick with Gnome forever no matter what the OS is.
-
-
-## Tools/Apps to make your Gnome as eye candy
-
+Screenshots of the target setup:
 ![screenshot](./config-2.png)
 ![screenshot](./config-ss.png)
 
 ### Panels
-This `mate-panel` is one of the best thing in Gnome and you can customize adding the window list, workspace switcher to pinning your fav apps along with indicators & Classic menu. If your screen permits with big display, go for two panels, one on top and other at bottom.
+If you use **MATE panels** or GNOME Flashback, `mate-panel` offers classic customizability. You can add window lists, workspace switchers, and pin favorite apps.
+*   **Tip**: For large displays, consider using two panels: one at the top for menus/indicators and one at the bottom for window management.
 
-### Conky
-Conky is a system monitor that can be customized to display information in a text window, allowing for real-time monitoring of system statistics such as CPU usage, memory usage, disk usage, temperature, and more. Conky is highly customizable and can be customized to display the information in a variety of formats such as text, graphs, and charts. Conky is very lightweight and resource-efficient, making it a great choice for older hardware.
+### Conky System Monitor
+[Conky](https://github.com/brndnmtthws/conky) is a lightweight system monitor that renders system information directly on your desktop wallpaper. It can display CPU, memory, disk usage, network stats, and more.
+*   **Customization**: Conky is scriptable via Lua and has countless user-created themes available.
 
+### Plank Dock
+[Plank](https://launchpad.net/plank) is a strictly simple dock.
+*   **Features**: It provides an macOS-style dock for launching and switching applications.
+*   **Configuration**: Supports themes ("docklets") to match your desktop aesthetic.
+*   **Note**: If you experience issues with dragging icons to the dock, ensure "Lock Icons" is disabled in settings.
 
-### Plank
-- Plank provides a Dock-like experience in Gnome, making it easier for linux users to switch between applications, documents, and web pages.
-- Plank can be customized with custom docklets and provides a clean and organized user experience.
-- Plank is lightweight and resource-efficient, making it a great choice for older hardware.
-- Plank provides a seamless integration with Gnome Shell and other Gnome applications.
+### Compiz Effects
+Compiz is a compositing window manager famous for its desktop effects (wobbly windows, desktop cube) and window management utilities.
 
-Plank makes life easy with docklets. You can pin you favorite docklets and
-
-The pain points from my experience is, I enabled `Lock Icons` under `Behaviour` and struggle to add more icons where things failed. So make sure the Lock Icons turned-off
-
-### Compiz
-- Compiz is a window manager and compositing manager for the X Window System, it enhances user experience by providing a wide range of features such as:
-	* Desktop effects like: move, resize, minimize, maximize, close buttons, window title bar, window shadows, window borders, window decorations, window animations, window transparency, etc.
-	* Window Management: window placement, window snapping, window tiling, window resizing, window maximizing, window minimizing, window cycling, window grouping, window stacking, window focus, etc.
-	* Workspace Management: multiple workspaces, workspace switching, workspace cycling, workspace locking, workspace auto-switching, etc.
-	* Animations: window move, window resize, window fade in/out, window animation, etc.
-	* Easy customization: Compiz can be customized with various plugins and effects to meet the user's preferences.
-	* Resource-efficient: Compiz is lightweight and resource-efficient, making it a great choice for older hardware.
-	* Seamless integration: Compiz provides a seamless integration with Gnome Shell and other Gnome applications.
-
+**Installation:**
 ```bash
-sudo apt install compiz-plugins-default compiz-plugins-main compiz-plugins-extra compiz-plugins compiz-plugins-main-default compiz-mate compizconfig-settings-manager
-sudo ccsm         # config as sudo
+sudo apt install compiz-plugins-default compiz-plugins-main compiz-plugins-extra compizconfig-settings-manager
 ```
 
-- `Place Windows` >> Placement Mode - Centered
-- `Effects`
-  - `Window Decoration*` - This is possible culprit for most cases
-  - `Animations` >> `Magic Lamp Wavy` for both Minimize & Unminimize - Open sesame!
+**Configuration:**
+Run the settings manager to configure effects. **Note:** Run this as your local user, not root, so settings apply to your session.
+```bash
+ccsm
+```
 
-\* In-case if you still missing borders for windows , probabbly a distro upgrade may help.
+**Recommended Settings:**
+*   **Place Windows**: Set Placement Mode to *Centered*.
+*   **Effects**:
+    *   Enable *Window Decoration* (crucial for window borders/titles).
+    *   Enable *Animations*: Try "Magic Lamp" or "Wavy" for minimize/unminimize effects.
 
-**Pro-Tip:** Try `sudo ccsm` and config it, so changes may forced into system and reflect.
+> **Pro-Tip:** If window borders disappear, double-check that the *Window Decoration* plugin is enabled and compatible with your window manager.
 
 ### Themes & Icons
-If you notice few apps not honoring the selected theme in **Appearance** (`mate-appearance-properties`) particularly (McMojave-circle*-X or so), time to use the power. Install the theme under `/usr/share/themes/` with help of `sudo` and you should be good to go.
+To apply themes that aren't available in your package manager, you can install them manually.
 
-The same goes with Icons as well. In case of trouble, install the icon package at `/usr/share/icons`
+** Installation Locations:**
+*   **User-only (Recommended)**: `~/.themes` for themes and `~/.icons` for icon sets.
+*   **System-wide**: `/usr/share/themes` and `/usr/share/icons` (requires `sudo`).
 
-**Download & Install** : McMojave-Light-Solid , McMojave-Light & Papirus
+**Recommendations:**
+*   **Themes**: McMojave (Light/Solid)
+*   **Icons**: Papirus (Light/Dark)
 
-**Validate at locations**
-  - `~/.themes` : McMojave-Light-Solid , McMojave-Light
-  - `~/.icons`: Papirus-Dark , Papirus-Light , Papirus-Dark
+**Manual Configuration:**
+You can verify your specific theme configuration in `~/.themes/<theme-name>/index.theme`. It should look similar to:
 
-**Customize and save**
-Check your theme  `~/.themes/<your-theme>/index.theme` so it looks similar to:
+```ini
+[Desktop Entry]
+Name=2026-universal
+Type=X-GNOME-Metatheme
 
-    [Desktop Entry]
-    Name=2026-universal
-    Type=X-GNOME-Metatheme
-    Comment=
-
-    [X-GNOME-Metatheme]
-    GtkTheme=Mojave-Light
-    MetacityTheme=Mojave-Light-solid
-    IconTheme=Papirus
-    GtkColorScheme=menu_fg: #363636
-    CursorTheme=Yaru
-    CursorSize=24
-
-### Fonts
-If you're fan of `Powerline` & `Mono` fonts, cheers! Hope you can get it under `.icons`
-      - DejaVu Sans Mono for Powerline.ttf
-      - DejaVu Sans Mono Nerd Font Complete Mono.ttf
-
-My terminals lover them and my eyes thank them forever
-
-### Cairo clock
-Is your desk missing the fancy clock? Get that \`radium\` `Cairo clock` and ensure it stick to the right position every time you login. `~/.cairo-clockrc` is your friend. Feel free to ignore the Do not edit warning , but sure about what you're doing.
-
-```bash
-sudo dpkg -i cairo-clock_0.3.4-2ubuntu2_amd64.deb  #grab the binary
-sudo apt install -f         # install deps if required during above
+[X-GNOME-Metatheme]
+GtkTheme=Mojave-Light
+MetacityTheme=Mojave-Light-solid
+IconTheme=Papirus
+CursorTheme=Yaru
+CursorSize=24
 ```
 
-### Albert
-One of the keyboard launcher, `Albert` is good choice for both Gnome/KDE. With Albert's fizzy-finding for anything, you need from the device, just matter of seconds.
+### Fonts
+For a polished terminal and coding experience, `Powerline` and `Nerd Fonts` are highly recommended.
+
+*   DejaVu Sans Mono for Powerline
+*   DejaVu Sans Mono Nerd Font
+
+**Quick Install:**
+You can use the following snippet to install a collection of Nerd Fonts:
 
 ```bash
-sudo dpkg -i albert_0.17.6-0_amd64.deb  #grab the binary
-sudo apt install -f         # install deps if required
+sudo apt update && sudo apt install curl -y
+curl -sSL https://raw.githubusercontent.com/fam007e/nerd_fonts_installer/main/nerdfonts_installer.sh | bash
+```
+
+### Cairo Clock
+[Cairo Check](https://macslow.thebiglinux.com/cairo-clock/) provides a high-quality analog clock for your desktop.
+*   **Configuration**: Settings are stored in `~/.cairo-clockrc`.
+*   **Installation**:
+    ```bash
+    # Example for Debian/Ubuntu based systems if not in repo
+    sudo dpkg -i cairo-clock_*.deb
+    sudo apt install -f
+    ```
+
+### Albert Launcher
+[Albert](https://albertlauncher.github.io/) is a keyboard-centric launcher (similar to Spotlight on macOS). It indexes your files and applications for instant access.
+
+**Installation:**
+```bash
+# Example manual install
+sudo dpkg -i albert_*.deb
+sudo apt install -f
 ```
