@@ -26,10 +26,13 @@ z40=0000000000000000000000000000000000000000
 
 while read local_ref local_sha remote_ref remote_sha
 do
-	if [ "$remote_ref" = "refs/heads/master" ] 
-		|| [ "$remote_ref" = "refs/heads/main" ] 
-		|| [ "$remote_ref" = "refs/heads/development" ]; 
-	then
+	if [ "$local_sha" = "$z40" ]; then
+		continue
+	fi
+
+	if [ "$remote_ref" = "refs/heads/master" ] || \
+	   [ "$remote_ref" = "refs/heads/main" ] || \
+	   [ "$remote_ref" = "refs/heads/development" ]; then
 		echo "--------------------------------------------------"
 		echo "PROTECTED BRANCH WARNING"
 		echo "--------------------------------------------------"
