@@ -13,6 +13,10 @@ This directory contains Git hook templates for version management in the project
 - Creates a new commit with the version bump
 - Updates format: `major.minor.patch` (e.g., 2.1.5 → 2.1.6)
 
+### pre-push
+- Prevents direct pushes to `master` or `main` branches
+- Ensures changes go through Pull Requests
+
 ## Installation
 
 To install these hooks, copy them to your `.git/hooks` directory and make them executable:
@@ -20,6 +24,8 @@ To install these hooks, copy them to your `.git/hooks` directory and make them e
 ```bash
 cp hooks/pre-commit .git/hooks/
 cp hooks/post-merge .git/hooks/
+cp hooks/pre-push .git/hooks/
 chmod +x .git/hooks/pre-commit
 chmod +x .git/hooks/post-merge
+chmod +x .git/hooks/pre-push
 ```
