@@ -26,12 +26,15 @@ z40=0000000000000000000000000000000000000000
 
 while read local_ref local_sha remote_ref remote_sha
 do
-	if [ "$remote_ref" = "refs/heads/master" ] || [ "$remote_ref" = "refs/heads/main" ]; then
+	if [ "$remote_ref" = "refs/heads/master" ] 
+		|| [ "$remote_ref" = "refs/heads/main" ] 
+		|| [ "$remote_ref" = "refs/heads/development" ]; 
+	then
 		echo "--------------------------------------------------"
 		echo "PROTECTED BRANCH WARNING"
 		echo "--------------------------------------------------"
 		echo "You are attempting to push directly to '$remote_ref'."
-		echo "Direct pushes to master/main are restricted to prevent accidental changes."
+		echo "Direct pushes to master/main/development are restricted to prevent accidental changes."
 		echo ""
 		echo "Please push to a feature branch and create a Pull Request."
 		echo "--------------------------------------------------"
