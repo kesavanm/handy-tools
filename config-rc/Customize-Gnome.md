@@ -118,6 +118,31 @@ curl -sSL https://raw.githubusercontent.com/fam007e/nerd_fonts_installer/main/ne
     sudo dpkg -i cairo-clock_*.deb
     sudo apt install -f
     ```
+There are situations where you may face issues with `Cairo clock` unable to install due to missing dependencies (E.g., Debian 12 Bookworm / Ubuntu 24.04). This may be due to `libglade2-0` being obsolete and no longer available in the main repositories. Here's a workaround:
+
+You can temporarily **enable the Debian 11 (Bullseye) repository** to install dependencies.
+
+  ```bash
+  #1 Create a sources list file for Bullseye
+  echo "deb http://deb.debian.org/debian bullseye main" | sudo tee /etc/apt/sources.list.d/bullseye.list
+  #2 Update your package list:
+  sudo apt update
+  #3 Install libglade2-0 and cairo-clock:
+  sudo apt install libglade2-0
+  #4 Install cairo-clock
+  sudo apt install cairo-clock # (or)
+  sudo dpkg -i cairo-clock_*.deb # downloaded binary
+
+  # cleanup
+  #5 Remove the Bullseye repository to avoid conflicts later:
+  sudo rm /etc/apt/sources.list.d/bullseye.list
+  #6 Update your package list:
+  sudo apt update
+
+  # Troubleshooting
+  # Fix Broken Dependencies: If you have broken packages after trying to install, run:
+  sudo apt-get install -f
+  ```
 
 ### Albert Launcher
 [Albert](https://albertlauncher.github.io/) is a keyboard-centric launcher (similar to Spotlight on macOS). It indexes your files and applications for instant access.
