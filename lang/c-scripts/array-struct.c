@@ -5,7 +5,7 @@
 #define MAX_RECORDS 3
 
 struct record {
-    char name[50];
+    char name[5];
     int age;
     char sex;
     char phone[10];
@@ -15,13 +15,13 @@ struct record {
 int main() {
     struct record phonebook[MAX_RECORDS];
     int num_records = 0;
-    strcpy(phonebook[0].name, "John");
+    strcpy(phonebook[0].name, "Muthu");
     phonebook[0].age = 30;
     phonebook[0].sex = 'M';
     strcpy(phonebook[0].phone, "1234567890");
     phonebook[0].zip = 12345;
 
-    strcpy(phonebook[1].name, "Jane");
+    strcpy(phonebook[1].name, "Tamil");
     phonebook[1].age = 25;
     phonebook[1].sex = 'F';
     strcpy(phonebook[1].phone, "0987654321");
@@ -39,4 +39,4 @@ int main() {
     }
 
     return 0;
-} 
+}
