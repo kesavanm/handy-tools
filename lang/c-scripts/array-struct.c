@@ -1,4 +1,3 @@
-/* struct2.c - demo on array of structures holding person name,age,sex,phone,zip */
 #include <stdio.h>
 #include <string.h>
 
