@@ -11,3 +11,4 @@ stow dotfiles
 ### Demo showing conky & cairo-clock
 ![screenshot](./config-2.png)
 ![screenshot](./config-ss.png)
+

@@ -1,8 +1,8 @@
-# Customize Your GNOME Desktop
+# Customize Your Desktop (MATE)
 
-This guide outlines essential steps and tools to customize your GNOME environment after a fresh GNU/Linux installation. While desktop preferences are subjective, this document highlights popular tools to enhance both productivity and aesthetics.
+This guide outlines essential steps and tools to customize your MATE environment after a fresh GNU/Linux installation. While desktop preferences are subjective, this document highlights popular tools to enhance both productivity and aesthetics.
 
-- [Customize Your GNOME Desktop](#customize-your-gnome-desktop)
+- [Customize Your Desktop](#customize-your-desktop)
   - [Desktop Environment Overview](#desktop-environment-overview)
   - [Visual Enhancements & Tools](#visual-enhancements--tools)
     - [Panels](#panels)
@@ -16,15 +16,15 @@ This guide outlines essential steps and tools to customize your GNOME environmen
 
 ## Desktop Environment Overview
 
-GNOME and KDE are two of the most popular desktop environments in the Linux ecosystem.
+GNOME, KDE Plasma, and MATE are three of the most popular desktop environments in the Linux ecosystem.
 
-| Feature | GNOME | KDE Plasma |
-| :--- | :--- | :--- |
-| **Philosophy** | Simplicity, productivity, and modern workflow. | Customization, familiarity, and feature-richness. |
-| **Strengths** | Consistent UI, distraction-free interface, high usage in enterprise. | Extensive configuration options, lightweight resource usage. |
-| **Toolkit** | GTK | Qt |
+| Feature | GNOME | KDE Plasma | MATE | Trinity | LXDE | LQDE |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Philosophy** | Simplicity, productivity, and modern workflow. | Customization, familiarity, and feature-richness. | Clean, consistent UI, focus on usability. | Minimalism, performance, and integration. | Minimalism, simple, and lightweight. | Minimalism, lightweight, and familiar. |
+| **Strengths** | Consistent UI, distraction-free interface, high usage in enterprise. | Extensive configuration options, lightweight resource usage. | Familiar interface for users transitioning from Windows or macOS. | Minimalistic interface, high performance. | Minimalistic interface, lightweight resources. | Minimalistic interface, familiar for users of LXDE. |
+| **Toolkit** | GTK | Qt | GTK | GTK | GTK | GTK |
 
-While I (the author) have moved through various distributions (like **OpenSuSE** and **Trisquel**), GNOME remains my preferred daily driver for its workflow and integration.
+While I (the author) have moved through various distributions (like **OpenSuSE** and **Trisquel**), MATE remains my preferred daily driver for its workflow and integration.
 
 ## Visual Enhancements & Tools
 
