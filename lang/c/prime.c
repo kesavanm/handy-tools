@@ -1,3 +1,4 @@
+/* Program to print first N prime numbers */
 #include <stdio.h>
 #define MAX 10
 
