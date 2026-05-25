@@ -1,0 +1,35 @@
+! # disable splash screen and startup tips
+Ddd*splashScreen: off
+Ddd*startupTips: off
+
+! # disable config auto overwrite
+Ddd*saveOptionsOnExit: off
+
+! # better UI
+Ddd*renderTable: rt
+Ddd*rt*fontType: FONT_IS_XFT
+Ddd*rt*fontName: Inconsolata
+Ddd*rt*fontSize: 8
+
+! # Fonts.
+! Ddd*defaultFont: helvetica-medium
+! Ddd*variableWidthFont: helvetica-medium
+! Ddd*fixedWidthFont: lucidatypewriter-medium
+! Ddd*dataFont: lucidatypewriter-medium
+Ddd*FontSize: 80
+
+! # plot term type
+Ddd*plotTermType: x11
+
+! # display line numbers and save history on exit
+Ddd*displayLineNumbers: on
+Ddd*saveHistoryOnExit: on
+
+! # Window sizes.
+Ddd*graph_edit.height: 362
+Ddd*source_text_w.columns: 103
+Ddd*source_text_w.rows: 19
+Ddd*code_text_w.columns: 1
+Ddd*code_text_w.rows: 1
+Ddd*gdb_w.columns: 103
+Ddd*gdb_w.rows: 5
