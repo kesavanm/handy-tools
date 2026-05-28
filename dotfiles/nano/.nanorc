@@ -16,7 +16,7 @@ set autoindent              # A new line will have the same number of leading sp
 #set indicator              # Displays a scroll bar on the right that shows the position and size of the current view port.
 #set minibar                # Displays file name and other information in the bottom bar. Removes top bar.
 set mouse
-set titlebar
+#set titlebar
 
 set backup                  # Creates backups of your current file.
 set backupdir "~/.cache/nano/backups/"  # The location of the backups.
