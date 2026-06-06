@@ -133,7 +133,7 @@ The following commands will be used to learn and have fun with Linux.
 
 
 ### Session 4: Math Commands
-Learn some math commands like `bc` for basic calculations.
+Learn some math commands like `bc expr pi` for basic calculations.
 
 Start with `bc` command and practice basic arithmetic operations.
 
@@ -145,7 +145,24 @@ x=45
 y=67
 x*y
 3015
+x = 3
+y = 72 / x
+y
+24
 ```
+```bash
+expr 45 + 54
+expr 45 \* 89
+expr 45 '*' 99
+```
+
+> [!TIP] 
+> Try: `pi 50`
+
+**Combination**
+`echo "45 * $(pi 5)" | bc -l`
+
+
 ### Session 5: Commands - Advanced
 
 | # | Command | Description | Example |
