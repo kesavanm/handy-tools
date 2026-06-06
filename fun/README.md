@@ -49,12 +49,12 @@ sudo apt install <command_name>
 ### Special Characters
 | Command | Description | Example |
 | --- | --- | --- |
-| `>` | Redirect (store) output to a file | `history > output.txt` |
-| `>>` | Add (append) output to a file | `cat mom_loves_you.txt >> output.txt` |
-| `\|` | Pipe output to another command | `history \| head -10` |
+| `>` | **Redirect** (store) output to a file | `history > output.txt` |
+| `>>` | **Append** (add) output to a file | `cat mom_loves_you.txt >> output.txt` |
+| `\|` | **Pipe** output to another command | `history \| head -10` |
 
 
-### Special signs
+### Special place
  `~` :  Home directory 
 
 | Example | Description |
