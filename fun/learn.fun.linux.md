@@ -11,6 +11,10 @@ Learning is fun. Linux is fun.
 - Understand the purpose of the session
 - Set up the environment
 
+To install a new command, use the following command:
+```bash
+sudo apt install <command_name>
+```
 
 ### Session 1: Basic Commands
 - Learn basic Linux commands
@@ -39,15 +43,29 @@ Learning is fun. Linux is fun.
 |31|`cal`|Display a calendar|`cal 2025`|
 |32|`bc`|An arbitrary precision calculator language|`bc <<< "2+2"`|
 |34|`history`|Display or manipulate the history list|`history`|
+|35|`man`|Display manual pages|`man ls`|
+|36|`chmod`|Change file permissions|`chmod +x stupid.sh`|
 
 ### Special Characters
 | Command | Description | Example |
 | --- | --- | --- |
 | `>` | Redirect (store) output to a file | `history > output.txt` |
 | `>>` | Add (append) output to a file | `cat mom_loves_you.txt >> output.txt` |
-| `|` | Pipe output to another command | `history | head -10` |
+| `\|` | Pipe output to another command | `history \| head -10` |
 
-### Special Symbols
+
+### Special signs
+ `~` :  Home directory 
+
+| Example | Description |
+| --- | --- |
+| `cd ~` | Change to home directory | 
+| `find ~ -iname "*.txt"` | Find files with .txt extension in home directory | 
+
+
+
+
+### Special Symbols - Additional
 | Symbol | Description | Example |
 | --- | --- | --- |
 | `~` | Home directory | `cd ~` |
@@ -58,7 +76,7 @@ Learning is fun. Linux is fun.
 | `?` | Single character wildcard | `ls file?.txt` |
 | `;` | Command separator | `ls; cd /home` |
 | `&&` | AND operator | `ls && cd /home` |
-| `||` | OR operator | `ls || echo "Failed"` |
+| `\|\|` | OR operator | `ls \|\| echo "Failed"` |
 | `&` | Run command in background | `sleep 10 &` |
 | `!` | History expansion | `!!` |
 | `#` | Comment | `# This is a comment` |
@@ -66,14 +84,6 @@ Learning is fun. Linux is fun.
 | `"` | Double quotes | `"Hello World"` |
 | `'` | Single quotes | `'Hello World'` |
 | `\` | Escape character | `ls file\ with\ spaces.txt` |
-
-
-| `~` | Home directory | `cd ~` |
-
-| Command | Description | Example |
-| --- | --- | --- |
-| `cd ~` | Change to home directory | - |
-| `find ~ -iname "*.txt"` | Find files with .txt extension in home directory | - |
 
 
 ### Special Placeholders
@@ -89,84 +99,75 @@ Learning is fun. Linux is fun.
 - Learn file operations
 - Practice using the terminal
 
+### Editor - `nano`
+| Command | Description | Example |
+| --- | --- | --- |
+| `nano` | Simple text editor | `nano stupid.sh` |
+| `CTRL+S` | Save file in nano | `CTRL+S` |
+| `CTRL+X` | Exit nano | `CTRL+X` |
+
 
 | Command | Description | Example |
 | --- | --- | --- |
 | `&` | Run command in background | `sleep 10 &` |
 | `;` | Separate commands | `ls ; cd /home` |
 | `&&` | Run command if previous command succeeded | `ls && cd /home` |
-| `||` | Run command if previous command failed | `ls || echo "Failed"` |
+| `\|\|` | Run command if previous command failed | `ls \|\| echo "Failed"` |
 
 
 
 
-
-
-
-
-
-
-14. `chmod` - Change file permissions
-15. `chown` - Change file ownership
-16. `chgrp` - Change file group
-26. `free` - Display amount of free and used memory
-27. `df` - Report file system disk space usage
-28. `du` - Estimate file space usage
-
-33. `time` - Time command execution
-35. `man` - Format and display the on-line manual pages
-36. `info` - Read documentation
-37. `whatis` - Display one-line manual page descriptions
-38. `whatis` - Display one-line manual page descriptions
-39. `whereis` - Locate the source and binary files for a command
-40. `which` - Locate a command
-12. `grep` - Search for patterns in files
-9. `less` - View files
-20. `ps` - Report a snapshot of current processes
-21. `top` - Display Linux processes
-22. `kill` - Send a signal to a process
-23. `killall` - Kill processes by name
-24. `pkill` - Kill processes by name
-25. `htop` - Interactive process viewer
-
-
-
-
-
-
-### Session 2: Fun Commands
+### Session 3: Fun Commands
 The following commands will be used to learn and have fun with Linux.
 
-To install a new command, use the following command:
-```bash
-sudo apt install <command_name>
-```
-1. `sl` - Show a steam train running across your terminal
-2. `cowsay` - Make a cow say something
-3. `fortune` - Print a random fortune
-4. `lolcat` - Colorize output
-5. `toilet` - Print large text
-6. `sysvbanner` - Print large text
-7. `figlet` - Print large text
-8. `boxes` - Print text in boxes
+| # | Command | Description | Example |
+| --- | --- | --- | --- |
+| 1 | `sl` | Show a steam train running across your terminal | `sl` |
+| 2 | `cowsay` | Make a cow say something | `cowsay "Hello World"` |
+| 3 | `fortune` | Print a random fortune | `fortune` |
+| 4 | `lolcat` | Colorize output | - |
+| 5 | `toilet` | Print large text | - |
+| 6 | `sysvbanner` | Print large text | - |
+| 7 | `figlet` | Print large text | - |
+| 8 | `boxes` | Print text in boxes | - |
 
 
-
-### Session 3: Math Commands
+### Session 4: Math Commands
 Learn some math commands like `bc` for basic calculations.
 
 Start with `bc` command and practice basic arithmetic operations.
 
 ```bash
 bc
-456+789
+45+65
+110
+x=45
+y=67
+x*y
+3015
 ```
+### Session 5: Commands - Advanced
 
-
-
-
-
-
-
+| # | Command | Description | Example |
+|---|---|---|---|
+| 1 | `chown` | Change file ownership | `chown user file.txt` |
+| 2 | `chgrp` | Change file group | `chgrp group file.txt` |
+| 3 | `less` | View files | `less file.txt` |
+| 4 | `more` | View files | `more file.txt` |
+| 5 | `grep` | Search for patterns in files | `grep word file.txt` |
+| 6 | `kill` | Send a signal to a process | `kill PID` |
+| 7 | `killall` | Kill processes by name | `killall process_name` |
+| 8 | `pkill` | Kill processes by name | `pkill process_name` |
+| 9 | `ps` | Report a snapshot of current processes | `ps aux` |
+| 10 | `top` | Display Linux processes | `top` |
+| 11 | `htop` | Interactive process viewer | `htop` |
+| 12 | `free` | Display amount of free and used memory | `free` |
+| 13 | `df` | Report file system disk space usage | `df -h` |
+| 14 | `du` | Estimate file space usage | `du -h file.txt` |
+| 15 | `info` | Read documentation | `info command` |
+| 16 | `whatis` | Display one-line manual page descriptions | `whatis command` |
+| 17 | `whereis` | Locate the source and binary files for a command | `whereis command` |
+| 18 | `which` | Locate a command | `which command` |
+| 19 | `time` | Time command execution | `time command` |
 
 
