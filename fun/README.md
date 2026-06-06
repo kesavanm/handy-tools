@@ -95,6 +95,20 @@ sudo apt install <command_name>
 | `$!` | Process ID of last background command | `sleep 10 &` then `$!` |
 
 
+### Variables
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| `$USER` | Username | `kesavan` |
+| `$HOME` | Home directory | `/home/kesavan` |
+| `$HOSTNAME` | Hostname | `kesavan-laptop` |
+| `$OSTYPE` | Operating system | `linux-gnu` |
+| `$RANDOM` | Random number | `12345` |
+| `$SHELL` | Shell type | `/bin/bash` |
+| `$PWD` | Current directory | `/home/kesavan/workspace/handy-tools/fun` |
+| `$SECONDS` | Seconds since shell session started | `60` |
+| `$SRANDOM` | Random number, seeded with current time | `45678` |
+
 ### Session 2: File Operations
 - Learn file operations
 - Practice using the terminal
@@ -138,7 +152,7 @@ Learn some math commands like `bc expr pi` for basic calculations.
 Start with `bc` command and practice basic arithmetic operations.
 
 ```bash
-bc
+$ bc
 45+65
 110
 x=45
@@ -149,11 +163,12 @@ x = 3
 y = 72 / x
 y
 24
+quit
 ```
 ```bash
-expr 45 + 54
-expr 45 \* 89
-expr 45 '*' 99
+$ expr 45 + 54
+$ expr 45 \* 89
+$ expr 45 '*' 99
 ```
 
 > [!TIP] 
@@ -182,9 +197,9 @@ expr 45 '*' 99
 | 13 | `df` | Report file system disk space usage | `df -h` |
 | 14 | `du` | Estimate file space usage | `du -h file.txt` |
 | 15 | `info` | Read documentation | `info command` |
-| 16 | `whatis` | Display one-line manual page descriptions | `whatis command` |
-| 17 | `whereis` | Locate the source and binary files for a command | `whereis command` |
-| 18 | `which` | Locate a command | `which command` |
-| 19 | `time` | Time command execution | `time command` |
-| 20 | `locate` | Find files by name | `locate filename` |
+| 16 | `whatis` | Display one-line manual page desc | `whatis ls` |
+| 17 | `whereis` | Locate source & binary for command | `whereis cd` |
+| 18 | `which` | Locate a command | `which touch` |
+| 19 | `time` | Time command execution | `time date` |
+| 20 | `locate` | Find files by name | `locate stupid` |
 
