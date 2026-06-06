@@ -23,28 +23,28 @@ sudo apt install <command_name>
 
 |#|Command|Description|Example|
 |-|-|-|-|
-|1|`ls`|List files and directories|`ls -l`|
-|2|`cd`|Change directory|`cd /home/user`|
-|3|`pwd`|Print working directory|`pwd`|
-|4|`uname`|Print system information|`uname -a`|
-|5|`whoami`|Print effective user ID|`whoami`|
-|6|`mkdir`|Make directory|`mkdir my_directory`|
-|7|`touch`|Create empty files or update timestamps|`touch my_file.txt`|
-|8|`rm`|Remove files and directories|`rm my_file.txt`|
-|9|`cp`|Copy files and directories|`cp my_file.txt new_file.txt`|
-|10|`mv`|Move/rename files and directories|`mv my_file.txt /path/to/new/location`|
-|11|`cat`|Concatenate and display files|`cat my_file.txt`|
-|12|`head`|Display the first part of files|`head my_file.txt`|
-|13|`tail`|Display the last part of files|`tail my_file.txt`|
-|14|`find`|Search for files|`find /path/to/search -name "*.txt"`|
-|15|`who`|Show who is logged in|`who`|
-|16|`w`|Show who is logged in and what they are doing|`w`|
-|17|`date`|Display the current date and time|`date`|
-|18|`cal`|Display a calendar|`cal 2025`|
-|19|`bc`|An arbitrary precision calculator language|`bc <<< "2+2"`|
-|20|`history`|Display or manipulate the history list|`history`|
-|21|`man`|Display manual pages|`man ls`|
-|22|`chmod`|Change file permissions|`chmod +x stupid.sh`|
+|1|`ls`| **list** files and directories|`ls -l`|
+|2|`cd`|**change directory**|`cd /home/user`|
+|3|`pwd`|**print working directory**|`pwd`|
+|4|`uname`|What is the (OS/your) **u name**?|`uname -a`|
+|5|`whoami`|Print effective user ID.  **Who Am I**?|`whoami`|
+|6|`mkdir`|**Make directory**|`mkdir my_directory`|
+|7|`touch`|**Create empty files or update timestamps**|`touch my_file.txt`|
+|8|`rm`|**Remove files and directories**|`rm my_file.txt`|
+|9|`cp`|**Copy** files and directories|`cp my_file.txt new_file.txt`|
+|10|`mv`|**Move**/rename files and directories|`mv my_file.txt /path/to/new/location`|
+|11|`cat`|**Concatenate** and display files|`cat my_file.txt`|
+|12|`head`|Display **head** (first) of file|`head my_file.txt`|
+|13|`tail`|Display **tail** (last) of file|`tail my_file.txt`|
+|14|`find`|**find** (search) for files|`find /path/to/search -name "*.txt"`|
+|15|`who`|Show **who** is logged in|`who`|
+|16|`w`|Show **who** is logged in and what they are doing|`w`|
+|17|`date`|Display the current **date** and time|`date`|
+|18|`cal`|Display a **calendar**|`cal 2025`|
+|19|`bc`|An arbitrary precision **bench calculator** language|`bc <<< "2+2"`|
+|20|`history`| Display my **history** of commands|`history`|
+|21|`man`|Display **manual** pages|`man ls`|
+|22|`chmod`| **Change Mode** to update file permissions|`chmod +x stupid.sh`|
 
 ### Special Characters
 | Command | Description | Example |
@@ -55,7 +55,7 @@ sudo apt install <command_name>
 
 
 ### Special place
- `~` :  Home directory 
+ `~` :  **Home directory**
 
 | Example | Description |
 | --- | --- |
@@ -65,7 +65,7 @@ sudo apt install <command_name>
 
 
 
-### Special Symbols - Additional
+### More specials
 | Symbol | Description | Example |
 | --- | --- | --- |
 | `~` | Home directory | `cd ~` |
@@ -186,5 +186,5 @@ expr 45 '*' 99
 | 17 | `whereis` | Locate the source and binary files for a command | `whereis command` |
 | 18 | `which` | Locate a command | `which command` |
 | 19 | `time` | Time command execution | `time command` |
-
+| 20 | `locate` | Find files by name | `locate filename` |
 
