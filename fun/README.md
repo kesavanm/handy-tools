@@ -41,7 +41,7 @@ sudo apt install <command_name>
 |16|`w`|Show **who** is logged in and what they are doing|`w`|
 |17|`date`|Display the current **date** and time|`date`|
 |18|`cal`|Display a **calendar**|`cal 2025`|
-|19|`bc`|An arbitrary precision **bench calculator** language|`bc <<< "2+2"`|
+|19|`bc`|An arbitrary precision **bench calculator** language|`bc -l <<< "2+2"`|
 |20|`history`| Display my **history** of commands|`history`|
 |21|`man`|Display **manual** pages|`man ls`|
 |22|`chmod`| **Change Mode** to update file permissions|`chmod +x stupid.sh`|
@@ -149,10 +149,10 @@ The following commands will be used to learn and have fun with Linux.
 ### Session 4: Math Commands
 Learn some math commands like `bc expr pi` for basic calculations.
 
-Start with `bc` command and practice basic arithmetic operations.
+Start with `bc` command and practice basic arithmetic operations. `-l` flag enables advanced math functions.
 
 ```bash
-$ bc
+$ bc -l
 45+65
 110
 x=45
