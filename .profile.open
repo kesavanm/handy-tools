@@ -31,7 +31,7 @@ MY_IP=''
 #User Settings
 GIT_REFRESH=1     # change to 0 if you git is too big & facing slow due to Refresh index: 100% (17649/17649), done.
 ENABLE_FZF=1
-ps1_status='wow' # [short|sweet|normal|full|auto|wow]
+export ps1_status='wow' # [short|sweet|normal|full|auto|wow]
 zip=77057
 
 # Enable ERR Reporting
@@ -1242,9 +1242,9 @@ function f_ps1(){
           #CONSTANTS - USER SUPPLIED
           COLOR_USER="PURPLE"
           COLOR_PATH="BLUE"
-          COLOR_IPv4="GREEN"
+          COLOR_IPv4="YELLOW"
           COLOR_DATE="CYAN"
-          COLOR_BRNH="YELLOW"
+          COLOR_BRNH="GREEN"
           COLOR_BRNH_MOD="ORANGE"
 
           # Big Thanks: https://stackoverflow.com/a/55331060
