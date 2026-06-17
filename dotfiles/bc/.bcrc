@@ -1,0 +1,47 @@
+# =============================================
+# FULL DEGREE MODE SETUP for GNU bc (-l)
+# =============================================
+
+# alias bc='bc -l ~/.bcrc'
+# 
+#
+# $1.6K - Tony: $2.2K Samsung 
+#
+#
+# Wash $850 Dry $850 
+#
+
+
+
+scale = 20
+pi = 4 * a(1)
+
+# Basic radian ↔ degree conversions
+define radtodeg(r) { return r * (180 / pi) }
+define degtorad(d) { return d * (pi / 180) }
+
+# Degree versions of trig functions
+define sind(x)   { return s( degtorad(x) ) }
+define cosd(x)   { return c( degtorad(x) ) }
+define tand(x)   { return sind(x) / cosd(x) }
+
+# Inverse trig (return degrees)
+define asind(x)  { return radtodeg( a(x) ) }
+define acosd(x)  { 
+    # More accurate acos using arctan
+    if (x == 1) return 0
+    if (x == -1) return 180
+    return radtodeg(2 * a(sqrt((1 - x) / (1 + x))))
+}
+define atand(x)  { return radtodeg( a(x) ) }
+
+# Optional: tan in radians (for completeness)
+define t(x)      { return s(x)/c(x) }
+
+# Bonus: Common constants
+define deg90()   { return 90 }
+define deg180()  { return 180 }
+define deg360()  { return 360 }
+
+print "=== Degree Mode Loaded ===\n"
+print "Use: sind(30), cosd(45), tand(60), asind(0.5), atand(1), etc.\n\n"
