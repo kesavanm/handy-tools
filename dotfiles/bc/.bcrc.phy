@@ -1,0 +1,97 @@
+# =============================================
+# Enhanced ~/.bcrc for GNU bc
+# Full Degree Mode + Constants + Physics
+# =============================================
+# echo 'export BC_ENV_ARGS="-l ~/.bcrc"' >> ~/.bashrc
+# source ~/.bashrc
+
+scale = 20
+pi = 4 * a(1)
+e_const = e(1)                    # Euler's number
+
+# ===================== MATHEMATICAL CONSTANTS =====================
+define const_pi()    { return pi }
+define const_e()     { return e_const }
+define const_phi()   { return (1 + sqrt(5)) / 2 }   # Golden ratio
+define const_sqrt2() { return sqrt(2) }
+define const_sqrt3() { return sqrt(3) }
+
+# ===================== PHYSICS CONSTANTS =====================
+# Using high-precision CODATA 2018/2022 values (exact where possible)
+
+define phys_c()      { return 299792458 }                    # Speed of light (exact) m/s
+define phys_g()      { return 6.67430 * 10^-11 }             # Gravitational constant m³ kg⁻¹ s⁻²
+define phys_h()      { return 6.62607015 * 10^-34 }          # Planck constant (exact) J s
+define phys_hbar()   { return phys_h() / (2 * pi) }          # Reduced Planck constant
+define phys_k()      { return 1.380649 * 10^-23 }            # Boltzmann constant (exact) J/K
+define phys_e()      { return 1.602176634 * 10^-19 }         # Elementary charge (exact) C
+define phys_eps0()   { return 8.8541878128 * 10^-12 }        # Vacuum permittivity F/m
+define phys_mu0()    { return 4 * pi * 10^-7 }               # Vacuum permeability (exact) H/m
+define phys_g0()     { return 6.67430 * 10^(-11) }           # Gravitational constant
+define phys_h()      { return 6.62607015 * 10^(-34) }        # Planck constant
+define phys_k()      { return 1.380649 * 10^(-23) }          # Boltzmann constant
+define phys_na()     { return 6.02214076 * 10^23 }           # Avogadro constant (exact) mol⁻¹
+
+
+
+define phys_g()      { return 9.80665 }                     # Standard gravity m/s² (exact)
+define phys_r()      { return phys_k() * phys_na() }        # Gas constant J/(mol·K)
+
+# ===================== RADIAN <-> DEGREE =====================
+define radtodeg(r) { return r * (180 / pi) }
+define degtorad(d) { return d * (pi / 180) }
+
+# ===================== DEGREE TRIG FUNCTIONS =====================
+define sind(x)   { return s( degtorad(x) ) }
+define cosd(x)   { return c( degtorad(x) ) }
+define tand(x)   { return sind(x) / cosd(x) }
+
+define asind(x)  { return radtodeg( a(x) ) }
+define acosd(x)  { 
+    if (x >= 1)  return 0
+    if (x <= -1) return 180
+    return radtodeg(2 * a(sqrt((1 - x) / (1 + x))))
+}
+define atand(x)  { return radtodeg( a(x) ) }
+
+define cotd(x)   { return cosd(x) / sind(x) }
+define secd(x)   { return 1 / cosd(x) }
+define cscd(x)   { return 1 / sind(x) }
+
+# ===================== HYPERBOLIC + OTHER FUNCTIONS =====================
+define sinh(x)   { return (e(x) - e(-x)) / 2 }
+define cosh(x)   { return (e(x) + e(-x)) / 2 }
+define tanh(x)   { return sinh(x) / cosh(x) }
+
+define log10(x)  { return l(x) / l(10) }
+define log2(x)   { return l(x) / l(2) }
+define pow(x, y) { return e( l(x) * y ) }
+define root(x, n){ return e( l(x) / n ) }
+
+# ===================== FACTORIAL =====================
+define fact(n) {
+    auto i, f
+    f = 1
+    for (i = 2; i <= n; i++) f = f * i
+    return f
+}
+
+
+# ===================== HELP FUNCTION =====================
+define help() {
+    print "Available functions:\n"
+    print "  phys_c(), phys_g(), phys_g0(), phys_h(), phys_k(), phys_na()\n"
+    print "  sind(x), cosd(x), tand(x), asind(x), acosd(x), atand(x)\n"
+    print "  sinh(x), cosh(x), tanh(x), log10(x), log2(x), pow(x,y), root(x,n)\n"
+    print "  fact(n), radtodeg(r), degtorad(d)\n"
+    print " check your .bcrc file for more information\n"
+    return 0
+}
+
+
+# ===================== STARTUP MESSAGE =====================
+print "\n=== Enhanced bc with Physics Constants Loaded ===\n"
+print "scale = ", scale, "\n"
+print "Physics: phys_c(), phys_g(), phys_g0(), phys_h(), phys_k() etc.\n"
+print "Trig:    sind(30), cosd(45), asind(0.5), atand(1)\n\n"
+
