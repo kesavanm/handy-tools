@@ -1,17 +1,8 @@
 # =============================================
 # FULL DEGREE MODE SETUP for GNU bc (-l)
 # =============================================
-
 # alias bc='bc -l ~/.bcrc'
-# 
 #
-# $1.6K - Tony: $2.2K Samsung 
-#
-#
-# Wash $850 Dry $850 
-#
-
-
 
 scale = 20
 pi = 4 * a(1)
