@@ -18,8 +18,8 @@ set autoindent              # A new line will have the same number of leading sp
 set mouse
 #set titlebar
 
-set backup                  # Creates backups of your current file.
-set backupdir "~/.cache/nano/backups/"  # The location of the backups.
+#set backup                  # Creates backups of your current file.
+#set backupdir "~/.cache/nano/backups/"  # The location of the backups.
 
 # modern bindings, jump to end of words, no mouse, cut from cursor to EOL, delete marked lines on one press
 set afterends
@@ -36,6 +36,7 @@ set keycolor black,blue
 set functioncolor blue
 set selectedcolor blue,yellow
 #set stripecolor black,lightblue
-set numbercolor black,yellow
+set numbercolor yellow
 
 include "/usr/share/nano/*.nanorc"  # Enables the syntax highlighting.
+
