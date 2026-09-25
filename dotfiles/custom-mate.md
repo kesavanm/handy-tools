@@ -51,7 +51,7 @@ Compiz is a compositing window manager famous for its desktop effects (wobbly wi
 
 **Installation:**
 ```bash
-sudo apt install compiz-plugins-default compiz-plugins-main compiz-plugins-extra compizconfig-settings-manager
+sudo apt install compiz-plugins-default compiz-mate compiz-plugins-main compiz-plugins-extra compizconfig-settings-manager
 ```
 
 **Configuration:**
