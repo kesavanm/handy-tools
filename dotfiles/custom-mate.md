@@ -71,7 +71,7 @@ ccsm
 ### Themes & Icons
 To apply themes that aren't available in your package manager, you can install them manually.
 
-** Installation Locations:**
+**Installation Locations:**
 *   **User-only (Recommended)**: `~/.themes` for themes and `~/.icons` for icon sets.
 *   **System-wide**: `/usr/share/themes` and `/usr/share/icons` (requires `sudo`).
 
@@ -148,8 +148,10 @@ You can temporarily **enable the Debian 11 (Bullseye) repository** to install de
 [Albert](https://albertlauncher.github.io/) is a keyboard-centric launcher (similar to Spotlight on macOS). It indexes your files and applications for instant access.
 
 **Installation:**
+Best way is to follow the steps from `official portal` to install deps
+
 ```bash
-# Example manual install
+# (OR) manual install
 sudo dpkg -i albert_*.deb
 sudo apt install -f
 ```
