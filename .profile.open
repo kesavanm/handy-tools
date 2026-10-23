@@ -1122,6 +1122,14 @@ function statc(){
   return 0;
 }
 
+function rat() (
+    for f in "$@"; do
+        printf '\n===== %s =====\n' "$f"
+        nl -ba "$f"
+    done
+)
+
+
 function battery(){
   #for old kernel
   #upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state|to\ full|percentage"
