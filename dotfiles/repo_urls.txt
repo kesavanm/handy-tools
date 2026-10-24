@@ -1,0 +1,3 @@
+THEMES_REPO=https://github.com/vinceliuice/Mojave-gtk-theme
+ICONS_REPO=https://github.com/PapirusDevelopmentTeam/papirus-icon-theme
+FONTS_REPO=
