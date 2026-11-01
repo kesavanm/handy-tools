@@ -7,6 +7,47 @@ URL_FILE="$BACKUP_DIR/repo_urls.txt"
 # List of required packages for your setup
 REQUIRED_PKGS=("mate-desktop-environment" "plank" "compiz" "albert" "cairo-clock" "conky-all" "git")
 
+install_git_asset() {
+    local repo_var="$1"
+    local dest_dir="$2"
+    local label="$3"
+    local repo_url="${!repo_var}"
+
+    if [ -n "$repo_url" ]; then
+        echo "[*] Installing $label from Git..."
+        mkdir -p "$dest_dir"
+        local temp_dir="$dest_dir/.tmp_git_asset"
+        rm -rf "$temp_dir"
+        git clone --depth 1 "$repo_url" "$temp_dir"
+        if [ -d "$temp_dir" ]; then
+            cp -a "$temp_dir"/. "$dest_dir"/
+            rm -rf "$temp_dir"
+            echo "[✓] $label install completed."
+        else
+            echo "[!] Failed to clone $label from $repo_url"
+        fi
+    fi
+}
+
+confirm_theme_install() {
+    local dconf_file="$BACKUP_DIR/mate_dconf.conf"
+    local theme_name="$(sed -n "s/^gtk-theme='\(.*\)'$/\1/p; s/^theme='\(.*\)'$/\1/p" "$dconf_file" | head -n 1)"
+    local icon_name="$(sed -n "s/^icon-theme='\(.*\)'$/\1/p" "$dconf_file" | head -n 1)"
+
+    echo "[*] Confirming installed theme and icon settings..."
+    if [ -n "$theme_name" ] && [ -d "$HOME/.themes/$theme_name" ]; then
+        echo "[✓] GTK theme installed: $theme_name"
+    elif [ -n "$theme_name" ]; then
+        echo "[!] GTK theme missing from ~/.themes/$theme_name"
+    fi
+
+    if [ -n "$icon_name" ] && [ -d "$HOME/.icons/$icon_name" ]; then
+        echo "[✓] Icon theme installed: $icon_name"
+    elif [ -n "$icon_name" ]; then
+        echo "[!] Icon theme missing from ~/.icons/$icon_name"
+    fi
+}
+
 show_usage() {
     echo "Usage: $0 [export|import]"
     echo "  export : Backs up MATE and configuration files (Leaves assets to Git)"
@@ -116,25 +157,17 @@ case "$ACTION" in
         mkdir -p ~/.themes ~/.icons ~/.local/share/fonts
         if [ -f "$URL_FILE" ]; then
             source "$URL_FILE"
-            
-            if [ -not -z "$THEMES_REPO" ]; then
-                echo "[*] Cloning Themes via Git..."
-                git clone "$THEMES_REPO" ~/.themes/temporary_git_dir && cp -r ~/.themes/temporary_git_dir/* ~/.themes/ && rm -rf ~/.themes/temporary_git_dir
-            fi
-            if [ -not -z "$ICONS_REPO" ]; then
-                echo "[*] Cloning Icons via Git..."
-                git clone "$ICONS_REPO" ~/.icons/temporary_git_dir && cp -r ~/.icons/temporary_git_dir/* ~/.icons/ && rm -rf ~/.icons/temporary_git_dir
-            fi
-            if [ -not -z "$FONTS_REPO" ]; then
-                echo "[*] Cloning Fonts via Git..."
-                git clone "$FONTS_REPO" ~/.local/share/fonts/temporary_git_dir && cp -r ~/.local/share/fonts/temporary_git_dir/* ~/.local/share/fonts/ && rm -rf ~/.local/share/fonts/temporary_git_dir
-            fi
+
+            install_git_asset THEMES_REPO "$HOME/.themes" "GTK theme"
+            install_git_asset ICONS_REPO "$HOME/.icons" "icon theme"
+            install_git_asset FONTS_REPO "$HOME/.local/share/fonts" "font pack"
         else
             echo "[!] No repo_urls.txt found. Skipping Git asset download."
         fi
 
         # 2. Restore Application Config Directories
         echo "[*] Restoring application configuration files..."
+        
         mkdir -p ~/.config ~/.local/share
 
         cp -r "$BACKUP_DIR/plank/config/"* ~/.config/plank/ 2>/dev/null
@@ -155,7 +188,8 @@ case "$ACTION" in
         # 4. Refresh DE
         echo "[*] Reloading MATE interface..."
         mate-panel --replace &> /dev/null &
-        
+
+        confirm_theme_install
         echo "=== IMPORT COMPLETE ==="
         ;;
 
