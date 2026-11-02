@@ -479,7 +479,7 @@ function mydf() {   # Pretty-print of 'df' output.
 
 
 function myip() {   # Get IP adress on ethernet.
-    IP=$(hostname -I)
+    IP=$(hostname -I|awk '{print $1}')
     # IP=$(curl -s ipinfo.io/ip)
     echo ${IP:-"Not connected"}
 }
